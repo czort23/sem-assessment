@@ -1,1 +1,1 @@
-GitHub Actions test
+![workflow](https://github.com/czort23/devops/actions/workflows/main.yml/badge.svg)
