@@ -1,0 +1,24 @@
+Code of Conduct
+1. Respect & Communication
+- Treat all team members with respect.
+- Communicate clearly, professionally, and promptly.
+- Be open to feedback and differing opinions.
+
+2. Responsibility & Accountability
+- Complete assigned tasks on time.
+- Own up to mistakes and help resolve issues collaboratively.
+- Inform the group early if you're struggling with a task or deadline.
+
+3. Collaboration & Participation
+- Attend all scheduled meetings unless previously excused.
+- Contribute actively to discussions and development.
+- Support others and share knowledge.
+
+4. Integrity & Academic Honesty
+- Follow university guidelines on academic integrity.
+- Do not plagiarize or misuse code.
+- Properly attribute external sources or tools used.
+
+5. Conflict Resolution
+- Address issues constructively within the group first.
+- If unresolved, escalate respectfully to the course supervisor or TA.
