@@ -18,16 +18,16 @@ Primary task.
 
 Database connection is active.
 Database included population data for all countries as well as their continents.
-The user provides a valid integer input for N.
+The user provides a valid continent name and integer N.
 
 ### Success End Condition
 
-System generates report and displays the top N countries in the world, ordered by population from largest to smallest.
+System generates report and displays the top N populated countries within the specified continent, from largest to smallest.
 
 ### Failed End Condition
 
 If query fails or data unavailable error is displayed.
-The user enters an invalid or non-numeric value for N.
+The user enters an invalid continent name or invalid value for N.
 
 ### Primary Actor
 
@@ -35,21 +35,23 @@ Organisation.
 
 ### Trigger
 
-"View Top N Countries in The World" is selected and N is specified.
+"View Top N Countries by Continent" is selected, continent name is selected and N is specified.
 
 ## MAIN SUCCESS SCENARIO
 
-1. User selects navigates to Country Reports -> Top N Countries in The World
-2. The System allows to type a value for N.
-3. The user types the number.
+1. User selects navigates to Country Reports -> Top N Countries by Continent
+2. The System allows to select or enter continent name and integer for N.
+3. The user enters the continent and number.
 4. The System executes the query.
-5. Database returns sorted top N countries.
+5. Database returns sorted top N countries within that continent.
 6. User views report.
 
 ## EXTENSIONS
 
-4. The user enteres non-numeric or invalid N.
+3a. The user enters non-numeric or invalid N.
    i. System displays "Invalid number. Try again."
+3b. The user enters invalid continent name.
+   i. System displays "Please try again."
 
 ## SUB-VARIATIONS
 

@@ -46,7 +46,7 @@ Organisation.
 
 ## EXTENSIONS
 
-4. The user enters an invalid or misspelled region name.
+3. The user enters an invalid or misspelled region name.
    i. System displays "Invalid continent name. Try again."
 
 ## SUB-VARIATIONS

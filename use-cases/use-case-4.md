@@ -48,7 +48,7 @@ View Top N Countries in The World" is selected and N is specified.
 
 ## EXTENSIONS
 
-4. The user enteres non-numeric or invalid N.
+3. The user enters non-numeric or invalid N.
    i. System displays "Invalid number. Try again."
 
 ## SUB-VARIATIONS
