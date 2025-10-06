@@ -1,4 +1,4 @@
-# USE CASE: 1 Produce a Report on the Salary of Employees of a Given Role
+# USE CASE: 2 All the countries in a continent organised by largest population to smallest.
 
 ## CHARACTERISTIC INFORMATION
 

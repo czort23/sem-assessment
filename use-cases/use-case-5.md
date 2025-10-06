@@ -1,10 +1,10 @@
-# USE CASE: 4 The top N populated countries in the world where N is provided by the user.
+# USE CASE: 5 The top N populated countries in a continent where N is provided by the user.
 
 ## CHARACTERISTIC INFORMATION
 
 ### Goal in Context
 
-The organisation wants to view a report of the top N populated countries in the world where N is provided by the user.
+The organisation wants to view a report of the top N populated countries in a continent where N is provided by the user.
 
 ### Scope
 
@@ -17,7 +17,7 @@ Primary task.
 ### Preconditions
 
 Database connection is active.
-Database included population data for all countries.
+Database included population data for all countries as well as their continents.
 The user provides a valid integer input for N.
 
 ### Success End Condition
@@ -35,7 +35,7 @@ Organisation.
 
 ### Trigger
 
-View Top N Countries in The World" is selected and N is specified.
+"View Top N Countries in The World" is selected and N is specified.
 
 ## MAIN SUCCESS SCENARIO
 
