@@ -4,15 +4,15 @@
 
 ### Goal in Context
 
-As a *data analyst* I want *to view and sort all countries by population, world, continent, religion or top N, * so that *I can analyse how populations are distributed globally and regionally.*
+The organisation wants to view a report of all the countries in the world organised by largest population to smallest.
 
 ### Scope
 
-Organisation.
+World Population Reporting System
 
 ### Level
 
-User goal.
+Primary task.
 
 ### Preconditions
 
@@ -28,23 +28,25 @@ If query fails or data unavailable error is displayed.
 
 ### Primary Actor
 
-Data Analyst.
+Organisation.
 
 ### Trigger
 
-"Country Report" is selected.
+"Largest to Smallest" is selected.
 
 ## MAIN SUCCESS SCENARIO
 
-1. User selects "Country Report".
+1. User selects "Largest to Smallest".
 2. System shows for filter.
-3. HR advisor extracts current salary information of all employees of the given role.
-4. HR advisor provides report to finance.
+3. User enters selection.
+4. System retrieves and sorts data.
+5. System displays report.
+6. User views report.
 
 ## EXTENSIONS
 
-3. **Role does not exist**:
-    1. HR advisor informs finance no role exists.
+- Database is unavailable -> Error message.
+- No results -> "No data found."
 
 ## SUB-VARIATIONS
 
@@ -52,4 +54,4 @@ None.
 
 ## SCHEDULE
 
-**DUE DATE**: Release 1.0
+**DUE DATE**: Release 2.0
