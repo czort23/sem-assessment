@@ -9,10 +9,9 @@ public class App {
 
         // Connect to database
         a.connect();
-        // Get Employee
-        Employee emp = a.getEmployee(255530);
-        // Display results
-        a.displayEmployee(emp);
+
+        City c = a.getCity(1);
+        System.out.println(c.toString());
 
         // Disconnect from database
         a.disconnect();
@@ -43,12 +42,12 @@ public class App {
                 // Wait a bit for db to start
                 Thread.sleep(30000);
                 // Connect to database
-                con = DriverManager.getConnection("jdbc:mysql://db:3306/employees?allowPublicKeyRetrieval=true&useSSL=false", "root", "example");
+                con = DriverManager.getConnection("jdbc:mysql://db:3306/world?allowPublicKeyRetrieval=true&useSSL=false", "root", "example");
                 System.out.println("Successfully connected");
                 break;
             }
             catch (SQLException sqle) {
-                System.out.println("Failed to connect to database attempt " + Integer.toString(i));
+                System.out.println("Failed to connect to database attempt " + i);
                 System.out.println(sqle.getMessage());
             }
             catch (InterruptedException ie) {
@@ -72,78 +71,31 @@ public class App {
         }
     }
 
-    public Employee getEmployee(int ID) {
+    public City getCity(int id) {
         try {
             // Create an SQL statement
             Statement stmt = con.createStatement();
             // Create string for SQL statement
-            String strSelect =
-                    "SELECT\n" +
-                            "    e.emp_no,\n" +
-                            "    e.first_name,\n" +
-                            "    e.last_name,\n" +
-                            "    t.title AS current_title,\n" +
-                            "    s.salary AS current_salary,\n" +
-                            "    d.dept_name AS department,\n" +
-                            "    CONCAT(m.first_name, ' ', m.last_name) AS manager_name\n" +
-                            "FROM employees e\n" +
-                            "-- Current title\n" +
-                            "JOIN titles t\n" +
-                            "    ON e.emp_no = t.emp_no\n" +
-                            "    AND t.to_date = '9999-01-01'\n" +
-                            "-- Current salary\n" +
-                            "JOIN salaries s\n" +
-                            "    ON e.emp_no = s.emp_no\n" +
-                            "    AND s.to_date = '9999-01-01'\n" +
-                            "-- Current department\n" +
-                            "JOIN dept_emp de\n" +
-                            "    ON e.emp_no = de.emp_no\n" +
-                            "    AND de.to_date = '9999-01-01'\n" +
-                            "JOIN departments d\n" +
-                            "    ON de.dept_no = d.dept_no\n" +
-                            "-- Current department manager\n" +
-                            "JOIN dept_manager dm\n" +
-                            "    ON de.dept_no = dm.dept_no\n" +
-                            "    AND dm.to_date = '9999-01-01'\n" +
-                            "JOIN employees m\n" +
-                            "    ON dm.emp_no = m.emp_no\n" +
-                            "WHERE e.emp_no = " + ID + " " +
-                            "ORDER BY e.emp_no;";
+            String strSelect = "SELECT * FROM city WHERE id = " + id;
             // Execute SQL statement
             ResultSet rset = stmt.executeQuery(strSelect);
-            // Return new employee if valid.
-            // Check one is returned
+
             if (rset.next()) {
-                Employee emp = new Employee();
-                emp.emp_no = rset.getInt("emp_no");
-                emp.first_name = rset.getString("first_name");
-                emp.last_name = rset.getString("last_name");
-                emp.title = rset.getString("current_title");
-                emp.salary = rset.getInt("current_salary");
-                emp.dept_name = rset.getString("department");
-                emp.manager = rset.getString("manager_name");
-                return emp;
+                City c = new City();
+                c.id = rset.getInt("ID");
+                c.name = rset.getString("Name");
+                c.countryCode = rset.getString("CountryCode");
+                c.district = rset.getString("District");
+                c.population = rset.getInt("Population");
+                return c;
             }
             else
                 return null;
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
-            System.out.println("Failed to get employee details");
+            System.out.println("Failed to get data");
             return null;
-        }
-    }
-
-    public void displayEmployee(Employee emp) {
-        if (emp != null) {
-            System.out.println(
-                    emp.emp_no + " "
-                            + emp.first_name + " "
-                            + emp.last_name + "\n"
-                            + emp.title + "\n"
-                            + "Salary:" + emp.salary + "\n"
-                            + emp.dept_name + "\n"
-                            + "Manager: " + emp.manager + "\n");
         }
     }
 }
