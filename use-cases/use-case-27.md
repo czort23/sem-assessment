@@ -30,7 +30,7 @@ If query fails or data unavailable error is displayed.
 
 ### Primary Actor
 
-Organisation.
+Organisation user.
 
 ### Trigger
 
@@ -56,4 +56,4 @@ Dropdown list of valid continents.
 
 ## SCHEDULE
 
-**DUE DATE**: Release 2.0
+**DUE DATE**: Release 1.0

@@ -29,7 +29,7 @@ The user enters an invalid continent name.
 
 ### Primary Actor
 
-Organisation.
+Organisation user.
 
 ### Trigger
 
@@ -55,4 +55,4 @@ None.
 
 ## SCHEDULE
 
-**DUE DATE**: Release 2.0
+**DUE DATE**: Release 1.0

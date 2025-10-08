@@ -33,7 +33,7 @@ Invalid value for N is entered.
 
 ### Primary Actor
 
-Organisation.
+Organisation user.
 
 ### Trigger
 
@@ -63,4 +63,4 @@ User picks/enters district name and value for N.
 
 ## SCHEDULE
 
-**DUE DATE**: Release 2.0
+**DUE DATE**: Release 1.0

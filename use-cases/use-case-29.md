@@ -31,7 +31,7 @@ User enters/selects a valid country.
 
 ### Primary Actor
 
-Organisation.
+Organisation user.
 
 ### Trigger
 
@@ -56,4 +56,4 @@ Dropdown list of all countries.
 
 ## SCHEDULE
 
-**DUE DATE**: Release 2.0
+**DUE DATE**: Release 1.0

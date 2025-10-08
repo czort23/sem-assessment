@@ -31,11 +31,11 @@ The user enters an invalid or non-numeric value for N.
 
 ### Primary Actor
 
-Organisation.
+Organisation user.
 
 ### Trigger
 
-View Top N Countries in The World" is selected and N is specified.
+"View Top N Countries in The World" is selected and N is specified.
 
 ## MAIN SUCCESS SCENARIO
 
@@ -57,4 +57,4 @@ None.
 
 ## SCHEDULE
 
-**DUE DATE**: Release 2.0
+**DUE DATE**: Release 1.0

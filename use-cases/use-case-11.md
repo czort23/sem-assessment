@@ -31,7 +31,7 @@ Invalid district name is entered.
 
 ### Primary Actor
 
-Organisation.
+Organisation user.
 
 ### Trigger
 
@@ -56,4 +56,4 @@ Organisation.
 
 ## SCHEDULE
 
-**DUE DATE**: Release 2.0
+**DUE DATE**: Release 1.0

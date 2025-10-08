@@ -30,7 +30,7 @@ If query fails or data unavailable error is displayed.
 
 ### Primary Actor
 
-Organisation.
+Organisation user.
 
 ### Trigger
 
@@ -57,4 +57,4 @@ User specifies region name.
 
 ## SCHEDULE
 
-**DUE DATE**: Release 2.0
+**DUE DATE**: Release 1.0
