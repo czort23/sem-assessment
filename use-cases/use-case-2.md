@@ -1,4 +1,4 @@
-# USE CASE: 1 Produce a Report on the Salary of Employees of a Given Role
+# USE CASE: 2 All the countries in a continent organised by largest population to smallest.
 
 ## CHARACTERISTIC INFORMATION
 
@@ -29,7 +29,7 @@ The user enters an invalid continent name.
 
 ### Primary Actor
 
-Organisation.
+Organisation user.
 
 ### Trigger
 
@@ -46,7 +46,7 @@ Organisation.
 
 ## EXTENSIONS
 
-4. The user enters an invalid or misspelled continent name.
+3. The user enters an invalid or misspelled continent name.
     i. System displays "Invalid continent name. Try again."
 
 ## SUB-VARIATIONS
@@ -55,4 +55,4 @@ None.
 
 ## SCHEDULE
 
-**DUE DATE**: Release 2.0
+**DUE DATE**: Release 1.0

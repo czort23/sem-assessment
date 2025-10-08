@@ -1,4 +1,4 @@
-# USE CASE: 1 Produce a Report on the Salary of Employees of a Given Role
+# USE CASE: 4 The top N populated countries in the world where N is provided by the user.
 
 ## CHARACTERISTIC INFORMATION
 
@@ -31,7 +31,7 @@ The user enters an invalid or non-numeric value for N.
 
 ### Primary Actor
 
-Organisation.
+Organisation user.
 
 ### Trigger
 
@@ -48,7 +48,7 @@ Organisation.
 
 ## EXTENSIONS
 
-4. The user enteres non-numeric or invalid N.
+3. The user enters non-numeric or invalid N.
    i. System displays "Invalid number. Try again."
 
 ## SUB-VARIATIONS
@@ -57,4 +57,4 @@ None.
 
 ## SCHEDULE
 
-**DUE DATE**: Release 2.0
+**DUE DATE**: Release 1.0

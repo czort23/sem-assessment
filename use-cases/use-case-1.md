@@ -1,4 +1,4 @@
-# USE CASE: 1 Produce a Report on the Salary of Employees of a Given Role
+# USE CASE: 1 All the countries in the world organised by largest population to smallest.
 
 ## CHARACTERISTIC INFORMATION
 
@@ -28,7 +28,7 @@ If query fails or data unavailable error is displayed.
 
 ### Primary Actor
 
-Organisation.
+Organisation user.
 
 ### Trigger
 
@@ -54,4 +54,4 @@ None.
 
 ## SCHEDULE
 
-**DUE DATE**: Release 2.0
+**DUE DATE**: Release 1.0
