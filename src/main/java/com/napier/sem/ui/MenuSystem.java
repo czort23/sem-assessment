@@ -6,35 +6,83 @@ public class MenuSystem {
                 .addOption(1, "Country Reports", this::countryMenu)
                 .addOption(2, "City Reports", this::cityMenu)
                 .addOption(3, "Capital City Reports", this::capitalCityMenu)
-                .addOption(4, "Population Breakdown Reports", this::populationBreakdownMenu)
-                .addOption(5, "Specific Population Reports", this::specificPopulationMenu)
-                .addOption(6, "Language Reports", this::languageMenu)
+                .addOption(4, "Population Reports", this::populationMenu)
+                .addOption(5, "Language Reports", this::languageMenu)
                 .addOption(0, "Exit", () -> System.out.println("Exiting..."));
 
         mainMenu.run();
     }
 
-    public void countryMenu() {
-
+    /**
+     * Displays the submenu for country reports.
+     */
+    private void countryMenu() {
+        // TODO:
+//        1. All countries in the world (by population)
+//        2. All countries in a continent (by population)
+//        3. All countries in a region (by population)
+//        4. Top N populated countries in the world
+//        5. Top N populated countries in a continent
+//        6. Top N populated countries in a region
+//        7. Back to Main Menu
     }
 
-    public void cityMenu() {
-
+    /**
+     * Displays the submenu for city reports.
+     */
+    private void cityMenu() {
+        // TODO:
+//        1. All cities in the world (by population)
+//        2. All cities in a continent (by population)
+//        3. All cities in a region (by population)
+//        4. All cities in a country (by population)
+//        5. All cities in a district (by population)
+//        6. Top N cities in the world
+//        7. Top N cities in a continent
+//        8. Top N cities in a region
+//        9. Top N cities in a country
+//        10. Top N cities in a district
+//        11. Back to Main Menu
     }
 
-    public void capitalCityMenu() {
-
+    /**
+     * Displays the submenu for capital city reports.
+     */
+    private void capitalCityMenu() {
+        // TODO:
+//        1. All capital cities in the world (by population)
+//        2. All capital cities in a continent (by population)
+//        3. All capital cities in a region (by population)
+//        4. Top N capital cities in the world
+//        5. Top N capital cities in a continent
+//        6. Top N capital cities in a region
+//        7. Back to Main Menu
     }
 
-    public void populationBreakdownMenu() {
-
+    /**
+     * Displays the population for country reports.
+     */
+    private void populationMenu() {
+        // TODO:
+//        1. Population of the world
+//        2. Population of a continent
+//        3. Population of a region
+//        4. Population of a country
+//        5. Population of a district
+//        6. Population of a city
+//        7. Population breakdown by continent (cities vs non-cities)
+//        8. Population breakdown by region (cities vs non-cities)
+//        9. Population breakdown by country (cities vs non-cities)
+//        10. Back to Main Menu
     }
 
-    public void specificPopulationMenu() {
-
-    }
-
-    public void languageMenu() {
-
+    /**
+     * Displays the submenu for language reports.
+     */
+    private void languageMenu() {
+        // TODO:
+//        1. Number of people who speak Chinese, English, Hindi, Spanish, Arabic
+//        (sorted from greatest to smallest, with world %)
+//        2. Back to Main Menu
     }
 }
