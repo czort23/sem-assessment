@@ -1,5 +1,9 @@
 package com.napier.sem.ui;
 
+/**
+ * Represents the main menu class delegating which menu to display
+ * and which report to run based on user input.
+ */
 public class MenuSystem {
     public void start() {
         Menu mainMenu = new Menu("Population Reporting System")
