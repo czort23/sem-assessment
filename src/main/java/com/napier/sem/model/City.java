@@ -1,9 +1,19 @@
 package com.napier.sem.model;
 
+/**
+ * Represents a city.
+ */
 public class City {
+    /** The name of the city */
     private String name;
+
+    /** The country to which the city belongs. */
     private String country;
+
+    /** The district to which the city belongs. */
     private String district;
+
+    /** The population of the city. */
     private int population;
 
     public City(String name, String country, String district, int population) {

@@ -1,8 +1,16 @@
 package com.napier.sem.model;
 
+/**
+ * Represents a language report.
+ */
 public class LanguageReport {
+    /** The name of the language. */
     private String language;
+
+    /** The number of speakers. */
     private int speakers;
+
+    /** The percentage of the world's population who speak the language. */
     private double worldPercentage;
 
     public LanguageReport(String language, int speakers, double worldPercentage) {

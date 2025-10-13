@@ -1,8 +1,16 @@
 package com.napier.sem.model;
 
+/**
+ * Represents a capital city.
+ */
 public class CapitalCity {
+    /** The name of the city */
     private String name;
+
+    /** The country to which the city belongs. */
     private String country;
+
+    /** The population of the city. */
     private int population;
 
     public CapitalCity(String name, String country, int population) {

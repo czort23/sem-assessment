@@ -1,12 +1,26 @@
 package com.napier.sem.model;
 
+/**
+ * Represents a country.
+ */
 public class Country {
+    /** The code of the country. */
     private String code;
+
+    /** The name of the country. */
     private String name;
+
+    /** The continent to which the country belongs. */
     private String continent;
+
+    /** The region to which the country belongs. */
     private String region;
+
+    /** The population of the country. */
     private int population;
-    private String capital; // Name of the capital city
+
+    /** The name of the capital city */
+    private String capital;
 
     public Country(String code, String name, String continent, String region, int population, String capital) {
         this.code = code;

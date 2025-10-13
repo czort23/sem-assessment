@@ -1,9 +1,19 @@
 package com.napier.sem.model;
 
+/**
+ * Represents a population report.
+ */
 public class PopulationReport {
+    /** The name of the continent/region/country etc. */
     private String name;
+
+    /** The total population of the continent/region/country etc. */
     private int totalPopulation;
+
+    /** The total population of the continent/region/country etc. living in cities. */
     private int populationInCities;
+
+    /** The total population of the continent/region/country etc. not living in cities. */
     private int populationNotInCities;
 
     public PopulationReport(String name, int totalPopulation, int populationInCities, int populationNotInCities) {
@@ -23,10 +33,18 @@ public class PopulationReport {
     public int getPopulationNotInCities() { return populationNotInCities; }
     public void setPopulationNotInCities(int populationNotInCities) { this.populationNotInCities = populationNotInCities; }
 
+    /**
+     * The total population of the continent/region/country etc. living in cities as a percentage.
+     * @return percentage of people living in cities.
+     */
     public double getPercentInCities() {
         return totalPopulation == 0 ? 0 : (double) populationInCities / totalPopulation * 100;
     }
 
+    /**
+     * The total population of the continent/region/country etc. not living in cities as a percentage.
+     * @return percentage of people not living in cities.
+     */
     public double getPercentNotInCities() {
         return totalPopulation == 0 ? 0 : (double) populationNotInCities / totalPopulation * 100;
     }
