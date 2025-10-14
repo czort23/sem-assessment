@@ -1,10 +1,36 @@
 package com.napier.sem.ui;
 
+import com.napier.sem.config.DatabaseConnection;
+import com.napier.sem.service.*;
+
+import java.sql.Connection;
+
 /**
  * Represents the main menu class delegating which menu to display
  * and which report to run based on user input.
  */
 public class MenuSystem {
+    /** Database connection. */
+    private final Connection conn = DatabaseConnection.get();
+
+    /** Service for country reports. */
+    private final CountryService countryService = new CountryService(conn);
+
+    /** Service for city reports. */
+    private final CityService cityService = new CityService(conn);
+
+    /** Service for capital city reports. */
+    private final CapitalCityService capitalCityService = new CapitalCityService(conn);
+
+    /** Service for population reports. */
+    private final PopulationReportService populationReportService = new PopulationReportService(conn);
+
+    /** Service for language reports. */
+    private final LanguageReportService languageReportService = new LanguageReportService(conn);
+
+    /**
+     * Starts the main menu.
+     */
     public void start() {
         Menu mainMenu = new Menu("Population Reporting System")
                 .addOption(1, "Country Reports", this::countryMenu)
