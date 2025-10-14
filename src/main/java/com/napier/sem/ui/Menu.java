@@ -1,9 +1,6 @@
 package com.napier.sem.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Represents a simple menu displayed to the user.
@@ -44,7 +41,16 @@ public class Menu {
             options.forEach(System.out::println);
             System.out.print("\n>> Enter your choice: ");
 
-            int input = sc.nextInt();
+            int input;
+            try {
+                input = sc.nextInt();
+                sc.nextLine(); // consume the remaining newline
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid choice. Please enter a number.");
+                sc.nextLine(); // clear the invalid input
+                continue;
+            }
+
             // Returns the option which key matches user input (or null if no match).
             Optional<MenuOption> choice = options.stream()
                     .filter(opt -> opt.getKey() == input)
