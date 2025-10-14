@@ -1,14 +1,13 @@
-# USE CASE: 5 The top N populated countries in a continent where N is provided by the user.
-
+# USE CASE: 5 Language Report
 ## CHARACTERISTIC INFORMATION
 
 ### Goal in Context
 
-The organisation wants to view a report of the top N populated countries in a continent where N is provided by the user.
+As a Data Analyst for an Organisation, I want to produce a report about different number of people who speak specific language and their percentage of the total world population, from greatest to smallest, so I can understand global linguistic distribution.
 
 ### Scope
 
-World Population Reporting System
+Organisation.
 
 ### Level
 
@@ -16,42 +15,44 @@ Primary task.
 
 ### Preconditions
 
-Database connection is active.
-Database included population data for all countries as well as their continents.
-The user provides a valid continent name and integer N.
+The system is up and running and connected to database.
+The database contains data for population value and list of spoken languages.
 
 ### Success End Condition
 
-System generates report and displays the top N populated countries within the specified continent, from largest to smallest.
+The system displays report for Data Analyst showing the total number of people for selected languages and their percentage of the total global population.
 
 ### Failed End Condition
 
-If query fails or data unavailable error is displayed.
-The user enters an invalid continent name or invalid value for N.
+No report is produced.
+Error message is displayed.
 
 ### Primary Actor
 
-Organisation user.
+Data Analyst.
 
 ### Trigger
 
-"View Top N Countries by Continent" is selected, continent name is selected and N is specified.
+Data Analyst selects Language Reports from the menu.
 
 ## MAIN SUCCESS SCENARIO
 
-1. User selects navigates to Country Reports -> Top N Countries by Continent
-2. The System allows to select or enter continent name and integer for N.
-3. The user enters the continent and number.
-4. The System executes the query.
-5. Database returns sorted top N countries within that continent.
-6. User views report.
+1. Data Analyst opens up the System.
+2. The Analyst selects Languages Reports from option menu.
+3. The System retrieves a list of languages:
+   1. Chinese
+   2. English
+   3. Hindi
+   4. Spanish
+   5. Arabic
+   From the greatest number to smallest, with percentage of the world population.
+4. The System displays the report.
+5. The Analyst provides the report for an organisation.
 
 ## EXTENSIONS
 
-3a. The user enters non-numeric or invalid N.
-   i. System displays "Invalid number. Try again."
-3b. The user enters invalid continent name.
-   i. System displays "Please try again."
+4. No results returned:
+   1. The System displays "No data found."
 
 ## SUB-VARIATIONS
 
