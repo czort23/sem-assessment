@@ -22,7 +22,6 @@ INSTRUCTIONS:
 
 3. Use '?' placeholders for user parameters.
 4. To retrieve a query in code:
-        String sql = QueryLoader.get("all_countries");
         String sql = QueryLoader.get("all_countries_desc");
 ===============================================================================
  */
@@ -81,6 +80,3 @@ JOIN city s ON c.Capital = s.ID
 WHERE c.Region = ?
 ORDER BY c.Population DESC
 LIMIT ?;
-
-===============================================================================
-*/
