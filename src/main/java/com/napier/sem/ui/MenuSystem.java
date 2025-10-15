@@ -1,6 +1,8 @@
 package com.napier.sem.ui;
 
 import com.napier.sem.config.DatabaseConnection;
+import com.napier.sem.helper.InputHelper;
+import com.napier.sem.helper.OutputHelper;
 import com.napier.sem.service.*;
 
 import java.sql.Connection;
@@ -32,6 +34,7 @@ public class MenuSystem {
      * Starts the main menu.
      */
     public void start() {
+        // Initialize main menu and add options
         Menu mainMenu = new Menu("Population Reporting System")
                 .addOption(1, "Country Reports", this::countryMenu)
                 .addOption(2, "City Reports", this::cityMenu)
@@ -47,14 +50,30 @@ public class MenuSystem {
      * Displays the submenu for country reports.
      */
     private void countryMenu() {
-        // TODO:
-//        1. All countries in the world (by population)
-//        2. All countries in a continent (by population)
-//        3. All countries in a region (by population)
-//        4. Top N populated countries in the world
-//        5. Top N populated countries in a continent
-//        6. Top N populated countries in a region
-//        7. Back to Main Menu
+        // Initialize country menu and add options
+        Menu menu = new Menu("Country Reports")
+                .addOption(1, "All countries in the world (by population)",
+                        () -> OutputHelper.print(countryService.getAllCountries()))
+                .addOption(2, "All countries in a continent (by population)",
+                        () -> OutputHelper.print(countryService.getCountriesByContinent(
+                                InputHelper.getStringInput("Enter a continent: "))))
+                .addOption(3, "All countries in a region (by population)",
+                        () -> OutputHelper.print(countryService.getCountriesByRegion(
+                                InputHelper.getStringInput("Enter a region: "))))
+                .addOption(4, "Top N populated countries in the world",
+                        () -> OutputHelper.print(countryService.getTopNCountriesInWorld(
+                                InputHelper.getIntegerInput("Enter N: "))))
+                .addOption(5, "Top N populated countries in a continent",
+                        () -> OutputHelper.print(countryService.getTopNCountriesInContinent(
+                                InputHelper.getStringInput("Enter a continent: "),
+                                InputHelper.getIntegerInput("Enter N: "))))
+                .addOption(6, "Top N populated countries in a region",
+                        () -> OutputHelper.print(countryService.getTopNCountriesInRegion(
+                                InputHelper.getStringInput("Enter a region: "),
+                                InputHelper.getIntegerInput("Enter N: "))))
+                .addOption(0, "Back to Main Menu", () -> {});
+
+        menu.run();
     }
 
     /**
