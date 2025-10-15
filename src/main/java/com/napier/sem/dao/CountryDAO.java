@@ -1,12 +1,18 @@
 package com.napier.sem.dao;
 
+import com.napier.sem.config.QueryLoader;
+import com.napier.sem.exception.DataAccessException;
 import com.napier.sem.model.Country;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Data Access Object responsible for retrieving data from country for city reports.
+ * Data Access Object responsible for retrieving data from database for country reports.
  */
 public class CountryDAO {
     /** Database connection. */
@@ -16,33 +22,118 @@ public class CountryDAO {
         this.conn = conn;
     }
 
-    // 1. All countries in the world
+    /**
+     * Gets all countries.
+     * @return A list of {@link Country} objects.
+     */
     public List<Country> getAllCountries() {
-        return null;
+        String sql = QueryLoader.get("all_countries");
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            return getList(stmt);
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to fetch population report", e);
+        }
     }
 
-    // 2. All countries in a continent
+    /**
+     * Gets all countries on the chosen continent.
+     * @param continent The name of a continent the user wants.
+     * @return A list of {@link Country} objects.
+     */
     public List<Country> getCountriesByContinent(String continent) {
-        return null;
+        String sql = QueryLoader.get("all_countries_by_continent");
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, continent);
+            return getList(stmt);
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to fetch population report", e);
+        }
     }
 
-    // 3. All countries in a region
+    /**
+     * Gets all countries on the chosen region.
+     * @param region The name of a region the user wants.
+     * @return A list of {@link Country} objects.
+     */
     public List<Country> getCountriesByRegion(String region) {
-        return null;
+        String sql = QueryLoader.get("all_countries_by_region");
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, region);
+            return getList(stmt);
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to fetch population report", e);
+        }
     }
 
-    // 4. Top N countries in the world
+    /**
+     * Gets top N countries in the world by population.
+     * @param n The number of countries to output.
+     * @return A list of {@link Country} objects.
+     */
     public List<Country> getTopNCountriesInWorld(int n) {
-        return null;
+        String sql = QueryLoader.get("top_n_countries");
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, n);
+            return getList(stmt);
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to fetch population report", e);
+        }
     }
 
-    // 5. Top N countries in a continent
+    /**
+     * Gets top N countries on a continent by population.
+     * @param continent The name of a continent the user wants.
+     * @param n The number of countries to output.
+     * @return A list of {@link Country} objects.
+     */
     public List<Country> getTopNCountriesInContinent(String continent, int n) {
-        return null;
+        String sql = QueryLoader.get("top_n_countries_by_continent");
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, continent);
+            stmt.setInt(2, n);
+            return getList(stmt);
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to fetch population report", e);
+        }
     }
 
-    // 6. Top N countries in a region
+    /**
+     * Gets top N countries on a region by population.
+     * @param region The name of a region the user wants.
+     * @param n The number of countries to output.
+     * @return A list of {@link Country} objects.
+     */
     public List<Country> getTopNCountriesInRegion(String region, int n) {
-        return null;
+        String sql = QueryLoader.get("top_n_countries_by_region");
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, region);
+            stmt.setInt(2, n);
+            return getList(stmt);
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to fetch population report", e);
+        }
+    }
+
+    /**
+     * Create a list of {@link Country} objects.
+     * @param stmt SQL statement.
+     * @return A list of {@link Country} objects.
+     */
+    private List<Country> getList(PreparedStatement stmt) throws SQLException {
+        List<Country> countries = new ArrayList<>();
+        try (ResultSet rs = stmt.executeQuery()) {
+            // Loop through results and create the list
+            while (rs.next()) {
+                countries.add(new Country(
+                        rs.getString("Code"),
+                        rs.getString("Name"),
+                        rs.getString("Continent"),
+                        rs.getString("Region"),
+                        rs.getInt("Population"),
+                        rs.getString("Capital")
+                ));
+            }
+        }
+        return countries;
     }
 }
