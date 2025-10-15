@@ -15,7 +15,7 @@ INSTRUCTIONS:
     - Example:
 
         -- Get all countries in the world ordered by population (descending)
-        -- name: all_countries
+        -- name: all_countries_desc
         SELECT Code, Name, Continent, Region, Population, Capital
         FROM country
         ORDER BY Population DESC;
@@ -23,5 +23,64 @@ INSTRUCTIONS:
 3. Use '?' placeholders for user parameters.
 4. To retrieve a query in code:
         String sql = QueryLoader.get("all_countries");
+        String sql = QueryLoader.get("all_countries_desc");
+===============================================================================
+ */
+
+/*
+===============================================================================
+ COUNTRY REPORTS
+===============================================================================
+ */
+
+-- All the countries in the world organised by largest population to smallest.
+-- name: all_countries
+SELECT c.Code, c.Name, c.Continent, c.Region, c.Population, s.Name AS Capital
+FROM country c
+JOIN city s ON c.Capital = s.ID
+ORDER BY c.Population DESC;
+
+-- All the countries in a continent organised by largest population to smallest.
+-- name: all_countries_by_continent
+SELECT c.Code, c.Name, c.Continent, c.Region, c.Population, s.Name AS Capital
+FROM country c
+JOIN city s ON c.Capital = s.ID
+WHERE c.Continent = ?
+ORDER BY c.Population DESC;
+
+-- All the countries in a region organised by largest population to smallest.
+-- name: all_countries_by_region
+SELECT c.Code, c.Name, c.Continent, c.Region, c.Population, s.Name AS Capital
+FROM country c
+JOIN city s ON c.Capital = s.ID
+WHERE c.Region = ?
+ORDER BY c.Population DESC;
+
+-- The top N populated countries in the world where N is provided by the user.
+-- name: top_n_countries
+SELECT c.Code, c.Name, c.Continent, c.Region, c.Population, s.Name AS Capital
+FROM country c
+JOIN city s ON c.Capital = s.ID
+ORDER BY c.Population DESC
+LIMIT ?;
+
+-- The top N populated countries in a continent where N is provided by the user.
+-- name: top_n_countries_by_continent
+SELECT c.Code, c.Name, c.Continent, c.Region, c.Population, s.Name AS Capital
+FROM country c
+JOIN city s ON c.Capital = s.ID
+WHERE c.Continent = ?
+ORDER BY c.Population DESC
+LIMIT ?;
+
+-- The top N populated countries in a region where N is provided by the user.
+-- name: top_n_countries_by_region
+SELECT c.Code, c.Name, c.Continent, c.Region, c.Population, s.Name AS Capital
+FROM country c
+JOIN city s ON c.Capital = s.ID
+WHERE c.Region = ?
+ORDER BY c.Population DESC
+LIMIT ?;
+
 ===============================================================================
 */
