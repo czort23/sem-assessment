@@ -1,8 +1,10 @@
 package com.napier.sem.service;
 
 import com.napier.sem.dao.PopulationReportDAO;
+import com.napier.sem.model.PopulationReport;
 
 import java.sql.Connection;
+import java.util.List;
 
 /**
  * Service layer for handling all operations related to population reports.
@@ -16,47 +18,47 @@ public class PopulationReportService {
     }
 
     // 1. Population of the world
-    public void printWorldPopulation() {
-
+    public List<PopulationReport> getWorldPopulation() {
+        return null;
     }
 
     // 2. Population of a continent
-    public void printContinentPopulation(String continent) {
-
+    public List<PopulationReport> getContinentPopulation(String continent) {
+        return null;
     }
 
     // 3. Population of a region
-    public void printRegionPopulation(String region) {
-
+    public List<PopulationReport> getRegionPopulation(String region) {
+        return null;
     }
 
     // 4. Population of a country
-    public void printCountryPopulation(String country) {
-
+    public List<PopulationReport> getCountryPopulation(String country) {
+        return null;
     }
 
     // 5. Population of a district
-    public void printDistrictPopulation(String district) {
-
+    public List<PopulationReport> getDistrictPopulation(String district) {
+        return null;
     }
 
     // 6. Population of a city
-    public void printCityPopulation(String city) {
-
+    public List<PopulationReport> getCityPopulation(String city) {
+        return null;
     }
 
     // 7. People living in cities vs not living in cities (by continent)
-    public void printContinentPopulationBreakdown() {
-
+    public List<PopulationReport> getContinentPopulationBreakdown() {
+        return null;
     }
 
     // 8. People living in cities vs not living in cities (by region)
-    public void printRegionPopulationBreakdown() {
-
+    public List<PopulationReport> getRegionPopulationBreakdown() {
+        return null;
     }
 
     // 9. People living in cities vs not living in cities (by country)
-    public void printCountryPopulationBreakdown() {
-
+    public List<PopulationReport> getCountryPopulationBreakdown() {
+        return null;
     }
 }

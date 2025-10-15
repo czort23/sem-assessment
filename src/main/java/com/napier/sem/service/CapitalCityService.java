@@ -1,8 +1,10 @@
 package com.napier.sem.service;
 
 import com.napier.sem.dao.CapitalCityDAO;
+import com.napier.sem.model.CapitalCity;
 
 import java.sql.Connection;
+import java.util.List;
 
 /**
  * Service layer for handling all operations related to capital city reports.
@@ -16,32 +18,32 @@ public class CapitalCityService {
     }
 
     // 1. All capital cities in the world
-    public void printAllCapitalCities() {
-
+    public List<CapitalCity> getAllCapitalCities() {
+        return null;
     }
 
     // 2. All capital cities in a continent
-    public void printCapitalCitiesByContinent(String continent) {
-
+    public List<CapitalCity> getCapitalCitiesByContinent(String continent) {
+        return null;
     }
 
     // 3. All capital cities in a region
-    public void printCapitalCitiesByRegion(String region) {
-
+    public List<CapitalCity> getCapitalCitiesByRegion(String region) {
+        return null;
     }
 
     // 4. Top N capital cities in the world
-    public void printTopNCapitalCitiesInWorld(int n) {
-
+    public List<CapitalCity> getTopNCapitalCitiesInWorld(int n) {
+        return null;
     }
 
     // 5. Top N capital cities in a continent
-    public void printTopNCapitalCitiesInContinent(String continent, int n) {
-
+    public List<CapitalCity> getTopNCapitalCitiesInContinent(String continent, int n) {
+        return null;
     }
 
     // 6. Top N capital cities in a region
-    public void printTopNCapitalCitiesInRegion(String region, int n) {
-
+    public List<CapitalCity> getTopNCapitalCitiesInRegion(String region, int n) {
+        return null;
     }
 }
