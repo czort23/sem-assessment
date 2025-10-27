@@ -1,8 +1,14 @@
 package com.napier.sem.dao;
 
+import com.napier.sem.config.QueryLoader;
+import com.napier.sem.exception.DataAccessException;
 import com.napier.sem.model.City;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,53 +22,154 @@ public class CityDAO {
         this.conn = conn;
     }
 
-    // 1. All cities in the world
+    /**
+     * All cities in the world by population desc.
+     */
     public List<City> getAllCities() {
-        return null;
+        String sql = QueryLoader.get("all_cities");
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            return getList(stmt);
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to fetch all cities", e);
+        }
     }
 
-    // 2. All cities in a continent
+    /**
+     * All cities in a continent by population desc.
+     */
     public List<City> getCitiesByContinent(String continent) {
-        return null;
+        String sql = QueryLoader.get("all_cities_by_continent");
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, continent);
+            return getList(stmt);
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to fetch cities for continent " + continent, e);
+        }
     }
 
-    // 3. All cities in a region
+    /**
+     * All cities in a region by population desc.
+     */
     public List<City> getCitiesByRegion(String region) {
-        return null;
+        String sql = QueryLoader.get("all_cities_by_region");
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, region);
+            return getList(stmt);
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to fetch cities for region " + region, e);
+        }
     }
 
-    // 4. All cities in a country
-    public List<City> getCitiesByCountry(String country) {
-        return null;
+    /**
+     * All cities in a country by population desc.
+     */
+    public List<City> getCitiesByCountry(String countryName) {
+        String sql = QueryLoader.get("all_cities_by_country");
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, countryName);
+            return getList(stmt);
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to fetch cities for country " + countryName, e);
+        }
     }
 
-    // 5. All cities in a district
+    /**
+     * All cities in a district by population desc.
+     */
     public List<City> getCitiesByDistrict(String district) {
-        return null;
+        String sql = QueryLoader.get("all_cities_by_district");
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, district);
+            return getList(stmt);
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to fetch cities for district " + district, e);
+        }
     }
 
-    // 6. Top N cities in the world
+    /**
+     * Top N cities in the world.
+     */
     public List<City> getTopNCitiesInWorld(int n) {
-        return null;
+        String sql = QueryLoader.get("top_n_cities");
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, n);
+            return getList(stmt);
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to fetch top " + n + " cities (world)", e);
+        }
     }
 
-    // 7. Top N cities in a continent
+    /**
+     * Top N cities in a continent.
+     */
     public List<City> getTopNCitiesInContinent(String continent, int n) {
-        return null;
+        String sql = QueryLoader.get("top_n_cities_by_continent");
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, continent);
+            stmt.setInt(2, n);
+            return getList(stmt);
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to fetch top " + n + " cities in continent " + continent, e);
+        }
     }
 
-    // 8. Top N cities in a region
+    /**
+     * Top N cities in a region.
+     */
     public List<City> getTopNCitiesInRegion(String region, int n) {
-        return null;
+        String sql = QueryLoader.get("top_n_cities_by_region");
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, region);
+            stmt.setInt(2, n);
+            return getList(stmt);
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to fetch top " + n + " cities in region " + region, e);
+        }
     }
 
-    // 9. Top N cities in a country
-    public List<City> getTopNCitiesInCountry(String country, int n) {
-        return null;
+    /**
+     * Top N cities in a country.
+     */
+    public List<City> getTopNCitiesInCountry(String countryName, int n) {
+        String sql = QueryLoader.get("top_n_cities_by_country");
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, countryName);
+            stmt.setInt(2, n);
+            return getList(stmt);
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to fetch top " + n + " cities in country " + countryName, e);
+        }
     }
 
-    // 10. Top N cities in a district
+    /**
+     * Top N cities in a district.
+     */
     public List<City> getTopNCitiesInDistrict(String district, int n) {
-        return null;
+        String sql = QueryLoader.get("top_n_cities_by_district");
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, district);
+            stmt.setInt(2, n);
+            return getList(stmt);
+        } catch (SQLException e) {
+            throw new DataAccessException("Failed to fetch top " + n + " cities in district " + district, e);
+        }
+    }
+
+    /**
+     * Runs the prepared statement and builds a list of City objects.
+     */
+    private List<City> getList(PreparedStatement stmt) throws SQLException {
+        List<City> cities = new ArrayList<>();
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                cities.add(new City(
+                        rs.getString("City"),       // alias in SQL: ci.Name AS City
+                        rs.getString("Country"),    // alias in SQL: co.Name AS Country
+                        rs.getString("District"),
+                        rs.getInt("Population")
+                ));
+            }
+        }
+        return cities;
     }
 }

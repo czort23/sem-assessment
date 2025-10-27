@@ -7,8 +7,8 @@ public class App {
     public static void main(String[] args) {
         DatabaseConnection.connect();
 
-//        MenuSystem menuSystem = new MenuSystem();
-//        menuSystem.start();
+        MenuSystem menuSystem = new MenuSystem();
+        menuSystem.start();
 
         DatabaseConnection.disconnect();
     }

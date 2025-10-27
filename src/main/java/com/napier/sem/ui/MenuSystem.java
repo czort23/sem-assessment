@@ -80,19 +80,45 @@ public class MenuSystem {
      * Displays the submenu for city reports.
      */
     private void cityMenu() {
-        // TODO:
-//        1. All cities in the world (by population)
-//        2. All cities in a continent (by population)
-//        3. All cities in a region (by population)
-//        4. All cities in a country (by population)
-//        5. All cities in a district (by population)
-//        6. Top N cities in the world
-//        7. Top N cities in a continent
-//        8. Top N cities in a region
-//        9. Top N cities in a country
-//        10. Top N cities in a district
-//        11. Back to Main Menu
+        Menu menu = new Menu("City Reports")
+                .addOption(1, "All cities in the world (by population)",
+                        () -> OutputHelper.print(cityService.getAllCities()))
+                .addOption(2, "All cities in a continent (by population)",
+                        () -> OutputHelper.print(cityService.getCitiesByContinent(
+                                InputHelper.getStringInput("Enter a continent: "))))
+                .addOption(3, "All cities in a region (by population)",
+                        () -> OutputHelper.print(cityService.getCitiesByRegion(
+                                InputHelper.getStringInput("Enter a region: "))))
+                .addOption(4, "All cities in a country (by population)",
+                        () -> OutputHelper.print(cityService.getCitiesByCountry(
+                                InputHelper.getStringInput("Enter a country: "))))
+                .addOption(5, "All cities in a district (by population)",
+                        () -> OutputHelper.print(cityService.getCitiesByDistrict(
+                                InputHelper.getStringInput("Enter a district: "))))
+                .addOption(6, "Top N cities in the world",
+                        () -> OutputHelper.print(cityService.getTopNCitiesInWorld(
+                                InputHelper.getIntegerInput("Enter N: "))))
+                .addOption(7, "Top N cities in a continent",
+                        () -> OutputHelper.print(cityService.getTopNCitiesInContinent(
+                                InputHelper.getStringInput("Enter a continent: "),
+                                InputHelper.getIntegerInput("Enter N: "))))
+                .addOption(8, "Top N cities in a region",
+                        () -> OutputHelper.print(cityService.getTopNCitiesInRegion(
+                                InputHelper.getStringInput("Enter a region: "),
+                                InputHelper.getIntegerInput("Enter N: "))))
+                .addOption(9, "Top N cities in a country",
+                        () -> OutputHelper.print(cityService.getTopNCitiesInCountry(
+                                InputHelper.getStringInput("Enter a country: "),
+                                InputHelper.getIntegerInput("Enter N: "))))
+                .addOption(10, "Top N cities in a district",
+                        () -> OutputHelper.print(cityService.getTopNCitiesInDistrict(
+                                InputHelper.getStringInput("Enter a district: "),
+                                InputHelper.getIntegerInput("Enter N: "))))
+                .addOption(0, "Back to Main Menu", () -> {});
+
+        menu.run();
     }
+
 
     /**
      * Displays the submenu for capital city reports.

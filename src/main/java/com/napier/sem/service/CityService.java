@@ -17,53 +17,43 @@ public class CityService {
         this.cityDAO = new CityDAO(conn);
     }
 
-    // 1. All cities in the world
     public List<City> getAllCities() {
-        return null;
+        return cityDAO.getAllCities();
     }
 
-    // 2. All cities in a continent
     public List<City> getCitiesByContinent(String continent) {
-        return null;
+        return cityDAO.getCitiesByContinent(continent);
     }
 
-    // 3. All cities in a region
     public List<City> getCitiesByRegion(String region) {
-        return null;
+        return cityDAO.getCitiesByRegion(region);
     }
 
-    // 4. All cities in a country
-    public List<City> getCitiesByCountry(String country) {
-        return null;
+    public List<City> getCitiesByCountry(String countryName) {
+        return cityDAO.getCitiesByCountry(countryName);
     }
 
-    // 5. All cities in a district
     public List<City> getCitiesByDistrict(String district) {
-        return null;
+        return cityDAO.getCitiesByDistrict(district);
     }
 
-    // 6. Top N cities in the world
     public List<City> getTopNCitiesInWorld(int n) {
-        return null;
+        return cityDAO.getTopNCitiesInWorld(n);
     }
 
-    // 7. Top N cities in a continent
     public List<City> getTopNCitiesInContinent(String continent, int n) {
-        return null;
+        return cityDAO.getTopNCitiesInContinent(continent, n);
     }
 
-    // 8. Top N cities in a region
     public List<City> getTopNCitiesInRegion(String region, int n) {
-        return null;
+        return cityDAO.getTopNCitiesInRegion(region, n);
     }
 
-    // 9. Top N cities in a country
-    public List<City> getTopNCitiesInCountry(String country, int n) {
-        return null;
+    public List<City> getTopNCitiesInCountry(String countryName, int n) {
+        return cityDAO.getTopNCitiesInCountry(countryName, n);
     }
 
-    // 10. Top N cities in a district
     public List<City> getTopNCitiesInDistrict(String district, int n) {
-        return null;
+        return cityDAO.getTopNCitiesInDistrict(district, n);
     }
 }

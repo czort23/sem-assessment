@@ -83,6 +83,95 @@ LIMIT ?;
 
 /*
 ===============================================================================
+ CITY REPORTS
+===============================================================================
+ */
+
+-- All the cities in the world organised by largest population to smallest.
+-- name: all_cities
+SELECT ci.Name AS City, co.Name AS Country, ci.District, ci.Population
+FROM city ci
+JOIN country co ON ci.CountryCode = co.Code
+ORDER BY ci.Population DESC;
+
+-- All the cities in a continent organised by largest population to smallest.
+-- name: all_cities_by_continent
+SELECT ci.Name AS City, co.Name AS Country, ci.District, ci.Population
+FROM city ci
+JOIN country co ON ci.CountryCode = co.Code
+WHERE co.Continent = ?
+ORDER BY ci.Population DESC;
+
+-- All the cities in a region organised by largest population to smallest.
+-- name: all_cities_by_region
+SELECT ci.Name AS City, co.Name AS Country, ci.District, ci.Population
+FROM city ci
+JOIN country co ON ci.CountryCode = co.Code
+WHERE co.Region = ?
+ORDER BY ci.Population DESC;
+
+-- All the cities in a country organised by largest population to smallest.
+-- name: all_cities_by_country
+SELECT ci.Name AS City, co.Name AS Country, ci.District, ci.Population
+FROM city ci
+JOIN country co ON ci.CountryCode = co.Code
+WHERE co.Name = ?
+ORDER BY ci.Population DESC;
+
+-- All the cities in a district organised by largest population to smallest.
+-- name: all_cities_by_district
+SELECT ci.Name AS City, co.Name AS Country, ci.District, ci.Population
+FROM city ci
+JOIN country co ON ci.CountryCode = co.Code
+WHERE ci.District = ?
+ORDER BY ci.Population DESC;
+
+-- The top N populated cities in the world where N is provided by the user.
+-- name: top_n_cities
+SELECT ci.Name AS City, co.Name AS Country, ci.District, ci.Population
+FROM city ci
+JOIN country co ON ci.CountryCode = co.Code
+ORDER BY ci.Population DESC
+LIMIT ?;
+
+-- The top N populated cities in a continent where N is provided by the user.
+-- name: top_n_cities_by_continent
+SELECT ci.Name AS City, co.Name AS Country, ci.District, ci.Population
+FROM city ci
+JOIN country co ON ci.CountryCode = co.Code
+WHERE co.Continent = ?
+ORDER BY ci.Population DESC
+LIMIT ?;
+
+-- The top N populated cities in a region where N is provided by the user.
+-- name: top_n_cities_by_region
+SELECT ci.Name AS City, co.Name AS Country, ci.District, ci.Population
+FROM city ci
+JOIN country co ON ci.CountryCode = co.Code
+WHERE co.Region = ?
+ORDER BY ci.Population DESC
+LIMIT ?;
+
+-- The top N populated cities in a country where N is provided by the user.
+-- name: top_n_cities_by_country
+SELECT ci.Name AS City, co.Name AS Country, ci.District, ci.Population
+FROM city ci
+JOIN country co ON ci.CountryCode = co.Code
+WHERE co.Name = ?
+ORDER BY ci.Population DESC
+LIMIT ?;
+
+-- The top N populated cities in a district where N is provided by the user.
+-- name: top_n_cities_by_district
+SELECT ci.Name AS City, co.Name AS Country, ci.District, ci.Population
+FROM city ci
+JOIN country co ON ci.CountryCode = co.Code
+WHERE ci.District = ?
+ORDER BY ci.Population DESC
+LIMIT ?;
+
+/*
+===============================================================================
  LANGUAGE REPORTS
 ===============================================================================
  */
