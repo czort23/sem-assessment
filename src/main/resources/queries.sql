@@ -80,3 +80,21 @@ JOIN city s ON c.Capital = s.ID
 WHERE c.Region = ?
 ORDER BY c.Population DESC
 LIMIT ?;
+
+/*
+===============================================================================
+ LANGUAGE REPORTS
+===============================================================================
+ */
+
+-- Number of people who speak Chinese, English, Hindi, Spanish, Arabic (sorted from greatest to smallest, with world %)
+-- name: language_breakdown
+SELECT
+    l.Language,
+    ROUND(SUM(c.Population * (l.Percentage / 100)), 0) AS Speakers,
+    ROUND(SUM(c.Population * (l.Percentage / 100)) / (SELECT SUM(Population) FROM country) * 100, 2) AS WorldPercentage
+FROM countrylanguage l
+JOIN country c ON l.CountryCode = c.Code
+WHERE l.Language IN ('Chinese','English','Hindi','Spanish','Arabic')
+GROUP BY l.Language
+ORDER BY Speakers DESC;
