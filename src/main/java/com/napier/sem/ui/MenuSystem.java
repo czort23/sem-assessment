@@ -129,9 +129,13 @@ public class MenuSystem {
      * Displays the submenu for language reports.
      */
     private void languageMenu() {
-        // TODO:
-//        1. Number of people who speak Chinese, English, Hindi, Spanish, Arabic
-//        (sorted from greatest to smallest, with world %)
-//        2. Back to Main Menu
+        // Initialize language menu and add options
+        Menu menu = new Menu("Language Reports")
+                .addOption(1, "Number of people who speak Chinese, English, Hindi, Spanish, Arabic\n" +
+                        "(sorted from greatest to smallest, with world %)",
+                        () -> OutputHelper.print(languageReportService.getLanguagePopulationReport()))
+                .addOption(0, "Back to Main Menu", () -> {});
+
+        menu.run();
     }
 }
