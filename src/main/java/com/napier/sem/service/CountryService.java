@@ -1,8 +1,10 @@
 package com.napier.sem.service;
 
 import com.napier.sem.dao.CountryDAO;
+import com.napier.sem.model.Country;
 
 import java.sql.Connection;
+import java.util.List;
 
 /**
  * Service layer for handling all operations related to country reports.
@@ -15,33 +17,58 @@ public class CountryService {
         this.countryDAO = new CountryDAO(conn);
     }
 
-    // 1. All countries in the world
-    public void printAllCountries() {
-
+    /**
+     * Gets all countries.
+     * @return A list of {@link Country} objects.
+     */
+    public List<Country> getAllCountries() {
+        return countryDAO.getAllCountries();
     }
 
-    // 2. All countries in a continent
-    public void printCountriesByContinent(String continent) {
-
+    /**
+     * Gets all countries on the chosen continent.
+     * @param continent The name of a continent the user wants.
+     * @return A list of {@link Country} objects.
+     */
+    public List<Country> getCountriesByContinent(String continent) {
+        return countryDAO.getCountriesByContinent(continent);
     }
 
-    // 3. All countries in a region
-    public void printCountriesByRegion(String region) {
-
+    /**
+     * Gets all countries on the chosen region.
+     * @param region The name of a region the user wants.
+     * @return A list of {@link Country} objects.
+     */
+    public List<Country> getCountriesByRegion(String region) {
+        return countryDAO.getCountriesByRegion(region);
     }
 
-    // 4. Top N countries in the world
-    public void printTopNCountriesInWorld(int n) {
-
+    /**
+     * Gets top N countries in the world by population.
+     * @param n The number of countries to output.
+     * @return A list of {@link Country} objects.
+     */
+    public List<Country> getTopNCountriesInWorld(int n) {
+        return countryDAO.getTopNCountriesInWorld(n);
     }
 
-    // 5. Top N countries in a continent
-    public void printTopNCountriesInContinent(String continent, int n) {
-
+    /**
+     * Gets top N countries on a continent by population.
+     * @param continent The name of a continent the user wants.
+     * @param n The number of countries to output.
+     * @return A list of {@link Country} objects.
+     */
+    public List<Country> getTopNCountriesInContinent(String continent, int n) {
+        return countryDAO.getTopNCountriesInContinent(continent, n);
     }
 
-    // 6. Top N countries in a region
-    public void printTopNCountriesInRegion(String region, int n) {
-
+    /**
+     * Gets top N countries on a region by population.
+     * @param region The name of a region the user wants.
+     * @param n The number of countries to output.
+     * @return A list of {@link Country} objects.
+     */
+    public List<Country> getTopNCountriesInRegion(String region, int n) {
+        return countryDAO.getTopNCountriesInRegion(region, n);
     }
 }

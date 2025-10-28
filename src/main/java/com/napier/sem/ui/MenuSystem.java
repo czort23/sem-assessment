@@ -1,6 +1,8 @@
 package com.napier.sem.ui;
 
 import com.napier.sem.config.DatabaseConnection;
+import com.napier.sem.helper.InputHelper;
+import com.napier.sem.helper.OutputHelper;
 import com.napier.sem.service.*;
 
 import java.sql.Connection;
@@ -32,6 +34,7 @@ public class MenuSystem {
      * Starts the main menu.
      */
     public void start() {
+        // Initialize main menu and add options
         Menu mainMenu = new Menu("Population Reporting System")
                 .addOption(1, "Country Reports", this::countryMenu)
                 .addOption(2, "City Reports", this::cityMenu)
@@ -47,33 +50,75 @@ public class MenuSystem {
      * Displays the submenu for country reports.
      */
     private void countryMenu() {
-        // TODO:
-//        1. All countries in the world (by population)
-//        2. All countries in a continent (by population)
-//        3. All countries in a region (by population)
-//        4. Top N populated countries in the world
-//        5. Top N populated countries in a continent
-//        6. Top N populated countries in a region
-//        7. Back to Main Menu
+        // Initialize country menu and add options
+        Menu menu = new Menu("Country Reports")
+                .addOption(1, "All countries in the world (by population)",
+                        () -> OutputHelper.print(countryService.getAllCountries()))
+                .addOption(2, "All countries in a continent (by population)",
+                        () -> OutputHelper.print(countryService.getCountriesByContinent(
+                                InputHelper.getStringInput("Enter a continent: "))))
+                .addOption(3, "All countries in a region (by population)",
+                        () -> OutputHelper.print(countryService.getCountriesByRegion(
+                                InputHelper.getStringInput("Enter a region: "))))
+                .addOption(4, "Top N populated countries in the world",
+                        () -> OutputHelper.print(countryService.getTopNCountriesInWorld(
+                                InputHelper.getIntegerInput("Enter N: "))))
+                .addOption(5, "Top N populated countries in a continent",
+                        () -> OutputHelper.print(countryService.getTopNCountriesInContinent(
+                                InputHelper.getStringInput("Enter a continent: "),
+                                InputHelper.getIntegerInput("Enter N: "))))
+                .addOption(6, "Top N populated countries in a region",
+                        () -> OutputHelper.print(countryService.getTopNCountriesInRegion(
+                                InputHelper.getStringInput("Enter a region: "),
+                                InputHelper.getIntegerInput("Enter N: "))))
+                .addOption(0, "Back to Main Menu", () -> {});
+
+        menu.run();
     }
 
     /**
      * Displays the submenu for city reports.
      */
     private void cityMenu() {
-        // TODO:
-//        1. All cities in the world (by population)
-//        2. All cities in a continent (by population)
-//        3. All cities in a region (by population)
-//        4. All cities in a country (by population)
-//        5. All cities in a district (by population)
-//        6. Top N cities in the world
-//        7. Top N cities in a continent
-//        8. Top N cities in a region
-//        9. Top N cities in a country
-//        10. Top N cities in a district
-//        11. Back to Main Menu
+        Menu menu = new Menu("City Reports")
+                .addOption(1, "All cities in the world (by population)",
+                        () -> OutputHelper.print(cityService.getAllCities()))
+                .addOption(2, "All cities in a continent (by population)",
+                        () -> OutputHelper.print(cityService.getCitiesByContinent(
+                                InputHelper.getStringInput("Enter a continent: "))))
+                .addOption(3, "All cities in a region (by population)",
+                        () -> OutputHelper.print(cityService.getCitiesByRegion(
+                                InputHelper.getStringInput("Enter a region: "))))
+                .addOption(4, "All cities in a country (by population)",
+                        () -> OutputHelper.print(cityService.getCitiesByCountry(
+                                InputHelper.getStringInput("Enter a country: "))))
+                .addOption(5, "All cities in a district (by population)",
+                        () -> OutputHelper.print(cityService.getCitiesByDistrict(
+                                InputHelper.getStringInput("Enter a district: "))))
+                .addOption(6, "Top N cities in the world",
+                        () -> OutputHelper.print(cityService.getTopNCitiesInWorld(
+                                InputHelper.getIntegerInput("Enter N: "))))
+                .addOption(7, "Top N cities in a continent",
+                        () -> OutputHelper.print(cityService.getTopNCitiesInContinent(
+                                InputHelper.getStringInput("Enter a continent: "),
+                                InputHelper.getIntegerInput("Enter N: "))))
+                .addOption(8, "Top N cities in a region",
+                        () -> OutputHelper.print(cityService.getTopNCitiesInRegion(
+                                InputHelper.getStringInput("Enter a region: "),
+                                InputHelper.getIntegerInput("Enter N: "))))
+                .addOption(9, "Top N cities in a country",
+                        () -> OutputHelper.print(cityService.getTopNCitiesInCountry(
+                                InputHelper.getStringInput("Enter a country: "),
+                                InputHelper.getIntegerInput("Enter N: "))))
+                .addOption(10, "Top N cities in a district",
+                        () -> OutputHelper.print(cityService.getTopNCitiesInDistrict(
+                                InputHelper.getStringInput("Enter a district: "),
+                                InputHelper.getIntegerInput("Enter N: "))))
+                .addOption(0, "Back to Main Menu", () -> {});
+
+        menu.run();
     }
+
 
     /**
      * Displays the submenu for capital city reports.
@@ -110,9 +155,13 @@ public class MenuSystem {
      * Displays the submenu for language reports.
      */
     private void languageMenu() {
-        // TODO:
-//        1. Number of people who speak Chinese, English, Hindi, Spanish, Arabic
-//        (sorted from greatest to smallest, with world %)
-//        2. Back to Main Menu
+        // Initialize language menu and add options
+        Menu menu = new Menu("Language Reports")
+                .addOption(1, "Number of people who speak Chinese, English, Hindi, Spanish, Arabic\n" +
+                        "(sorted from greatest to smallest, with world %)",
+                        () -> OutputHelper.print(languageReportService.getLanguagePopulationReport()))
+                .addOption(0, "Back to Main Menu", () -> {});
+
+        menu.run();
     }
 }

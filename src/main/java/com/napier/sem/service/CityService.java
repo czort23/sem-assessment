@@ -1,8 +1,10 @@
 package com.napier.sem.service;
 
 import com.napier.sem.dao.CityDAO;
+import com.napier.sem.model.City;
 
 import java.sql.Connection;
+import java.util.List;
 
 /**
  * Service layer for handling all operations related to city reports.
@@ -15,53 +17,43 @@ public class CityService {
         this.cityDAO = new CityDAO(conn);
     }
 
-    // 1. All cities in the world
-    public void printAllCities() {
-
+    public List<City> getAllCities() {
+        return cityDAO.getAllCities();
     }
 
-    // 2. All cities in a continent
-    public void printCitiesByContinent(String continent) {
-
+    public List<City> getCitiesByContinent(String continent) {
+        return cityDAO.getCitiesByContinent(continent);
     }
 
-    // 3. All cities in a region
-    public void printCitiesByRegion(String region) {
-
+    public List<City> getCitiesByRegion(String region) {
+        return cityDAO.getCitiesByRegion(region);
     }
 
-    // 4. All cities in a country
-    public void printCitiesByCountry(String country) {
-
+    public List<City> getCitiesByCountry(String countryName) {
+        return cityDAO.getCitiesByCountry(countryName);
     }
 
-    // 5. All cities in a district
-    public void printCitiesByDistrict(String district) {
-
+    public List<City> getCitiesByDistrict(String district) {
+        return cityDAO.getCitiesByDistrict(district);
     }
 
-    // 6. Top N cities in the world
-    public void printTopNCitiesInWorld(int n) {
-
+    public List<City> getTopNCitiesInWorld(int n) {
+        return cityDAO.getTopNCitiesInWorld(n);
     }
 
-    // 7. Top N cities in a continent
-    public void printTopNCitiesInContinent(String continent, int n) {
-
+    public List<City> getTopNCitiesInContinent(String continent, int n) {
+        return cityDAO.getTopNCitiesInContinent(continent, n);
     }
 
-    // 8. Top N cities in a region
-    public void printTopNCitiesInRegion(String region, int n) {
-
+    public List<City> getTopNCitiesInRegion(String region, int n) {
+        return cityDAO.getTopNCitiesInRegion(region, n);
     }
 
-    // 9. Top N cities in a country
-    public void printTopNCitiesInCountry(String country, int n) {
-
+    public List<City> getTopNCitiesInCountry(String countryName, int n) {
+        return cityDAO.getTopNCitiesInCountry(countryName, n);
     }
 
-    // 10. Top N cities in a district
-    public void printTopNCitiesInDistrict(String district, int n) {
-
+    public List<City> getTopNCitiesInDistrict(String district, int n) {
+        return cityDAO.getTopNCitiesInDistrict(district, n);
     }
 }
