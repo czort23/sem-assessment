@@ -17,33 +17,45 @@ public class CapitalCityService {
         this.capitalCityDAO = new CapitalCityDAO(conn);
     }
 
-    // 1. All capital cities in the world
+    /**
+     * 1. All capital cities in the world
+     */
     public List<CapitalCity> getAllCapitalCities() {
-        return null;
+        return capitalCityDAO.getAllCapitalCities();
     }
 
-    // 2. All capital cities in a continent
+    /**
+     * 2. All capital cities in a continent
+     */
     public List<CapitalCity> getCapitalCitiesByContinent(String continent) {
-        return null;
+        return capitalCityDAO.getCapitalCitiesByContinent(continent);
     }
 
-    // 3. All capital cities in a region
+    /**
+     * 3. All capital cities in a region
+     */
     public List<CapitalCity> getCapitalCitiesByRegion(String region) {
-        return null;
+        return capitalCityDAO.getCapitalCitiesByRegion(region);
     }
 
-    // 4. Top N capital cities in the world
+    /**
+     * 4. Top N capital cities in the world
+     */
     public List<CapitalCity> getTopNCapitalCitiesInWorld(int n) {
-        return null;
+        return capitalCityDAO.getTopNCapitalCitiesInWorld(n);
     }
 
-    // 5. Top N capital cities in a continent
+    /**
+     * 5. Top N capital cities in a continent
+     */
     public List<CapitalCity> getTopNCapitalCitiesInContinent(String continent, int n) {
-        return null;
+        return capitalCityDAO.getTopNCapitalCitiesInContinent(continent, n);
     }
 
-    // 6. Top N capital cities in a region
+    /**
+     * 6. Top N capital cities in a region
+     */
     public List<CapitalCity> getTopNCapitalCitiesInRegion(String region, int n) {
-        return null;
+        return capitalCityDAO.getTopNCapitalCitiesInRegion(region, n);
     }
 }

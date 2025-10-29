@@ -125,15 +125,31 @@ public class MenuSystem {
      * Displays the submenu for capital city reports.
      */
     private void capitalCityMenu() {
-        // TODO:
-//        1. All capital cities in the world (by population)
-//        2. All capital cities in a continent (by population)
-//        3. All capital cities in a region (by population)
-//        4. Top N capital cities in the world
-//        5. Top N capital cities in a continent
-//        6. Top N capital cities in a region
-//        7. Back to Main Menu
+        Menu menu = new Menu("Capital City Reports")
+                .addOption(1, "All capital cities in the world (by population)",
+                        () -> OutputHelper.print(capitalCityService.getAllCapitalCities()))
+                .addOption(2, "All capital cities in a continent (by population)",
+                        () -> OutputHelper.print(capitalCityService.getCapitalCitiesByContinent(
+                                InputHelper.getStringInput("Enter a continent: "))))
+                .addOption(3, "All capital cities in a region (by population)",
+                        () -> OutputHelper.print(capitalCityService.getCapitalCitiesByRegion(
+                                InputHelper.getStringInput("Enter a region: "))))
+                .addOption(4, "Top N capital cities in the world",
+                        () -> OutputHelper.print(capitalCityService.getTopNCapitalCitiesInWorld(
+                                InputHelper.getIntegerInput("Enter N: "))))
+                .addOption(5, "Top N capital cities in a continent",
+                        () -> OutputHelper.print(capitalCityService.getTopNCapitalCitiesInContinent(
+                                InputHelper.getStringInput("Enter a continent: "),
+                                InputHelper.getIntegerInput("Enter N: "))))
+                .addOption(6, "Top N capital cities in a region",
+                        () -> OutputHelper.print(capitalCityService.getTopNCapitalCitiesInRegion(
+                                InputHelper.getStringInput("Enter a region: "),
+                                InputHelper.getIntegerInput("Enter N: "))))
+                .addOption(0, "Back to Main Menu", () -> {});
+
+        menu.run();
     }
+
 
     /**
      * Displays the population for country reports.

@@ -9,6 +9,6 @@ services:
     build: db/.
     restart: always
     ports:
-      - "33060:3306"
+      - "3307:3306"
     environment:
       MYSQL_ROOT_HOST: "%"
