@@ -8,15 +8,15 @@ public class PopulationReport {
     private String name;
 
     /** The total population of the continent/region/country etc. */
-    private int totalPopulation;
+    private long totalPopulation;
 
     /** The total population of the continent/region/country etc. living in cities. */
-    private int populationInCities;
+    private long populationInCities;
 
     /** The total population of the continent/region/country etc. not living in cities. */
-    private int populationNotInCities;
+    private long populationNotInCities;
 
-    public PopulationReport(String name, int totalPopulation, int populationInCities, int populationNotInCities) {
+    public PopulationReport(String name, long totalPopulation, long populationInCities, long populationNotInCities) {
         this.name = name;
         this.totalPopulation = totalPopulation;
         this.populationInCities = populationInCities;
@@ -26,11 +26,11 @@ public class PopulationReport {
     // Getters and setters
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-    public int getTotalPopulation() { return totalPopulation; }
+    public long getTotalPopulation() { return totalPopulation; }
     public void setTotalPopulation(int totalPopulation) { this.totalPopulation = totalPopulation; }
-    public int getPopulationInCities() { return populationInCities; }
+    public long getPopulationInCities() { return populationInCities; }
     public void setPopulationInCities(int populationInCities) { this.populationInCities = populationInCities; }
-    public int getPopulationNotInCities() { return populationNotInCities; }
+    public long getPopulationNotInCities() { return populationNotInCities; }
     public void setPopulationNotInCities(int populationNotInCities) { this.populationNotInCities = populationNotInCities; }
 
     /**
