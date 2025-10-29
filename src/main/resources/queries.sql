@@ -187,3 +187,58 @@ JOIN country c ON l.CountryCode = c.Code
 WHERE l.Language IN ('Chinese','English','Hindi','Spanish','Arabic')
 GROUP BY l.Language
 ORDER BY Speakers DESC;
+
+/*
+===============================================================================
+ CAPITAL CITY REPORTS
+===============================================================================
+ */
+
+-- All capital cities in the world organised by largest population to smallest.
+-- name: all_capital_cities
+SELECT ci.Name AS City, co.Name AS Country, ci.Population
+FROM city ci
+JOIN country co ON co.Capital = ci.ID
+ORDER BY ci.Population DESC;
+
+-- All capital cities in a continent organised by largest population to smallest.
+-- name: all_capital_cities_by_continent
+SELECT ci.Name AS City, co.Name AS Country, ci.Population
+FROM city ci
+JOIN country co ON co.Capital = ci.ID
+WHERE co.Continent = ?
+ORDER BY ci.Population DESC;
+
+-- All capital cities in a region organised by largest population to smallest.
+-- name: all_capital_cities_by_region
+SELECT ci.Name AS City, co.Name AS Country, ci.Population
+FROM city ci
+JOIN country co ON co.Capital = ci.ID
+WHERE co.Region = ?
+ORDER BY ci.Population DESC;
+
+-- Top N populated capital cities in the world.
+-- name: top_n_capital_cities
+SELECT ci.Name AS City, co.Name AS Country, ci.Population
+FROM city ci
+JOIN country co ON co.Capital = ci.ID
+ORDER BY ci.Population DESC
+LIMIT ?;
+
+-- Top N populated capital cities in a continent.
+-- name: top_n_capital_cities_by_continent
+SELECT ci.Name AS City, co.Name AS Country, ci.Population
+FROM city ci
+JOIN country co ON co.Capital = ci.ID
+WHERE co.Continent = ?
+ORDER BY ci.Population DESC
+LIMIT ?;
+
+-- Top N populated capital cities in a region.
+-- name: top_n_capital_cities_by_region
+SELECT ci.Name AS City, co.Name AS Country, ci.Population
+FROM city ci
+JOIN country co ON co.Capital = ci.ID
+WHERE co.Region = ?
+ORDER BY ci.Population DESC
+LIMIT ?;
