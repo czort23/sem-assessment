@@ -4,8 +4,12 @@ import com.napier.sem.dao.PopulationReportDAO;
 import com.napier.sem.model.PopulationReport;
 
 import java.sql.Connection;
+import java.util.Collections;
 import java.util.List;
 
+/**
+ * Service layer for handling all operations related to population reports.
+ */
 /**
  * Service layer for handling all operations related to population reports.
  */
@@ -17,48 +21,124 @@ public class PopulationReportService {
         this.populationReportDAO = new PopulationReportDAO(conn);
     }
 
-    // 1. Population of the world
-    public List<PopulationReport> getWorldPopulation() {
-        return null;
+    /**
+     * Helper method for validating input and printing consistent error messages.
+     */
+    private boolean isInvalidInput(String label, String value) {
+        if (value == null || value.trim().isEmpty()) {
+            System.out.println("Invalid " + label + " name.");
+            return true;
+        }
+        return false;
     }
 
-    // 2. Population of a continent
-    public List<PopulationReport> getContinentPopulation(String continent) {
-        return null;
+    /**
+     * Helper method for formatting output consistently when no results are found.
+     */
+    private void handleNoResults(String label, String value) {
+        System.out.println("No results found for " + label + ": " + value);
     }
 
-    // 3. Population of a region
-    public List<PopulationReport> getRegionPopulation(String region) {
-        return null;
+    /**
+     * Gets the total population of the world.
+     */
+    public Long getWorldPopulation() {
+        return populationReportDAO.getWorldPopulation();
     }
 
-    // 4. Population of a country
-    public List<PopulationReport> getCountryPopulation(String country) {
-        return null;
+    /**
+     * Gets the total population of a continent.
+     */
+    public Long getContinentPopulation(String continent) {
+        if (isInvalidInput("continent", continent)) return null;
+        continent = continent.trim();
+
+        Long population = populationReportDAO.getContinentPopulation(continent);
+        if (population == null) {
+            handleNoResults("continent", continent);
+            return null;
+        }
+        return population;
     }
 
-    // 5. Population of a district
-    public List<PopulationReport> getDistrictPopulation(String district) {
-        return null;
+    /**
+     * Gets the total population of a region.
+     */
+    public Long getRegionPopulation(String region) {
+        if (isInvalidInput("region", region)) return null;
+        region = region.trim();
+
+        Long population = populationReportDAO.getRegionPopulation(region);
+        if (population == null) {
+            handleNoResults("region", region);
+            return null;
+        }
+        return population;
     }
 
-    // 6. Population of a city
-    public List<PopulationReport> getCityPopulation(String city) {
-        return null;
+    /**
+     * Gets the total population of a country.
+     */
+    public Long getCountryPopulation(String country) {
+        if (isInvalidInput("country", country)) return null;
+        country = country.trim();
+
+        Long population = populationReportDAO.getCountryPopulation(country);
+        if (population == null) {
+            handleNoResults("country", country);
+            return null;
+        }
+        return population;
     }
 
-    // 7. People living in cities vs not living in cities (by continent)
+    /**
+     * Gets the total population of a district.
+     */
+    public Long getDistrictPopulation(String district) {
+        if (isInvalidInput("district", district)) return null;
+        district = district.trim();
+
+        Long population = populationReportDAO.getDistrictPopulation(district);
+        if (population == null) {
+            handleNoResults("district", district);
+            return null;
+        }
+        return population;
+    }
+
+    /**
+     * Gets the total population of a city.
+     */
+    public Long getCityPopulation(String city) {
+        if (isInvalidInput("city", city)) return null;
+        city = city.trim();
+
+        Long population = populationReportDAO.getCityPopulation(city);
+        if (population == null) {
+            handleNoResults("city", city);
+            return null;
+        }
+        return population;
+    }
+
+    /**
+     * Gets population breakdown by continent (total, city, non-city).
+     */
     public List<PopulationReport> getContinentPopulationBreakdown() {
-        return null;
+        return populationReportDAO.getContinentPopulationBreakdown();
     }
 
-    // 8. People living in cities vs not living in cities (by region)
+    /**
+     * Gets population breakdown by region (total, city, non-city).
+     */
     public List<PopulationReport> getRegionPopulationBreakdown() {
-        return null;
+        return populationReportDAO.getRegionPopulationBreakdown();
     }
 
-    // 9. People living in cities vs not living in cities (by country)
+    /**
+     * Gets population breakdown by country (total, city, non-city).
+     */
     public List<PopulationReport> getCountryPopulationBreakdown() {
-        return null;
+        return populationReportDAO.getCountryPopulationBreakdown();
     }
 }

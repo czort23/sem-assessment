@@ -6,7 +6,8 @@ import com.napier.sem.helper.OutputHelper;
 import com.napier.sem.service.*;
 
 import java.sql.Connection;
-
+import com.napier.sem.model.PopulationReport;
+import java.util.List;
 /**
  * Represents the main menu class delegating which menu to display
  * and which report to run based on user input.
@@ -138,19 +139,64 @@ public class MenuSystem {
      * Displays the population for country reports.
      */
     private void populationMenu() {
-        // TODO:
-//        1. Population of the world
-//        2. Population of a continent
-//        3. Population of a region
-//        4. Population of a country
-//        5. Population of a district
-//        6. Population of a city
-//        7. Population breakdown by continent (cities vs non-cities)
-//        8. Population breakdown by region (cities vs non-cities)
-//        9. Population breakdown by country (cities vs non-cities)
-//        10. Back to Main Menu
-    }
+        Menu menu = new Menu("Population Reports")
+                .addOption(1, "Population of the world",
+                        () -> System.out.println("World population: " +
+                                populationReportService.getWorldPopulation()))
+                .addOption(2, "Population of a continent",
+                        () -> System.out.println("Continent population: " +
+                                populationReportService.getContinentPopulation(
+                                        InputHelper.getStringInput("Enter a continent: "))))
+                .addOption(3, "Population of a region",
+                        () -> System.out.println("Region population: " +
+                                populationReportService.getRegionPopulation(
+                                        InputHelper.getStringInput("Enter a region: "))))
+                .addOption(4, "Population of a country",
+                        () -> System.out.println("Country population: " +
+                                populationReportService.getCountryPopulation(
+                                        InputHelper.getStringInput("Enter a country: "))))
+                .addOption(5, "Population of a district",
+                        () -> System.out.println("District population: " +
+                                populationReportService.getDistrictPopulation(
+                                        InputHelper.getStringInput("Enter a district: "))))
+                .addOption(6, "Population of a city",
+                        () -> System.out.println("City population: " +
+                                populationReportService.getCityPopulation(
+                                        InputHelper.getStringInput("Enter a city: "))))
+                .addOption(7, "Population breakdown by continent (cities vs non-cities)",
+                        () -> showPopulationBreakdown("Continent",
+                                populationReportService.getContinentPopulationBreakdown()))
+                .addOption(8, "Population breakdown by region (cities vs non-cities)",
+                        () -> showPopulationBreakdown("Region",
+                                populationReportService.getRegionPopulationBreakdown()))
+                .addOption(9, "Population breakdown by country (cities vs non-cities)",
+                        () -> showPopulationBreakdown("Country",
+                                populationReportService.getCountryPopulationBreakdown()))
+                .addOption(0, "Back to Main Menu", () -> {});
 
+        menu.run();
+    }
+    private void showPopulationBreakdown(String title, List<PopulationReport> reports) {
+        if (reports == null || reports.isEmpty()) {
+            System.out.println("No data available for " + title + ".");
+            return;
+        }
+
+        System.out.println("\n--- Population Breakdown by " + title + " ---");
+        System.out.printf("%-25s %-15s %-15s %-10s %-15s %-10s%n",
+                title, "Total Pop.", "City Pop.", "% City", "Non-City Pop.", "% Non-City");
+        System.out.println("-------------------------------------------------------------------------------------------");
+
+        for (PopulationReport report : reports) {
+            System.out.printf("%-25s %-15d %-15d (%.2f%%) %-15d (%.2f%%)%n",
+                    report.getName(),
+                    report.getTotalPopulation(),
+                    report.getPopulationInCities(),
+                    report.getPercentInCities(),
+                    report.getPopulationNotInCities(),
+                    report.getPercentNotInCities());
+        }
+    }
     /**
      * Displays the submenu for language reports.
      */

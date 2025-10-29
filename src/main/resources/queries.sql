@@ -187,3 +187,108 @@ JOIN country c ON l.CountryCode = c.Code
 WHERE l.Language IN ('Chinese','English','Hindi','Spanish','Arabic')
 GROUP BY l.Language
 ORDER BY Speakers DESC;
+/*
+===============================================================================
+ POPULATION REPORTS
+===============================================================================
+*/
+
+-- Show total population of the world
+-- name: world_population
+
+SELECT SUM(Population) AS total_population
+FROM country;
+
+--Show each continent, total population in each continent,  population living in cities,
+--and  population not living in cities  in each continent, ordered by total population (largest to smallest)
+-- name: continent_population_summary
+SELECT
+    co.Continent,
+    SUM(co.Population) AS total_population,
+    SUM(ci.city_population) AS city_population,
+    (SUM(co.Population) - SUM(ci.city_population)) AS non_city_population
+FROM country AS co
+         LEFT JOIN (
+    SELECT
+        CountryCode,
+        SUM(Population) AS city_population
+    FROM city
+    GROUP BY CountryCode
+) AS ci ON co.Code = ci.CountryCode
+GROUP BY co.Continent
+ORDER BY total_population DESC;
+
+
+-- Show each Region, total population in eaach region, people living in cities, and people not living in cities
+-- for each region, ordered by total population (largest to smallest)
+-- name: region_population_summary
+SELECT
+    co.Region,
+    SUM(co.Population) AS total_population,
+    SUM(ci.city_population) AS city_population,
+    (SUM(co.Population) - SUM(ci.city_population)) AS non_city_population
+FROM country AS co
+         LEFT JOIN (
+    SELECT CountryCode, SUM(Population) AS city_population
+    FROM city
+    GROUP BY CountryCode
+) AS ci ON co.Code = ci.CountryCode
+GROUP BY co.Region
+ORDER BY total_population DESC;
+
+-- Show each Country, total population, people living in cities, and people not living in cities
+-- for each country, ordered by total population (largest to smallest)
+-- name: country_population_summary
+SELECT
+    co.Name AS Country,
+    SUM(co.Population) AS total_population,
+    SUM(ci.city_population) AS city_population,
+    (SUM(co.Population) - SUM(ci.city_population)) AS non_city_population
+FROM country AS co
+         LEFT JOIN (
+    SELECT CountryCode, SUM(Population) AS city_population
+    FROM city
+    GROUP BY CountryCode
+) AS ci ON co.Code = ci.CountryCode
+GROUP BY co.Name
+ORDER BY total_population DESC;
+
+-- Show population for a specific continent provided by the user
+-- name: population_by_continent
+SELECT SUM(co.Population) AS total_population
+FROM country AS co
+WHERE co.Continent = ?;
+
+
+-- Show population for a specific region provided by the user
+-- name: population_by_region
+SELECT SUM(co.Population) AS total_population
+FROM country AS co
+WHERE co.Region = ?;
+
+
+-- Show population for a specific country provided by the user
+-- name: population_by_country
+SELECT co.Population AS total_population
+FROM country AS co
+WHERE co.Name = ?;
+
+
+-- Show total population of a specific district
+-- name: population_by_district
+
+SELECT SUM(ci.Population) AS total_population
+FROM city AS ci
+WHERE ci.District = ?;
+
+
+-- Show total population of a specific city
+-- name: population_by_city
+
+SELECT ci.Population AS total_population
+FROM city AS ci
+WHERE ci.Name = ?;
+
+
+
+
