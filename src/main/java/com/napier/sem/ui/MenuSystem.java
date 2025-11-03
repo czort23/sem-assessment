@@ -6,8 +6,7 @@ import com.napier.sem.helper.OutputHelper;
 import com.napier.sem.service.*;
 
 import java.sql.Connection;
-import com.napier.sem.model.PopulationReport;
-import java.util.List;
+
 /**
  * Represents the main menu class delegating which menu to display
  * and which report to run based on user input.
@@ -120,7 +119,6 @@ public class MenuSystem {
         menu.run();
     }
 
-
     /**
      * Displays the submenu for capital city reports.
      */
@@ -149,7 +147,6 @@ public class MenuSystem {
 
         menu.run();
     }
-
 
     /**
      * Displays the population for country reports.
@@ -180,39 +177,16 @@ public class MenuSystem {
                                 populationReportService.getCityPopulation(
                                         InputHelper.getStringInput("Enter a city: "))))
                 .addOption(7, "Population breakdown by continent (cities vs non-cities)",
-                        () -> showPopulationBreakdown("Continent",
-                                populationReportService.getContinentPopulationBreakdown()))
+                        () -> OutputHelper.print(populationReportService.getContinentPopulationBreakdown()))
                 .addOption(8, "Population breakdown by region (cities vs non-cities)",
-                        () -> showPopulationBreakdown("Region",
-                                populationReportService.getRegionPopulationBreakdown()))
+                        () -> OutputHelper.print(populationReportService.getRegionPopulationBreakdown()))
                 .addOption(9, "Population breakdown by country (cities vs non-cities)",
-                        () -> showPopulationBreakdown("Country",
-                                populationReportService.getCountryPopulationBreakdown()))
+                        () -> OutputHelper.print(populationReportService.getCountryPopulationBreakdown()))
                 .addOption(0, "Back to Main Menu", () -> {});
 
         menu.run();
     }
-    private void showPopulationBreakdown(String title, List<PopulationReport> reports) {
-        if (reports == null || reports.isEmpty()) {
-            System.out.println("No data available for " + title + ".");
-            return;
-        }
 
-        System.out.println("\n--- Population Breakdown by " + title + " ---");
-        System.out.printf("%-25s %-15s %-15s %-10s %-15s %-10s%n",
-                title, "Total Pop.", "City Pop.", "% City", "Non-City Pop.", "% Non-City");
-        System.out.println("-------------------------------------------------------------------------------------------");
-
-        for (PopulationReport report : reports) {
-            System.out.printf("%-25s %-15d %-15d (%.2f%%) %-15d (%.2f%%)%n",
-                    report.getName(),
-                    report.getTotalPopulation(),
-                    report.getPopulationInCities(),
-                    report.getPercentInCities(),
-                    report.getPopulationNotInCities(),
-                    report.getPercentNotInCities());
-        }
-    }
     /**
      * Displays the submenu for language reports.
      */
