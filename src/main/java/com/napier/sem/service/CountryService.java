@@ -13,8 +13,14 @@ public class CountryService {
     /** DAO responsible for database access related to countries. */
     private final CountryDAO countryDAO;
 
+    // Constructor for production
     public CountryService(Connection conn) {
         this.countryDAO = new CountryDAO(conn);
+    }
+
+    // Constructor for testing (inject DAO)
+    public CountryService(CountryDAO countryDAO) {
+        this.countryDAO = countryDAO;
     }
 
     /**

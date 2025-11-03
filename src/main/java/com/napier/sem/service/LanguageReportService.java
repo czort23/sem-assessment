@@ -13,8 +13,14 @@ public class LanguageReportService {
     /** DAO responsible for database access related to language reports. */
     private final LanguageReportDAO languageReportDAO;
 
+    // Constructor for production
     public LanguageReportService(Connection conn) {
         this.languageReportDAO = new LanguageReportDAO(conn);
+    }
+
+    // Constructor for testing (inject DAO)
+    public LanguageReportService(LanguageReportDAO languageReportDAO) {
+        this.languageReportDAO = languageReportDAO;
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.napier.sem.service;
 
+import com.napier.sem.dao.LanguageReportDAO;
 import com.napier.sem.dao.PopulationReportDAO;
 import com.napier.sem.model.PopulationReport;
 
@@ -17,8 +18,14 @@ public class PopulationReportService {
     /** DAO responsible for database access related to population reports. */
     private final PopulationReportDAO populationReportDAO;
 
+    // Constructor for production
     public PopulationReportService(Connection conn) {
         this.populationReportDAO = new PopulationReportDAO(conn);
+    }
+
+    // Constructor for testing (inject DAO)
+    public PopulationReportService(PopulationReportDAO populationReportDAO) {
+        this.populationReportDAO = populationReportDAO;
     }
 
     /**

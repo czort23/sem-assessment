@@ -1,6 +1,7 @@
 package com.napier.sem.service;
 
 import com.napier.sem.dao.CapitalCityDAO;
+import com.napier.sem.dao.LanguageReportDAO;
 import com.napier.sem.model.CapitalCity;
 
 import java.sql.Connection;
@@ -13,8 +14,14 @@ public class CapitalCityService {
     /** DAO responsible for database access related to capital cities. */
     private final CapitalCityDAO capitalCityDAO;
 
+    // Constructor for production
     public CapitalCityService(Connection conn) {
         this.capitalCityDAO = new CapitalCityDAO(conn);
+    }
+
+    // Constructor for testing (inject DAO)
+    public CapitalCityService(CapitalCityDAO capitalCityDAO) {
+        this.capitalCityDAO = capitalCityDAO;
     }
 
     /**

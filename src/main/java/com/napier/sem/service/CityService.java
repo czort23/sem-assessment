@@ -1,6 +1,7 @@
 package com.napier.sem.service;
 
 import com.napier.sem.dao.CityDAO;
+import com.napier.sem.dao.LanguageReportDAO;
 import com.napier.sem.model.City;
 
 import java.sql.Connection;
@@ -13,8 +14,14 @@ public class CityService {
     /** DAO responsible for database access related to cities. */
     private final CityDAO cityDAO;
 
+    // Constructor for production
     public CityService(Connection conn) {
         this.cityDAO = new CityDAO(conn);
+    }
+
+    // Constructor for testing (inject DAO)
+    public CityService(CityDAO cityDAO) {
+        this.cityDAO = cityDAO;
     }
 
     public List<City> getAllCities() {
