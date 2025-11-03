@@ -1,7 +1,6 @@
 package com.napier.sem.service;
 
 import com.napier.sem.dao.CapitalCityDAO;
-import com.napier.sem.dao.LanguageReportDAO;
 import com.napier.sem.model.CapitalCity;
 
 import java.sql.Connection;

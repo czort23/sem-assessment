@@ -1,16 +1,11 @@
 package com.napier.sem.service;
 
-import com.napier.sem.dao.LanguageReportDAO;
 import com.napier.sem.dao.PopulationReportDAO;
 import com.napier.sem.model.PopulationReport;
 
 import java.sql.Connection;
-import java.util.Collections;
 import java.util.List;
 
-/**
- * Service layer for handling all operations related to population reports.
- */
 /**
  * Service layer for handling all operations related to population reports.
  */
