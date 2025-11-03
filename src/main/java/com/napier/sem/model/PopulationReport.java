@@ -49,12 +49,16 @@ public class PopulationReport {
         return totalPopulation == 0 ? 0 : (double) populationNotInCities / totalPopulation * 100;
     }
 
+    private static String formatPercent(double value) {
+        return String.format("%.0f%%", value);
+    }
+
     @Override
     public String toString() {
-        return String.format("%-25s %-15d %-15d (%.2f%%) %-15d (%.2f%%)",
+        return String.format("%-40s %-15d %-15d %-10s %-15d %-10s",
                 name,
                 totalPopulation,
-                populationInCities, getPercentInCities(),
-                populationNotInCities, getPercentNotInCities());
+                populationInCities, formatPercent(getPercentInCities()),
+                populationNotInCities, formatPercent(getPercentNotInCities()));
     }
 }
