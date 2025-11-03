@@ -13,10 +13,11 @@ public class Menu {
     private final List<MenuOption> options = new ArrayList<>();
 
     /** Scanner instance for reading user input. */
-    private final Scanner sc = new Scanner(System.in);
+    private final Scanner sc;
 
-    public Menu(String title) {
+    public Menu(String title, Scanner sc) {
         this.title = title;
+        this.sc = sc;
     }
 
     /**

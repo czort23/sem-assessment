@@ -6,6 +6,7 @@ import com.napier.sem.helper.OutputHelper;
 import com.napier.sem.service.*;
 
 import java.sql.Connection;
+import java.util.Scanner;
 
 /**
  * Represents the main menu class delegating which menu to display
@@ -30,12 +31,15 @@ public class MenuSystem {
     /** Service for language reports. */
     private final LanguageReportService languageReportService = new LanguageReportService(conn);
 
+    /** Scanner instance for reading user input. */
+    private final Scanner sc = new Scanner(System.in);
+
     /**
      * Starts the main menu.
      */
     public void start() {
         // Initialize main menu and add options
-        Menu mainMenu = new Menu("Population Reporting System")
+        Menu mainMenu = new Menu("Population Reporting System", sc)
                 .addOption(1, "Country Reports", this::countryMenu)
                 .addOption(2, "City Reports", this::cityMenu)
                 .addOption(3, "Capital City Reports", this::capitalCityMenu)
@@ -51,7 +55,7 @@ public class MenuSystem {
      */
     private void countryMenu() {
         // Initialize country menu and add options
-        Menu menu = new Menu("Country Reports")
+        Menu menu = new Menu("Country Reports", sc)
                 .addOption(1, "All countries in the world (by population)",
                         () -> OutputHelper.print(countryService.getAllCountries()))
                 .addOption(2, "All countries in a continent (by population)",
@@ -80,7 +84,7 @@ public class MenuSystem {
      * Displays the submenu for city reports.
      */
     private void cityMenu() {
-        Menu menu = new Menu("City Reports")
+        Menu menu = new Menu("City Reports", sc)
                 .addOption(1, "All cities in the world (by population)",
                         () -> OutputHelper.print(cityService.getAllCities()))
                 .addOption(2, "All cities in a continent (by population)",
@@ -123,7 +127,7 @@ public class MenuSystem {
      * Displays the submenu for capital city reports.
      */
     private void capitalCityMenu() {
-        Menu menu = new Menu("Capital City Reports")
+        Menu menu = new Menu("Capital City Reports", sc)
                 .addOption(1, "All capital cities in the world (by population)",
                         () -> OutputHelper.print(capitalCityService.getAllCapitalCities()))
                 .addOption(2, "All capital cities in a continent (by population)",
@@ -152,7 +156,7 @@ public class MenuSystem {
      * Displays the population for country reports.
      */
     private void populationMenu() {
-        Menu menu = new Menu("Population Reports")
+        Menu menu = new Menu("Population Reports", sc)
                 .addOption(1, "Population of the world",
                         () -> System.out.println("World population: " +
                                 populationReportService.getWorldPopulation()))
@@ -192,7 +196,7 @@ public class MenuSystem {
      */
     private void languageMenu() {
         // Initialize language menu and add options
-        Menu menu = new Menu("Language Reports")
+        Menu menu = new Menu("Language Reports", sc)
                 .addOption(1, "Number of people who speak Chinese, English, Hindi, Spanish, Arabic\n" +
                         "(sorted from greatest to smallest, with world %)",
                         () -> OutputHelper.print(languageReportService.getLanguagePopulationReport()))
