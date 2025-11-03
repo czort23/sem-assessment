@@ -24,9 +24,12 @@ public class DatabaseConnection {
      * Connects to the database.
      */
     public static void connect() {
+        if (conn != null) return; // Already connected
+
         // Set properties
         String driver = AppConfig.get("db.driver");
-        String url = AppConfig.get("db.url");
+        String urlDB = AppConfig.get("db.url.db");
+        String urlLocalhost = AppConfig.get("db.url.localhost");
         String username = AppConfig.get("db.username");
         String password = AppConfig.get("db.password");
         int maxRetries = AppConfig.getInt("db.connect.retries");
@@ -39,11 +42,21 @@ public class DatabaseConnection {
             throw new RuntimeException("Could not load SQL driver: " + driver, e);
         }
 
+        // Try to connect on localhost
+        System.out.println("Connecting to database on localhost...");
+        try {
+            conn = DriverManager.getConnection(urlLocalhost, username, password);
+            System.out.println("Successfully connected to the database.");
+            return;
+        } catch (SQLException e) {
+            System.out.println("Connection attempt failed. Connecting to remote.");
+        }
+
         // Try connecting to the database
         for (int attempt = 1; attempt <= maxRetries; ++attempt) {
             System.out.println("Connecting to database... Attempt " + attempt + "/" + maxRetries);
             try {
-                conn = DriverManager.getConnection(url, username, password);
+                conn = DriverManager.getConnection(urlDB, username, password);
                 System.out.println("Successfully connected to the database.");
                 return;
             } catch (SQLException e) {
@@ -56,7 +69,8 @@ public class DatabaseConnection {
             }
         }
 
-        throw new RuntimeException("Could not connect to database after " + maxRetries + " attempts.");
+        System.err.println("Could not connect to database after " + maxRetries + " attempts.");
+        System.exit(1); // Exit with a non-zero code to indicate error
     }
 
     /**
