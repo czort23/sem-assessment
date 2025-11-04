@@ -42,20 +42,14 @@ public class DatabaseConnection {
             throw new RuntimeException("Could not load SQL driver: " + driver, e);
         }
 
-        for (int attempt = 1; attempt <= maxRetries; ++attempt) {
-            System.out.println("Connecting to database... Attempt " + attempt + "/" + maxRetries);
-            try {
-                conn = DriverManager.getConnection(urlLocalhost, username, password);
-                System.out.println("Successfully connected to the database.");
-                return;
-            } catch (SQLException e) {
-                System.out.println("Connection attempt " + attempt + " failed: " + e.getMessage());
-                try {
-                    Thread.sleep(retryDelay);
-                } catch (InterruptedException ignored) {
-                    Thread.currentThread().interrupt();
-                }
-            }
+        // Try to connect on localhost
+        System.out.println("Connecting to database on localhost...");
+        try {
+            conn = DriverManager.getConnection(urlLocalhost, username, password);
+            System.out.println("Successfully connected to the database.");
+            return;
+        } catch (SQLException e) {
+            System.out.println("Connection attempt failed. Connecting to remote.");
         }
 
         // Try connecting to the database
