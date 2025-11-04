@@ -31,11 +31,19 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
-      - name: Integration Tests
+      - name: Build and run MySQL
         run: |
           docker build -t database ./db
-          docker run --name world -dp 33060:3306 database
-          mvn -Dtest="com.napier.sem.integration.*Test" test
+          docker run --name world -e MYSQL_ROOT_PASSWORD=example -dp 33060:3306 database
+          # Wait until MySQL is ready
+          until docker exec world mysqladmin ping -h "localhost" --silent; do
+            echo "Waiting for database..."
+            sleep 2
+          done
+      - name: Run integration tests
+        run: mvn -Dtest="com.napier.sem.integration.*Test" test
+      - name: Cleanup
+        run: |
           docker stop world
           docker rm world
           docker image rm database
