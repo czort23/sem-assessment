@@ -34,7 +34,7 @@ jobs:
       - name: Integration Tests
         run: |
           docker build -t db ./db
-          docker run --name app -dp 33060:3306 db
+          docker run --name app -dp 33060:3306 -e MYSQL_ROOT_HOST=% db
           mvn -Dtest="com.napier.sem.integration.*Test" test
           docker stop app
           docker rm app
