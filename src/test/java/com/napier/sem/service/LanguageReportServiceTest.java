@@ -7,10 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -34,7 +35,7 @@ public class LanguageReportServiceTest {
 
     @Test
     void testGetLanguagePopulationReport() {
-        when(languageReportService.getLanguagePopulationReport()).thenReturn(createTestLanguages());
+        when(mockLanguageReportDAO.getLanguagePopulationReport()).thenReturn(createTestLanguages());
 
         List<LanguageReport> languages = languageReportService.getLanguagePopulationReport();
 
@@ -44,5 +45,23 @@ public class LanguageReportServiceTest {
         assertEquals(1000000, english.getSpeakers());
         assertEquals(12.5, english.getWorldPercentage());
         verify(mockLanguageReportDAO).getLanguagePopulationReport();
+    }
+
+    @Test
+    void testGetLanguagePopulationReportNullFromDAO() {
+        when(mockLanguageReportDAO.getLanguagePopulationReport()).thenReturn(null);
+
+        List<LanguageReport> languages = languageReportService.getLanguagePopulationReport();
+
+        assertNull(languages);
+    }
+
+    @Test
+    void testGetLanguagePopulationReportEmptyListFromDAO() {
+        when(mockLanguageReportDAO.getLanguagePopulationReport()).thenReturn(new ArrayList<>());
+
+        List<LanguageReport> languages = languageReportService.getLanguagePopulationReport();
+
+        assertTrue(languages.isEmpty());
     }
 }

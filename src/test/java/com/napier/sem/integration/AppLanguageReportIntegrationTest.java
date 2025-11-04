@@ -60,5 +60,29 @@ public class AppLanguageReportIntegrationTest {
         assertTrue(output.contains("Spanish") && output.contains("347077867") && output.contains("5.71%"));
         assertTrue(output.contains("Arabic") && output.contains("233839239") && output.contains("3.85%"));
     }
+
+    @Test
+    void testLanguageReportMenuOptionInvalidInput() {
+        // Simulate user input:
+        // k - invalid input, try again
+        // 5 = language reports
+        // 1 = generate language report
+        // 99 - invalid input, try again
+        // 0 = back
+        // 0 = exit
+        String simulatedUserInput = "k\n5\n1\n99\n0\n0\n";
+        System.setIn(new ByteArrayInputStream(simulatedUserInput.getBytes()));
+
+        MenuSystem menu = new MenuSystem();
+        menu.start();
+
+        String output = outContent.toString();
+
+        assertTrue(output.contains("Chinese") && output.contains("1191843539") && output.contains("19.61%"));
+        assertTrue(output.contains("English") && output.contains("405633070") && output.contains("6.67%"));
+        assertTrue(output.contains("Hindi") && output.contains("355029462") && output.contains("5.84%"));
+        assertTrue(output.contains("Spanish") && output.contains("347077867") && output.contains("5.71%"));
+        assertTrue(output.contains("Arabic") && output.contains("233839239") && output.contains("3.85%"));
+    }
 }
 

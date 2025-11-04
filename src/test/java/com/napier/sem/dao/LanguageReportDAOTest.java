@@ -14,8 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class LanguageReportDAOTest {
@@ -58,6 +57,20 @@ public class LanguageReportDAOTest {
         verify(mockConn).prepareStatement(QueryLoader.get("language_breakdown"));
         verify(mockStmt).executeQuery();
         verify(mockRs, times(2)).next();
+    }
+
+    @Test
+    void testGetLanguagePopulationReportEmptyList() throws SQLException {
+        when(mockConn.prepareStatement(QueryLoader.get("language_breakdown"))).thenReturn(mockStmt);
+        when(mockStmt.executeQuery()).thenReturn(mockRs);
+        when(mockRs.next()).thenReturn(false);
+
+        List<LanguageReport> languages = languageReportDAO.getLanguagePopulationReport();
+
+        assertTrue(languages.isEmpty());
+        verify(mockConn).prepareStatement(QueryLoader.get("language_breakdown"));
+        verify(mockStmt).executeQuery();
+        verify(mockRs, times(1)).next();
     }
 
     @Test
