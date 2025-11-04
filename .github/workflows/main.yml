@@ -33,17 +33,12 @@ jobs:
           distribution: 'adopt'
       - name: Integration Tests
         run: |
-          docker build -t database ./db
-          docker run --name world -dp 33060:3306 database
-          echo "Waiting for MySQL to start..."
-            until docker exec world mysql -uroot -pexample -e "SELECT 1;" &> /dev/null; do
-            echo "MySQL not ready yet. Sleeping 5s..."
-            sleep 5
-          done
+          docker build -t db ./db
+          docker run --name app -dp 33060:3306 db
           mvn -Dtest="com.napier.sem.integration.*Test" test
-          docker stop world
-          docker rm world
-          docker image rm database
+          docker stop app
+          docker rm app
+          docker image rm db
 
   build:
     name: Build and Start Using docker-compose
