@@ -34,6 +34,10 @@ public class MenuSystem {
     /** Scanner instance for reading user input. */
     private final Scanner sc = new Scanner(System.in);
 
+    { // instance initializer block
+        InputHelper.setScanner(sc);
+    }
+
     /**
      * Starts the main menu.
      */

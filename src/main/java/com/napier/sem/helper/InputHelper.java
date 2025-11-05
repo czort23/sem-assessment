@@ -8,7 +8,11 @@ import java.util.Scanner;
  */
 public class InputHelper {
     /** Scanner instance for reading user input. */
-    private static final Scanner sc = new Scanner(System.in);
+    private static Scanner sc;
+
+    public static void setScanner(Scanner scanner) {
+        sc = scanner;
+    }
 
     /**
      * Prompts the user for a string input.
