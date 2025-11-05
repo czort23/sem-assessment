@@ -4,6 +4,7 @@ import com.napier.sem.dao.LanguageReportDAO;
 import com.napier.sem.model.LanguageReport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -34,7 +35,7 @@ public class LanguageReportServiceTest {
     }
 
     @Test
-    void testGetLanguagePopulationReport() {
+    void testGetLanguagePopulationReport_ReturnsLanguageList() {
         when(mockLanguageReportDAO.getLanguagePopulationReport()).thenReturn(createTestLanguages());
 
         List<LanguageReport> languages = languageReportService.getLanguagePopulationReport();
@@ -48,20 +49,23 @@ public class LanguageReportServiceTest {
     }
 
     @Test
-    void testGetLanguagePopulationReportNullFromDAO() {
-        when(mockLanguageReportDAO.getLanguagePopulationReport()).thenReturn(null);
-
-        List<LanguageReport> languages = languageReportService.getLanguagePopulationReport();
-
-        assertNull(languages);
-    }
-
-    @Test
-    void testGetLanguagePopulationReportEmptyListFromDAO() {
+    void testGetLanguagePopulationReport_ReturnsEmptyList() {
         when(mockLanguageReportDAO.getLanguagePopulationReport()).thenReturn(new ArrayList<>());
 
         List<LanguageReport> languages = languageReportService.getLanguagePopulationReport();
 
         assertTrue(languages.isEmpty());
+        verify(mockLanguageReportDAO).getLanguagePopulationReport();
     }
+
+    @Test
+    void testGetLanguagePopulationReport_ReturnsNull() {
+        when(mockLanguageReportDAO.getLanguagePopulationReport()).thenReturn(null);
+
+        List<LanguageReport> languages = languageReportService.getLanguagePopulationReport();
+
+        assertNull(languages);
+        verify(mockLanguageReportDAO).getLanguagePopulationReport();
+    }
+
 }

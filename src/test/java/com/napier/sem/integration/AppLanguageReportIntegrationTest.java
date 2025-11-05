@@ -4,12 +4,12 @@ import com.napier.sem.config.DatabaseConnection;
 import com.napier.sem.ui.MenuSystem;
 import org.junit.jupiter.api.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AppLanguageReportIntegrationTest {
     private final PrintStream originalOut = System.out;
@@ -39,8 +39,18 @@ public class AppLanguageReportIntegrationTest {
         System.setIn(originalIn);
     }
 
+    /**
+     * Extracts just the section of output between the given markers.
+     */
+    private String extractReportSection(String output, String startMarker, String endMarker) {
+        int start = output.indexOf(startMarker);
+        int end = output.indexOf(endMarker);
+        if (start == -1 || end == -1 || end <= start) return "";
+        return output.substring(start + startMarker.length(), end).trim();
+    }
+
     @Test
-    void testLanguageReportMenuOption() {
+    void testLanguageReportMenuOption() throws IOException {
         // Simulate user input:
         // 5 = language reports
         // 1 = generate language report
@@ -53,16 +63,24 @@ public class AppLanguageReportIntegrationTest {
         menu.start();
 
         String output = outContent.toString();
+        String report = extractReportSection(output,
+                "==== REPORT START ====",
+                "==== REPORT END ====");
 
-        assertTrue(output.contains("Chinese") && output.contains("1191843539") && output.contains("19.61%"));
-        assertTrue(output.contains("English") && output.contains("405633070") && output.contains("6.67%"));
-        assertTrue(output.contains("Hindi") && output.contains("355029462") && output.contains("5.84%"));
-        assertTrue(output.contains("Spanish") && output.contains("347077867") && output.contains("5.71%"));
-        assertTrue(output.contains("Arabic") && output.contains("233839239") && output.contains("3.85%"));
+        assertFalse(report.isEmpty(), "Report section should not be empty.");
+
+        // Load the expected report from file
+        Path expectedPath = Paths.get("src/test/resources/expected_reports/language/language_breakdown.txt");
+        assertTrue(Files.exists(expectedPath), "Expected report file does not exist: " + expectedPath);
+
+        String expectedReport = Files.readString(expectedPath).trim();
+
+        // Compare the actual and expected outputs
+        assertEquals(expectedReport, report, "The generated report does not match the expected output.");
     }
 
     @Test
-    void testLanguageReportMenuOptionInvalidInput() {
+    void testLanguageReportMenuOption_WithInvalidInput() throws IOException {
         // Simulate user input:
         // k - invalid input, try again
         // 5 = language reports
@@ -77,12 +95,20 @@ public class AppLanguageReportIntegrationTest {
         menu.start();
 
         String output = outContent.toString();
+        String report = extractReportSection(output,
+                "==== REPORT START ====",
+                "==== REPORT END ====");
 
-        assertTrue(output.contains("Chinese") && output.contains("1191843539") && output.contains("19.61%"));
-        assertTrue(output.contains("English") && output.contains("405633070") && output.contains("6.67%"));
-        assertTrue(output.contains("Hindi") && output.contains("355029462") && output.contains("5.84%"));
-        assertTrue(output.contains("Spanish") && output.contains("347077867") && output.contains("5.71%"));
-        assertTrue(output.contains("Arabic") && output.contains("233839239") && output.contains("3.85%"));
+        assertFalse(report.isEmpty(), "Report section should not be empty.");
+
+        // Load the expected report from file
+        Path expectedPath = Paths.get("src/test/resources/expected_reports/language/language_breakdown.txt");
+        assertTrue(Files.exists(expectedPath), "Expected report file does not exist: " + expectedPath);
+
+        String expectedReport = Files.readString(expectedPath).trim();
+
+        // Compare the actual and expected outputs
+        assertEquals(expectedReport, report, "The generated report does not match the expected output.");
     }
 }
 

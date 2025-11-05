@@ -5,6 +5,7 @@ import com.napier.sem.exception.DataAccessException;
 import com.napier.sem.model.LanguageReport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -25,13 +26,12 @@ public class LanguageReportDAOTest {
     private PreparedStatement mockStmt;
     @Mock
     private ResultSet mockRs;
-
+    @InjectMocks
     private LanguageReportDAO languageReportDAO;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        languageReportDAO = new LanguageReportDAO(mockConn);
     }
 
     private void mockResultSetForSingleLanguage() throws SQLException {
@@ -42,7 +42,7 @@ public class LanguageReportDAOTest {
     }
 
     @Test
-    void testGetLanguagePopulationReport() throws SQLException {
+    void testGetLanguagePopulationReport_ReturnsLanguageList() throws SQLException {
         when(mockConn.prepareStatement(QueryLoader.get("language_breakdown"))).thenReturn(mockStmt);
         when(mockStmt.executeQuery()).thenReturn(mockRs);
         mockResultSetForSingleLanguage();
@@ -60,7 +60,7 @@ public class LanguageReportDAOTest {
     }
 
     @Test
-    void testGetLanguagePopulationReportEmptyList() throws SQLException {
+    void testGetLanguagePopulationReport_ReturnsEmptyList() throws SQLException {
         when(mockConn.prepareStatement(QueryLoader.get("language_breakdown"))).thenReturn(mockStmt);
         when(mockStmt.executeQuery()).thenReturn(mockRs);
         when(mockRs.next()).thenReturn(false);
@@ -74,7 +74,7 @@ public class LanguageReportDAOTest {
     }
 
     @Test
-    void testSQLExceptionIsWrapped() throws SQLException {
+    void testThrowSQLException() throws SQLException {
         when(mockConn.prepareStatement(anyString())).thenThrow(new SQLException());
 
         assertThrows(DataAccessException.class, () -> languageReportDAO.getLanguagePopulationReport());
