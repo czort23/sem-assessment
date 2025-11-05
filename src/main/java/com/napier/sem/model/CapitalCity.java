@@ -29,6 +29,6 @@ public class CapitalCity {
 
     @Override
     public String toString() {
-        return String.format("%-35s %-40s %-15d", name, country, population);
+        return String.format("%-35s %-40s %d", name, country, population);
     }
 }

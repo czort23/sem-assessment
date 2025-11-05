@@ -55,7 +55,7 @@ public class PopulationReport {
 
     @Override
     public String toString() {
-        return String.format("%-40s %-15d %-15d %-10s %-15d %-10s",
+        return String.format("%-40s %-15d %-15d %-10s %-15d %s",
                 name,
                 totalPopulation,
                 populationInCities, formatPercent(getPercentInCities()),

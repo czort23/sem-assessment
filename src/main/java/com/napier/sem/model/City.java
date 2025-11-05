@@ -35,7 +35,7 @@ public class City {
 
     @Override
     public String toString() {
-        return String.format("%-35s %-40s %-25s %-15d",
+        return String.format("%-35s %-40s %-25s %d",
                 name, country, district, population);
     }
 }

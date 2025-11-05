@@ -48,7 +48,7 @@ public class Country {
     // Console-friendly output
     @Override
     public String toString() {
-        return String.format("%-10s %-40s %-20s %-30s %-15d %-20s",
+        return String.format("%-10s %-40s %-20s %-30s %-15d %s",
                 code, name, continent, region, population, capital);
     }
 }
