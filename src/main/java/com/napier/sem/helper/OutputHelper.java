@@ -18,10 +18,11 @@ public class OutputHelper {
 
         // Detect class type
         Class<?> clazz = list.get(0).getClass();
-
+        System.out.println("\n==== REPORT START ====");
         printHeader(clazz);
 
         list.forEach(System.out::println);
+        System.out.println("==== REPORT END ====");
     }
 
     /**
@@ -31,15 +32,15 @@ public class OutputHelper {
     private static void printHeader(Class<?> clazz) {
         // Choose class
         String header = switch (clazz.getSimpleName()) {
-            case "CapitalCity" -> String.format("\n%-35s %-40s %-15s",
+            case "CapitalCity" -> String.format("%-35s %-40s %s",
                     "Name:", "Country:", "Population:");
-            case "City" -> String.format("\n%-35s %-40s %-25s %-15s",
+            case "City" -> String.format("%-35s %-40s %-25s %s",
                     "Name:", "Country:", "District:", "Population:");
-            case "Country" -> String.format("\n%-10s %-40s %-20s %-30s %-15s %-20s",
+            case "Country" -> String.format("%-10s %-40s %-20s %-30s %-15s %s",
                     "Code:", "Name:", "Continent:", "Region:", "Population:", "Capital:");
-            case "LanguageReport" -> String.format("\n%-20s %-20s %-20s",
+            case "LanguageReport" -> String.format("%-20s %-20s %s",
                     "Language:", "Speakers:", "World Percentage:");
-            case "PopulationReport" -> String.format("\n%-40s %-15s %-15s %-10s %-15s %-10s",
+            case "PopulationReport" -> String.format("%-40s %-15s %-15s %-10s %-15s %s",
                     "Name:", "Total Pop.:", "City Pop.:", "City %:", "Non-City Pop.:", "Non-City %:");
             default -> "";
         };
