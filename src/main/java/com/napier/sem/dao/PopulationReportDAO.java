@@ -46,8 +46,7 @@ public class PopulationReportDAO {
 
     /** 1. Population of the world */
     public Long getWorldPopulation() {
-        String sql = "SELECT SUM(Population) AS total_population FROM country";
-        return fetchPopulation(sql, null, "world");
+        return fetchPopulation(QueryLoader.get("world_population"), null, "world");
     }
 
     /** 2. Population of a continent */

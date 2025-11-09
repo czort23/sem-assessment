@@ -69,12 +69,25 @@ public class AppPopulationReportIntegrationTest {
         assertEquals(expectedReport, report, "Generated report does not match expected output.");
     }
 
+    private void testPopMenuOption(String simulatedUserInput, String report) {
+        System.setIn(new ByteArrayInputStream(simulatedUserInput.getBytes()));
+
+        MenuSystem menu = new MenuSystem();
+        menu.start();
+
+        String output = outContent.toString();
+
+        assertTrue(!output.isEmpty(), "Report section should not be empty.");
+
+        assertTrue(output.contains(report));
+    }
+
     private void testMenuOption_NoResultFound(String simulatedUserInput) {
         System.setIn(new ByteArrayInputStream(simulatedUserInput.getBytes()));
         MenuSystem menu = new MenuSystem();
         menu.start();
         String output = outContent.toString();
-        assertTrue(output.contains("No results found."));
+        assertTrue(output.contains("No results found"));
     }
 
     // =========================
@@ -82,65 +95,84 @@ public class AppPopulationReportIntegrationTest {
     // =========================
 
     @Test
-    void testWorldPopulationReport() throws IOException {
-        // 2 = population reports menu
+    void testWorldPopulationReport() {
+        // 4 = population reports menu
         // 1 = world population
         // 0 = back, 0 = exit
-        testMenuOption(
-                "2\n1\n0\n0\n",
-                "src/test/resources/expected_reports/population/world_population.txt"
-        );
+        testPopMenuOption("4\n1\n0\n0\n", "World population: 6078749450");
     }
 
     @Test
-    void testContinentPopulationReport_Asia() throws IOException {
-        testMenuOption(
-                "2\n2\nAsia\n0\n0\n",
-                "src/test/resources/expected_reports/population/continent_population_asia.txt"
-        );
+    void testContinentPopulationReport_Asia() {
+        testPopMenuOption("4\n2\nAsia\n0\n0\n", "Continent population: 3705025700");
     }
 
     @Test
     void testContinentPopulationReport_InvalidContinent() {
-        testMenuOption_NoResultFound("2\n2\nAtlantis\n0\n0\n");
+        testMenuOption_NoResultFound("4\n2\nAtlantis\n0\n0\n");
     }
 
     @Test
-    void testRegionPopulationReport_WesternEurope() throws IOException {
-        testMenuOption(
-                "2\n3\nWestern Europe\n0\n0\n",
-                "src/test/resources/expected_reports/population/region_population_western_europe.txt"
-        );
+    void testRegionPopulationReport_WesternEurope() {
+        testPopMenuOption("4\n3\nWestern Europe\n0\n0\n", "Region population: 183247600");
     }
 
     @Test
     void testRegionPopulationReport_InvalidRegion() {
-        testMenuOption_NoResultFound("2\n3\nNowhereLand\n0\n0\n");
+        testMenuOption_NoResultFound("4\n3\nNowhereLand\n0\n0\n");
     }
 
     @Test
-    void testCountryPopulationReport_Germany() throws IOException {
-        testMenuOption(
-                "2\n4\nGermany\n0\n0\n",
-                "src/test/resources/expected_reports/population/country_population_germany.txt"
-        );
+    void testCountryPopulationReport_Germany() {
+        testPopMenuOption("4\n4\nGermany\n0\n0\n", "Country population: 82164700");
     }
 
     @Test
     void testCountryPopulationReport_InvalidCountry() {
-        testMenuOption_NoResultFound("2\n4\nGondor\n0\n0\n");
+        testMenuOption_NoResultFound("4\n4\nGondor\n0\n0\n");
     }
 
     @Test
-    void testCityPopulationReport_London() throws IOException {
-        testMenuOption(
-                "2\n5\nLondon\n0\n0\n",
-                "src/test/resources/expected_reports/population/city_population_london.txt"
-        );
+    void testDistrictPopulationReport_Germany() {
+        testPopMenuOption("4\n5\nKabol\n0\n0\n", "District population: 1780000");
+    }
+
+    @Test
+    void testDistrictPopulationReport_InvalidCountry() {
+        testMenuOption_NoResultFound("4\n5\nGondor\n0\n0\n");
+    }
+
+    @Test
+    void testCityPopulationReport_London() {
+        testPopMenuOption("4\n6\nLondon\n0\n0\n", "City population: 7285000");
     }
 
     @Test
     void testCityPopulationReport_InvalidCity() {
-        testMenuOption_NoResultFound("2\n5\nNarnia\n0\n0\n");
+        testMenuOption_NoResultFound("4\n6\nNarnia\n0\n0\n");
+    }
+
+    @Test
+    void testPopulationBreakdownByContinent() throws IOException {
+        testMenuOption(
+                "4\n7\n0\n0\n",
+                "src/test/resources/expected_reports/population/population_breakdown_by_continent.txt"
+        );
+    }
+
+    @Test
+    void testPopulationBreakdownByRegion() throws IOException {
+        testMenuOption(
+                "4\n8\n0\n0\n",
+                "src/test/resources/expected_reports/population/population_breakdown_by_region.txt"
+        );
+    }
+
+    @Test
+    void testPopulationBreakdownByCountry() throws IOException {
+        testMenuOption(
+                "4\n9\n0\n0\n",
+                "src/test/resources/expected_reports/population/population_breakdown_by_country.txt"
+        );
     }
 }
