@@ -4,6 +4,11 @@ services:
     build: .
     depends_on:
       - db
+    environment:
+      - DOCKER=true        # 👈 This tells your Java app it's running inside Docker
+    restart: on-failure    # Optional but recommended
+    stdin_open: true
+    tty: true
 
   db:
     build: db/.
@@ -12,3 +17,4 @@ services:
       - "33060:3306"
     environment:
       MYSQL_ROOT_HOST: "%"
+      MYSQL_ROOT_PASSWORD: example   # 👈 Add this line to match your application.properties
