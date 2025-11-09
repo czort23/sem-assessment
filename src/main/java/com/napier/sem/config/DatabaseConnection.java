@@ -8,12 +8,11 @@ import java.sql.SQLException;
  * Class responsible for opening and closing database connection.
  */
 public class DatabaseConnection {
-    /** Database connection. */
+    /** Active database connection */
     private static Connection conn = null;
 
     /**
-     * Retrieves the active database connection.
-     * @return database connection
+     * Returns the active database connection.
      */
     public static Connection get() {
         if (conn != null) return conn;
@@ -21,46 +20,35 @@ public class DatabaseConnection {
     }
 
     /**
-     * Connects to the database.
+     * Connects to the database using configuration from application.properties.
      */
     public static void connect() {
         if (conn != null) return; // Already connected
 
-        // Set properties
+        // Load configuration
         String driver = AppConfig.get("db.driver");
-        String urlDB = AppConfig.get("db.url.db");
-        String urlLocalhost = AppConfig.get("db.url.localhost");
+        String url = AppConfig.get("db.url");
         String username = AppConfig.get("db.username");
         String password = AppConfig.get("db.password");
         int maxRetries = AppConfig.getInt("db.connect.retries");
         int retryDelay = AppConfig.getInt("db.connect.delay");
 
-        // Load SQL driver
+        // Load the JDBC driver
         try {
             Class.forName(driver);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Could not load SQL driver: " + driver, e);
         }
 
-        // Try to connect on localhost
-        System.out.println("Connecting to database on localhost...");
-        try {
-            conn = DriverManager.getConnection(urlLocalhost, username, password);
-            System.out.println("Successfully connected to the database.");
-            return;
-        } catch (SQLException e) {
-            System.out.println("Connection attempt failed. Connecting to remote.");
-        }
-
-        // Try connecting to the database
+        // Try connecting with retries
         for (int attempt = 1; attempt <= maxRetries; ++attempt) {
-            System.out.println("Connecting to database... Attempt " + attempt + "/" + maxRetries);
+            System.out.println("Connecting to database: " + url + " (Attempt " + attempt + "/" + maxRetries + ")");
             try {
-                conn = DriverManager.getConnection(urlDB, username, password);
-                System.out.println("Successfully connected to the database.");
+                conn = DriverManager.getConnection(url, username, password);
+                System.out.println("✅ Successfully connected to the database.");
                 return;
             } catch (SQLException e) {
-                System.out.println("Connection attempt " + attempt + " failed: " + e.getMessage());
+                System.err.println("Connection attempt " + attempt + " failed: " + e.getMessage());
                 try {
                     Thread.sleep(retryDelay);
                 } catch (InterruptedException ignored) {
@@ -69,12 +57,12 @@ public class DatabaseConnection {
             }
         }
 
-        System.err.println("Could not connect to database after " + maxRetries + " attempts.");
-        System.exit(1); // Exit with a non-zero code to indicate error
+        System.err.println("❌ Could not connect to the database after " + maxRetries + " attempts.");
+        System.exit(1);
     }
 
     /**
-     * Closes database connection.
+     * Disconnects from the database.
      */
     public static void disconnect() {
         if (conn != null) {
