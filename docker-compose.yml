@@ -1,5 +1,6 @@
 version: '3'
 services:
+  # Application Dockerfile is in same folder which is.
   app:
     build: .
     depends_on:
@@ -10,6 +11,7 @@ services:
     stdin_open: true
     tty: true
 
+  # db is in db folder
   db:
     build: db/.
     restart: always
