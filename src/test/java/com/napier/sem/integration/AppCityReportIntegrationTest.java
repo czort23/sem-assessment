@@ -3,7 +3,9 @@ package com.napier.sem.integration;
 import com.napier.sem.config.DatabaseConnection;
 import com.napier.sem.model.City;
 import com.napier.sem.service.CityService;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
@@ -17,7 +19,17 @@ public class AppCityReportIntegrationTest {
     private static CityService cityService;
 
     @BeforeAll
-    static void init() {
+    static void setUpDatabase() {
+        DatabaseConnection.connect();
+    }
+
+    @AfterAll
+    static void tearDownDatabase() {
+        DatabaseConnection.disconnect();
+    }
+
+    @BeforeEach
+    void setUp() {
         // Ensure your DatabaseConnection has already connected in test context
         Connection conn = DatabaseConnection.get();
         assertNotNull(conn, "Database connection should not be null for integration tests");
