@@ -181,12 +181,9 @@ public class MenuSystem {
                                 populationReportService.getDistrictPopulation(
                                         InputHelper.getStringInput("Enter a district: "))))
                 .addOption(6, "Population of a city",
-                        () -> {
-                            String city = InputHelper.getStringInput("Enter a city: ");
-                            System.out.println("==== REPORT START ====");
-                            System.out.println("City population: " + populationReportService.getCityPopulation(city));
-                            System.out.println("==== REPORT END ====");
-                        })
+                        () -> System.out.println("City population: " +
+                                populationReportService.getCityPopulation(
+                                        InputHelper.getStringInput("Enter a city: "))))
                 .addOption(7, "Population breakdown by continent (cities vs non-cities)",
                         () -> OutputHelper.print(populationReportService.getContinentPopulationBreakdown()))
                 .addOption(8, "Population breakdown by region (cities vs non-cities)",
