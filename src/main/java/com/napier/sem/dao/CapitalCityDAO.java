@@ -13,6 +13,9 @@ import java.util.List;
 
 /**
  * Data Access Object responsible for retrieving data from database for capital city reports.
+ *
+ * This class communicates directly with the database and transforms SQL query
+ * results into Java objects (CapitalCity).
  */
 public class CapitalCityDAO {
     /** Database connection. */
@@ -23,24 +26,26 @@ public class CapitalCityDAO {
     }
 
     /**
-     * 1. All capital cities in the world
+     * 1. Retrieves all capital cities in the world.
+     * Uses a predefined SQL query from QueryLoader.
      */
     public List<CapitalCity> getAllCapitalCities() {
-        String sql = QueryLoader.get("all_capital_cities");
+        String sql = QueryLoader.get("all_capital_cities");  // Load SQL from queries.sql
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            return getList(stmt);
+            return getList(stmt);  // Execute and map results
         } catch (SQLException e) {
             throw new DataAccessException("Failed to fetch all capital cities", e);
         }
     }
 
     /**
-     * 2. All capital cities in a continent
+     * 2. Retrieves all capital cities located in a specific continent.
+     * @param continent the name of the continent
      */
     public List<CapitalCity> getCapitalCitiesByContinent(String continent) {
         String sql = QueryLoader.get("all_capital_cities_by_continent");
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, continent);
+            stmt.setString(1, continent); // Replace first "?" in query with the continent name
             return getList(stmt);
         } catch (SQLException e) {
             throw new DataAccessException("Failed to fetch capital cities for continent " + continent, e);
@@ -48,7 +53,8 @@ public class CapitalCityDAO {
     }
 
     /**
-     * 3. All capital cities in a region
+     * 3. Retrieves all capital cities in a given region.
+     * @param region the name of the region
      */
     public List<CapitalCity> getCapitalCitiesByRegion(String region) {
         String sql = QueryLoader.get("all_capital_cities_by_region");
@@ -61,12 +67,13 @@ public class CapitalCityDAO {
     }
 
     /**
-     * 4. Top N capital cities in the world
+     * 4. Retrieves the top N most populated capital cities in the world.
+     * @param n number of results to return
      */
     public List<CapitalCity> getTopNCapitalCitiesInWorld(int n) {
         String sql = QueryLoader.get("top_n_capital_cities");
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, n);
+            stmt.setInt(1, n); // Replace parameter with desired number of cities
             return getList(stmt);
         } catch (SQLException e) {
             throw new DataAccessException("Failed to fetch top " + n + " capital cities (world)", e);
@@ -74,7 +81,9 @@ public class CapitalCityDAO {
     }
 
     /**
-     * 5. Top N capital cities in a continent
+     * 5. Retrieves the top N most populated capital cities in a continent.
+     * @param continent the continent to filter by
+     * @param n number of results to return
      */
     public List<CapitalCity> getTopNCapitalCitiesInContinent(String continent, int n) {
         String sql = QueryLoader.get("top_n_capital_cities_by_continent");
@@ -88,7 +97,9 @@ public class CapitalCityDAO {
     }
 
     /**
-     * 6. Top N capital cities in a region
+     * 6. Retrieves the top N most populated capital cities in a region.
+     * @param region the region to filter by
+     * @param n number of results to return
      */
     public List<CapitalCity> getTopNCapitalCitiesInRegion(String region, int n) {
         String sql = QueryLoader.get("top_n_capital_cities_by_region");
@@ -102,7 +113,11 @@ public class CapitalCityDAO {
     }
 
     /**
-     * Generic result mapper
+     * Helper method that executes the given prepared SQL statement and converts
+     * each result row into a CapitalCity object.
+     *
+     * @param stmt the prepared SQL statement ready to execute
+     * @return a list of CapitalCity objects built from the query results
      */
     private List<CapitalCity> getList(PreparedStatement stmt) throws SQLException {
         List<CapitalCity> cities = new ArrayList<>();

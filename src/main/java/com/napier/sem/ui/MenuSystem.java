@@ -9,11 +9,23 @@ import java.sql.Connection;
 import java.util.Scanner;
 
 /**
- * Represents the main menu class delegating which menu to display
- * and which report to run based on user input.
+ * Represents the central menu controller of the Population Reporting System.
+ * <p>
+ * This class coordinates which menu (country, city, capital city, population, or language)
+ * to display based on user input. It connects the console-based UI layer with the
+ * underlying service layer (which in turn accesses the DAO/database).
+ * </p>
+ * <p>
+ * Each submenu presents a list of report options. When the user selects one,
+ * the corresponding service method is called, data is retrieved from the database,
+ * and output is printed using {@link OutputHelper}.
+ * </p>
  */
 public class MenuSystem {
-    /** Database connection. */
+    // -------------------------------------------------------
+    // Database & Services
+    // -------------------------------------------------------
+    /** Shared database connection instance. */
     private final Connection conn = DatabaseConnection.get();
 
     /** Service for country reports. */
@@ -37,9 +49,13 @@ public class MenuSystem {
     { // instance initializer block
         InputHelper.setScanner(sc);
     }
+    // -------------------------------------------------------
+    // Main Menu
+    // -------------------------------------------------------
 
     /**
-     * Starts the main menu.
+     * Starts the application by displaying the main menu and
+     * delegating to the appropriate submenu based on user selection.
      */
     public void start() {
         // Initialize main menu and add options
@@ -54,8 +70,13 @@ public class MenuSystem {
         mainMenu.run();
     }
 
+    // -------------------------------------------------------
+    // Country Menu
+    // -------------------------------------------------------
+
     /**
-     * Displays the submenu for country reports.
+     * Displays the submenu for all country-based reports.
+     * Each option calls a corresponding method from {@link CountryService}.
      */
     private void countryMenu() {
         // Initialize country menu and add options
@@ -84,8 +105,13 @@ public class MenuSystem {
         menu.run();
     }
 
+    // -------------------------------------------------------
+    // City Menu
+    // -------------------------------------------------------
+
     /**
-     * Displays the submenu for city reports.
+     * Displays the submenu for city-based reports.
+     * Each option interacts with the {@link CityService}.
      */
     private void cityMenu() {
         Menu menu = new Menu("City Reports", sc)
@@ -127,8 +153,13 @@ public class MenuSystem {
         menu.run();
     }
 
+    // -------------------------------------------------------
+    // Capital City Menu
+    // -------------------------------------------------------
+
     /**
      * Displays the submenu for capital city reports.
+     * Each option interacts with the {@link CapitalCityService}.
      */
     private void capitalCityMenu() {
         Menu menu = new Menu("Capital City Reports", sc)
@@ -156,8 +187,14 @@ public class MenuSystem {
         menu.run();
     }
 
+
+    // -------------------------------------------------------
+    // Population Menu
+    // -------------------------------------------------------
+
     /**
-     * Displays the population for country reports.
+     * Displays the submenu for population reports.
+     * Includes total population and breakdown options.
      */
     private void populationMenu() {
         Menu menu = new Menu("Population Reports", sc)
@@ -195,8 +232,12 @@ public class MenuSystem {
         menu.run();
     }
 
+    // -------------------------------------------------------
+    // Language Menu
+    // -------------------------------------------------------
+
     /**
-     * Displays the submenu for language reports.
+     * Displays the submenu for language-based population reports.
      */
     private void languageMenu() {
         // Initialize language menu and add options

@@ -14,31 +14,56 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-
+/**
+ * Unit tests for {@link CityService}.
+ *
+ * <p>These tests validate that {@link CityService} correctly delegates calls to
+ * {@link CityDAO} and returns the expected results. The DAO is mocked to isolate
+ * service-layer logic from the database.</p>
+ *
+ * <p>All test methods follow the pattern:
+ * <ul>
+ *   <li>Arrange – configure mock DAO behavior</li>
+ *   <li>Act – call the service method</li>
+ *   <li>Assert – verify returned data and DAO interactions</li>
+ * </ul>
+ * </p>
+ */
 public class CityServiceTest {
-
+    // -------------------------------------------
+    // Constants for test inputs
+    // -------------------------------------------
     private static final String CONTINENT = "Europe";
     private static final String REGION = "Western Europe";
     private static final String COUNTRY = "United Kingdom";
     private static final String DISTRICT = "England";
-
+    /** Mocked DAO dependency (no real database calls). */
     @Mock
     private CityDAO mockCityDAO;
-
+    /** Service under test. */
     private CityService cityService;
+    // -------------------------------------------
+    // Setup
+    // -------------------------------------------
 
+    /** Initializes Mockito and injects mocks before each test. */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         cityService = new CityService(mockCityDAO);
     }
 
+    // -------------------------------------------
+    // Helper methods
+    // -------------------------------------------
+
+    /** Returns a list containing a single test city: London. */
     private List<City> singleLondon() {
         return Collections.singletonList(
                 new City("London", "United Kingdom", "England", 8000000)
         );
     }
-
+    /** Asserts that the provided list contains only London with correct attributes. */
     private void assertSingleLondon(List<City> cities) {
         assertNotNull(cities);
         assertEquals(1, cities.size());
@@ -49,6 +74,9 @@ public class CityServiceTest {
         assertEquals(8000000, c.getPopulation());
     }
 
+    // -------------------------------------------
+    // Tests
+    // --------------
     @Test
     void testGetAllCities_ReturnsList() {
         when(mockCityDAO.getAllCities()).thenReturn(singleLondon());
@@ -58,6 +86,7 @@ public class CityServiceTest {
         assertSingleLondon(result);
         verify(mockCityDAO).getAllCities();
     }
+
 
     @Test
     void testGetAllCities_Empty() {

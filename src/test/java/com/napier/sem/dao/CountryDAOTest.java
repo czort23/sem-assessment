@@ -17,9 +17,14 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
+/**
+ * Unit tests for {@link CountryDAO}.
+ * These tests verify DAO logic independently from the database
+ * by mocking all JDBC interactions (Connection, PreparedStatement, ResultSet).
+ */
 public class CountryDAOTest {
 
+    // --- SQL query keys used by QueryLoader ---
     private static final String QUERY_ALL = "all_countries";
     private static final String QUERY_BY_CONTINENT = "all_countries_by_continent";
     private static final String QUERY_BY_REGION = "all_countries_by_region";
@@ -27,23 +32,30 @@ public class CountryDAOTest {
     private static final String QUERY_TOP_N_BY_CONTINENT = "top_n_countries_by_continent";
     private static final String QUERY_TOP_N_BY_REGION = "top_n_countries_by_region";
 
+    // --- Sample input data ---
     private final String CONTINENT = "North America";
     private final String REGION = "Northern America";
 
+    // --- Mocked dependencies ---
     @Mock
     private Connection mockConn;
     @Mock
     private PreparedStatement mockStmt;
     @Mock
     private ResultSet mockRs;
+    // DAO under test
     @InjectMocks
     private CountryDAO countryDAO;
 
+    /** Initializes Mockito mocks before each test. */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
+    // --- Mock setup helpers ---
+
+    /** Simulates one country row in the ResultSet (United States). */
     private void mockResultSetForSingleCountry() throws SQLException {
         when(mockRs.next()).thenReturn(true, false);
         when(mockRs.getString("Code")).thenReturn("USA");
@@ -54,18 +66,24 @@ public class CountryDAOTest {
         when(mockRs.getString("Capital")).thenReturn("Washington D.C.");
     }
 
+    /** Prepares a mocked result where one country is returned. */
     private void mockReturnCountryList(String query) throws SQLException {
         when(mockConn.prepareStatement(QueryLoader.get(query))).thenReturn(mockStmt);
         when(mockStmt.executeQuery()).thenReturn(mockRs);
         mockResultSetForSingleCountry();
     }
 
+
+    /** Prepares a mocked result where no rows are returned. */
     private void mockReturnEmptyList(String query) throws SQLException {
         when(mockConn.prepareStatement(QueryLoader.get(query))).thenReturn(mockStmt);
         when(mockStmt.executeQuery()).thenReturn(mockRs);
         when(mockRs.next()).thenReturn(false);
     }
 
+    // --- Assertions helpers ---
+
+    /** Verifies that one valid country (USA) is correctly mapped from ResultSet. */
     private void assertCountryList(List<Country> countries, String query) throws SQLException {
         assertEquals(1, countries.size());
         Country usa = countries.get(0);
@@ -80,6 +98,7 @@ public class CountryDAOTest {
         verify(mockRs, times(2)).next();
     }
 
+    /** Verifies that an empty list result behaves correctly. */
     private void assertEmptyList(List<Country> countries, String query) throws SQLException {
         assertTrue(countries.isEmpty());
         verify(mockConn).prepareStatement(QueryLoader.get(query));
@@ -87,6 +106,8 @@ public class CountryDAOTest {
         verify(mockRs, times(1)).next();
     }
 
+    // --- Tests for "All countries" query ---
+    // --- Tests for filtering by continent/region ---
     @Test
     void testGetAllCountries_ReturnsCountryList() throws SQLException {
         mockReturnCountryList(QUERY_ALL);
@@ -215,6 +236,11 @@ public class CountryDAOTest {
         verify(mockStmt).setInt(2, n);
     }
 
+    // --- Exception handling tests ---
+
+    /**
+     * Ensures all DAO methods wrap SQL exceptions into {@link DataAccessException}.
+     */
     @Test
     void testThrowSQLException() throws SQLException {
         when(mockConn.prepareStatement(anyString())).thenThrow(SQLException.class);

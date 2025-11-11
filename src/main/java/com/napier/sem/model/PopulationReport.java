@@ -1,7 +1,20 @@
 package com.napier.sem.model;
 
+
 /**
- * Represents a population report.
+ * Represents a population report for a given geographic level
+ * (e.g., world, continent, region, country, or district).
+ * <p>
+ * This class stores population details, including the total population,
+ * the population living in cities, and the population living outside cities.
+ * It also provides helper methods to calculate percentages of people
+ * living in and outside urban areas.
+ * </p>
+ * <p>
+ * Objects of this class are typically produced by
+ * {@link com.napier.sem.dao.PopulationReportDAO} and displayed in reports
+ * through {@link com.napier.sem.helper.OutputHelper}.
+ * </p>
  */
 public class PopulationReport {
     /** The name of the continent/region/country etc. */
@@ -15,7 +28,14 @@ public class PopulationReport {
 
     /** The total population of the continent/region/country etc. not living in cities. */
     private long populationNotInCities;
-
+    /**
+     * Constructs a new {@code PopulationReport}.
+     *
+     * @param name                  The name of the area (e.g., "Europe").
+     * @param totalPopulation       The total population of the area.
+     * @param populationInCities    The population living in cities.
+     * @param populationNotInCities The population living outside cities.
+     */
     public PopulationReport(String name, long totalPopulation, long populationInCities, long populationNotInCities) {
         this.name = name;
         this.totalPopulation = totalPopulation;
