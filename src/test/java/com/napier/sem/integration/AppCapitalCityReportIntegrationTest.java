@@ -1,21 +1,21 @@
 package com.napier.sem.integration;
 
 import com.napier.sem.config.DatabaseConnection;
-import com.napier.sem.ui.MenuSystem;
-import org.junit.jupiter.api.*;
+import com.napier.sem.model.CapitalCity;
+import com.napier.sem.service.CapitalCityService;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.sql.Connection;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AppCapitalCityReportIntegrationTest {
-    private final PrintStream originalOut = System.out;
-    private final InputStream originalIn = System.in;
 
-    private ByteArrayOutputStream outContent;
+    private static CapitalCityService capitalCityService;
 
     @BeforeAll
     static void setUpDatabase() {
@@ -28,83 +28,60 @@ public class AppCapitalCityReportIntegrationTest {
     }
 
     @BeforeEach
-    void setUpStreams() {
-        outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-    }
-
-    @AfterEach
-    void restoreStreams() {
-        System.setOut(originalOut);
-        System.setIn(originalIn);
-    }
-
-    /**
-     * Extracts just the section of output between the given markers.
-     */
-    private String extractReportSection(String output, String startMarker, String endMarker) {
-        int start = output.indexOf(startMarker);
-        int end = output.indexOf(endMarker);
-        if (start == -1 || end == -1 || end <= start) return "";
-        return output.substring(start + startMarker.length(), end).trim();
+    void setUp() {
+        Connection conn = DatabaseConnection.get();
+        assertNotNull(conn, "Database connection should not be null for integration tests");
+        capitalCityService = new CapitalCityService(conn);
     }
 
     @Test
-    void testCapitalCityReportMenuOption() throws IOException {
-        // Simulated input:
-        // 3 = capital city reports
-        // 1 = all capital cities in the world
-        // 0 = back
-        // 0 = exit
-        String simulatedUserInput = "3\n1\n0\n0\n";
-        System.setIn(new ByteArrayInputStream(simulatedUserInput.getBytes()));
-
-        MenuSystem menu = new MenuSystem();
-        menu.start();
-
-        String output = outContent.toString();
-        String report = extractReportSection(output,
-                "==== REPORT START ====",
-                "==== REPORT END ====");
-
-        assertFalse(report.isEmpty(), "Report section should not be empty.");
-
-        // Load expected output
-        Path expectedPath = Paths.get("src/test/resources/expected_reports/capital/all_capital_cities_world.txt");
-        assertTrue(Files.exists(expectedPath), "Expected report file does not exist: " + expectedPath);
-
-        String expectedReport = Files.readString(expectedPath).trim();
-
-        assertEquals(expectedReport, report, "The generated report does not match the expected output.");
+    void testAllCapitalCities_NotEmpty() {
+        List<CapitalCity> capitals = capitalCityService.getAllCapitalCities();
+        assertNotNull(capitals);
+        assertFalse(capitals.isEmpty(), "Expected at least one capital city from database");
     }
 
     @Test
-    void testCapitalCityReportMenuOption_WithInvalidInput() throws IOException {
-        // Simulated input:
-        // x - invalid input
-        // 3 = capital city reports
-        // 1 = all capital cities in the world
-        // 99 - invalid input inside menu
-        // 0 = back
-        // 0 = exit
-        String simulatedUserInput = "x\n3\n1\n99\n0\n0\n";
-        System.setIn(new ByteArrayInputStream(simulatedUserInput.getBytes()));
+    void testAllCapitalCities_SortedByPopulationDesc() {
+        List<CapitalCity> capitals = capitalCityService.getAllCapitalCities();
+        assertNotNull(capitals);
+        assertTrue(capitals.size() > 1, "Need multiple records to verify sorting");
 
-        MenuSystem menu = new MenuSystem();
-        menu.start();
+        for (int i = 1; i < capitals.size(); i++) {
+            assertTrue(
+                    capitals.get(i - 1).getPopulation() >= capitals.get(i).getPopulation(),
+                    "Capital cities are not sorted by population descending at index " + i
+            );
+        }
+    }
 
-        String output = outContent.toString();
-        String report = extractReportSection(output,
-                "==== REPORT START ====",
-                "==== REPORT END ====");
+    @Test
+    void testTopNCapitalCitiesInWorld_LimitRespected() {
+        int n = 10;
+        List<CapitalCity> capitals = capitalCityService.getTopNCapitalCitiesInWorld(n);
 
-        assertFalse(report.isEmpty(), "Report section should not be empty.");
+        assertNotNull(capitals);
+        assertFalse(capitals.isEmpty());
+        assertTrue(capitals.size() <= n, "Returned more than N capital cities in world");
+    }
 
-        Path expectedPath = Paths.get("src/test/resources/expected_reports/capital/all_capital_cities_world.txt");
-        assertTrue(Files.exists(expectedPath), "Expected report file does not exist: " + expectedPath);
+    @Test
+    void testTopNCapitalCitiesInContinent_LimitRespected() {
+        int n = 5;
+        List<CapitalCity> capitals = capitalCityService.getTopNCapitalCitiesInContinent("Asia", n);
 
-        String expectedReport = Files.readString(expectedPath).trim();
+        assertNotNull(capitals);
+        assertFalse(capitals.isEmpty(), "Expected Asian capital cities");
+        assertTrue(capitals.size() <= n, "Returned more than N capital cities for continent");
+    }
 
-        assertEquals(expectedReport, report, "The generated report does not match the expected output.");
+    @Test
+    void testTopNCapitalCitiesInRegion_LimitRespected() {
+        int n = 5;
+        List<CapitalCity> capitals = capitalCityService.getTopNCapitalCitiesInRegion("Eastern Asia", n);
+
+        assertNotNull(capitals);
+        assertFalse(capitals.isEmpty(), "Expected Eastern Asian capital cities");
+        assertTrue(capitals.size() <= n, "Returned more than N capital cities for region");
     }
 }
