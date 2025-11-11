@@ -18,8 +18,15 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit tests for {@link LanguageReportDAO}.
+ * These tests use Mockito to mock database behavior and verify:
+ *  - Correct query execution and result mapping
+ *  - Handling of empty results
+ *  - Proper wrapping of SQL exceptions into {@link DataAccessException}
+ */
 public class LanguageReportDAOTest {
-
+    // --- Mocked dependencies ---
     @Mock
     private Connection mockConn;
     @Mock
@@ -28,12 +35,14 @@ public class LanguageReportDAOTest {
     private ResultSet mockRs;
     @InjectMocks
     private LanguageReportDAO languageReportDAO;
-
+    /** Initializes Mockito mocks before each test run. */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
+    // --- Helper setup methods ---
 
+    /** Simulates a ResultSet with a single language record (English). */
     private void mockResultSetForSingleLanguage() throws SQLException {
         when(mockRs.next()).thenReturn(true, false);
         when(mockRs.getString("Language")).thenReturn("English");
@@ -41,6 +50,9 @@ public class LanguageReportDAOTest {
         when(mockRs.getDouble("WorldPercentage")).thenReturn(12.5);
     }
 
+    // --- Tests for valid results ---
+
+    /** Verifies that a valid language record is correctly mapped and returned. */
     @Test
     void testGetLanguagePopulationReport_ReturnsLanguageList() throws SQLException {
         when(mockConn.prepareStatement(QueryLoader.get("language_breakdown"))).thenReturn(mockStmt);
@@ -59,6 +71,9 @@ public class LanguageReportDAOTest {
         verify(mockRs, times(2)).next();
     }
 
+    // --- Tests for empty result sets ---
+
+    /** Ensures an empty result set returns an empty list without errors. */
     @Test
     void testGetLanguagePopulationReport_ReturnsEmptyList() throws SQLException {
         when(mockConn.prepareStatement(QueryLoader.get("language_breakdown"))).thenReturn(mockStmt);
@@ -73,6 +88,11 @@ public class LanguageReportDAOTest {
         verify(mockRs, times(1)).next();
     }
 
+    // --- Tests for exception handling ---
+
+    /**
+     * Ensures SQLExceptions are caught and rethrown as {@link DataAccessException}.
+     */
     @Test
     void testThrowSQLException() throws SQLException {
         when(mockConn.prepareStatement(anyString())).thenThrow(new SQLException());

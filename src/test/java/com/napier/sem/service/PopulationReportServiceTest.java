@@ -13,26 +13,57 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
+/**
+ * Unit tests for {@link PopulationReportService}.
+ *
+ * <p>These tests verify that {@link PopulationReportService} correctly delegates
+ * method calls to {@link PopulationReportDAO}, validates input where appropriate,
+ * and returns consistent results. The DAO is fully mocked to isolate service logic
+ * from database operations.</p>
+ *
+ * <p>Each test follows the Arrange–Act–Assert structure:
+ * <ul>
+ *   <li>Arrange – define DAO mock behavior</li>
+ *   <li>Act – call the service method</li>
+ *   <li>Assert – verify results and DAO interactions</li>
+ * </ul>
+ * </p>
+ */
 public class PopulationReportServiceTest {
 
+    // ------------------------------------------------------------
+    // Dependencies
+    // ------------------------------------------------------------
+
+    /** Mocked DAO dependency to isolate database access. */
     @Mock
     private PopulationReportDAO mockPopulationReportDAO;
 
     private PopulationReportService populationReportService;
+    // ------------------------------------------------------------
+    // Setup
+    // ------------------------------------------------------------
 
+    /** Initializes Mockito mocks before each test. */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         // Inject the mock DAO directly using the proper constructor
         populationReportService = new PopulationReportService(mockPopulationReportDAO);
     }
+    // ------------------------------------------------------------
+    // Helper methods
+    // ------------------------------------------------------------
 
+    /** Returns a mock list of population reports for Europe and Asia. */
     private List<PopulationReport> mockPopulationReports() {
         PopulationReport europe = new PopulationReport("Europe", 741000000, 550000000, 191000000);
         PopulationReport asia = new PopulationReport("Asia", 4600000000L, 3200000000L, 1400000000L);
         return Arrays.asList(europe, asia);
     }
+    // ------------------------------------------------------------
+    // Tests
+    // ------------------------------------------------------------
 
     // ---------- World Population ----------
     @Test

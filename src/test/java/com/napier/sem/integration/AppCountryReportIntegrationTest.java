@@ -10,7 +10,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * Full integration tests for all "Country Reports" menu options.
+ *
+ * These tests:
+ *  - Launch the {@link MenuSystem} and simulate real user input via System.in.
+ *  - Capture console output via System.out and compare it with expected results stored in text files.
+ *  - Validate both valid and invalid input flows, including error handling ("No results found").
+ *
+ * The database connection is real (no mocks) and uses {@link DatabaseConnection} for setup/teardown.
+ * Expected outputs are located in: {@code src/test/resources/expected_reports/country/}.
+ */
 public class AppCountryReportIntegrationTest {
 
     private final PrintStream originalOut = System.out;
@@ -51,7 +61,13 @@ public class AppCountryReportIntegrationTest {
         if (start == -1 || end == -1 || end <= start) return "";
         return output.substring(start + START_MARKER.length(), end).trim();
     }
-
+    /**
+     * Runs the menu system with simulated user input and compares the printed report output
+     * against an expected text file from the resources folder.
+     *
+     * @param simulatedUserInput The keystrokes to simulate (menu navigation, inputs, etc.)
+     * @param expectedPathString The path to the expected report file for comparison
+     */
     private void testMenuOption(String simulatedUserInput, String expectedPathString) throws IOException {
         System.setIn(new ByteArrayInputStream(simulatedUserInput.getBytes()));
 
@@ -72,7 +88,7 @@ public class AppCountryReportIntegrationTest {
         // Compare the actual and expected outputs
         assertEquals(expectedReport, report, "The generated report does not match the expected output.");
     }
-
+    /** Runs the menu system and asserts that "No results found." appears in the output. */
     private void testMenuOption_NoResultFound(String simulatedUserInput) {
         System.setIn(new ByteArrayInputStream(simulatedUserInput.getBytes()));
 

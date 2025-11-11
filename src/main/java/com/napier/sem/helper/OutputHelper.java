@@ -3,34 +3,49 @@ package com.napier.sem.helper;
 import java.util.List;
 
 /**
- * Utility class for handling list output to the console.
+ * Utility class responsible for neatly printing lists of report objects
+ * (e.g., City, Country, PopulationReport) to the console in a consistent format.
+ *
+ * <p>It automatically detects the object type and prints the correct header
+ * and table layout for each type of report.</p>
  */
 public class OutputHelper {
     /**
-     * Outputs a list of objects to the console.
-     * @param list A list of objects.
+     * Prints a formatted list of objects to the console.
+     *
+     * <p>If the list is empty or null, displays "No results found."
+     * Otherwise, determines the object type dynamically and prints
+     * an appropriate report header followed by all entries.</p>
+     *
+     * @param list The list of objects to print (e.g., List&lt;City&gt;, List&lt;Country&gt;).
+     * @param <T>  The generic type of the list elements.
      */
     public static <T> void print(List<T> list) {
+        // Handle empty or null results
         if (list == null || list.isEmpty()) {
             System.out.println("No results found.");
             return;
         }
 
-        // Detect class type
+        // Detect the class of the first element (e.g., City, Country, etc.)
         Class<?> clazz = list.get(0).getClass();
         System.out.println("\n==== REPORT START ====");
-        printHeader(clazz);
-
+        printHeader(clazz); // Print appropriate column headers
+// Print each object (relies on its overridden toString() method)
         list.forEach(System.out::println);
         System.out.println("==== REPORT END ====");
     }
 
     /**
-     * Outputs the correct report header based on the class being passed.
-     * @param clazz The class which info is being output.
+     * Prints the appropriate column headers based on the type of report.
+     *
+     * <p>This method uses a switch expression on the simple class name
+     * to determine which columns to display for each type of model class.</p>
+     *
+     * @param clazz The class type of the list elements.
      */
     private static void printHeader(Class<?> clazz) {
-        // Choose class
+        // Choose header layout depending on the report type
         String header = switch (clazz.getSimpleName()) {
             case "CapitalCity" -> String.format("%-35s %-40s %s",
                     "Name:", "Country:", "Population:");

@@ -12,35 +12,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Data Access Object responsible for retrieving data from database for city reports.
+ /**
+ * DAO (Data Access Object) responsible for retrieving city-related data
+ * from the database and converting it into City objects.
+ *
+ * Each method corresponds to a specific report query, which is defined
+ * externally in queries.sql and loaded via QueryLoader.
+ */
  */
 public class CityDAO {
     /** Database connection. */
     private final Connection conn;
 
+    /** Constructor initializes the DAO with an existing database connection. */
     public CityDAO(Connection conn) {
         this.conn = conn;
     }
 
     /**
-     * All cities in the world by population desc.
+     * 1⃣ Retrieves all cities in the world, sorted by population (descending).
      */
     public List<City> getAllCities() {
-        String sql = QueryLoader.get("all_cities");
+        String sql = QueryLoader.get("all_cities");  // Load the predefined SQL query
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            return getList(stmt);
+            return getList(stmt); // Execute query and map results
         } catch (SQLException e) {
             throw new DataAccessException("Failed to fetch all cities", e);
         }
     }
 
     /**
-     * All cities in a continent by population desc.
+     * 2️. Retrieves all cities within a given continent.
+     * @param continent name of the continent to filter by
      */
     public List<City> getCitiesByContinent(String continent) {
         String sql = QueryLoader.get("all_cities_by_continent");
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, continent);
+            stmt.setString(1, continent); // Set continent parameter (first ? in SQL)
             return getList(stmt);
         } catch (SQLException e) {
             throw new DataAccessException("Failed to fetch cities for continent " + continent, e);
@@ -48,7 +56,8 @@ public class CityDAO {
     }
 
     /**
-     * All cities in a region by population desc.
+     * 3️. Retrieves all cities within a given region.
+     * @param region name of the region
      */
     public List<City> getCitiesByRegion(String region) {
         String sql = QueryLoader.get("all_cities_by_region");
@@ -61,7 +70,8 @@ public class CityDAO {
     }
 
     /**
-     * All cities in a country by population desc.
+     * 4️. Retrieves all cities within a specific country.
+     * @param countryName name of the country
      */
     public List<City> getCitiesByCountry(String countryName) {
         String sql = QueryLoader.get("all_cities_by_country");
@@ -74,7 +84,8 @@ public class CityDAO {
     }
 
     /**
-     * All cities in a district by population desc.
+     * 5. Retrieves all cities within a specific district.
+     * @param district name of the district
      */
     public List<City> getCitiesByDistrict(String district) {
         String sql = QueryLoader.get("all_cities_by_district");
@@ -87,7 +98,8 @@ public class CityDAO {
     }
 
     /**
-     * Top N cities in the world.
+     * 6️. Retrieves the top N most populated cities in the world.
+     * @param n number of cities to return
      */
     public List<City> getTopNCitiesInWorld(int n) {
         String sql = QueryLoader.get("top_n_cities");
@@ -100,7 +112,9 @@ public class CityDAO {
     }
 
     /**
-     * Top N cities in a continent.
+     * 7️. Retrieves the top N most populated cities within a continent.
+     * @param continent continent name
+     * @param n number of results to return
      */
     public List<City> getTopNCitiesInContinent(String continent, int n) {
         String sql = QueryLoader.get("top_n_cities_by_continent");
@@ -114,7 +128,9 @@ public class CityDAO {
     }
 
     /**
-     * Top N cities in a region.
+     * 8️. Retrieves the top N most populated cities within a region.
+     * @param region region name
+     * @param n number of results to return
      */
     public List<City> getTopNCitiesInRegion(String region, int n) {
         String sql = QueryLoader.get("top_n_cities_by_region");
@@ -128,7 +144,9 @@ public class CityDAO {
     }
 
     /**
-     * Top N cities in a country.
+     * 9️. Retrieves the top N most populated cities within a country.
+     * @param countryName name of the country
+     * @param n number of results to return
      */
     public List<City> getTopNCitiesInCountry(String countryName, int n) {
         String sql = QueryLoader.get("top_n_cities_by_country");
@@ -142,7 +160,9 @@ public class CityDAO {
     }
 
     /**
-     * Top N cities in a district.
+     * 10. Retrieves the top N most populated cities within a district.
+     * @param district name of the district
+     * @param n number of results to return
      */
     public List<City> getTopNCitiesInDistrict(String district, int n) {
         String sql = QueryLoader.get("top_n_cities_by_district");
@@ -156,7 +176,11 @@ public class CityDAO {
     }
 
     /**
-     * Runs the prepared statement and builds a list of City objects.
+     * Helper method that executes the given SQL statement and converts
+     * each row in the ResultSet into a City object.
+     *
+     * @param stmt prepared SQL statement ready for execution
+     * @return list of City objects representing the query result
      */
     private List<City> getList(PreparedStatement stmt) throws SQLException {
         List<City> cities = new ArrayList<>();

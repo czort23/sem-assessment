@@ -12,7 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Data Access Object responsible for retrieving data from database for country reports.
+ * DAO (Data Access Object) responsible for retrieving and mapping
+ * country-related data from the database.
+ *
+ * Each method corresponds to a specific report requirement, such as:
+ * - Listing all countries
+ * - Filtering by continent or region
+ * - Getting the top N most populated countries
+ *
+ * The SQL queries are stored externally in {@code queries.sql} and loaded
+ * dynamically through {@link QueryLoader}.
  */
 public class CountryDAO {
     /** Database connection. */
@@ -27,7 +36,7 @@ public class CountryDAO {
      * @return A list of {@link Country} objects.
      */
     public List<Country> getAllCountries() {
-        String sql = QueryLoader.get("all_countries");
+        String sql = QueryLoader.get("all_countries"); // Load SQL text from queries.sql
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             return getList(stmt);
         } catch (SQLException e) {
