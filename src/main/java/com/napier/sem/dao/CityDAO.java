@@ -12,13 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- /**
  * DAO (Data Access Object) responsible for retrieving city-related data
  * from the database and converting it into City objects.
  *
  * Each method corresponds to a specific report query, which is defined
  * externally in queries.sql and loaded via QueryLoader.
- */
  */
 public class CityDAO {
     /** Database connection. */

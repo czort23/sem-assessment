@@ -13,10 +13,6 @@ import java.util.List;
 
 /**
  * Data Access Object responsible for retrieving data from database for capital city reports.
- */
-
-/**
- * DAO (Data Access Object) for retrieving capital city data from the database.
  *
  * This class communicates directly with the database and transforms SQL query
  * results into Java objects (CapitalCity).

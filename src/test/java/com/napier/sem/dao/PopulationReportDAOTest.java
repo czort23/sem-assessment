@@ -62,7 +62,7 @@ public class PopulationReportDAOTest {
         when(mockRs.getLong("total_population")).thenReturn(population);
         when(mockRs.wasNull()).thenReturn(false);
     }
-}
+
 
 /** Simulates an empty ResultSet (no rows returned). */
     private void mockEmptyPopulationResult() throws SQLException {
@@ -194,7 +194,7 @@ public class PopulationReportDAOTest {
     }
 /** Verifies region-level breakdown query maps correctly into {@link PopulationReport} objects. */
 @Test
-    @Test
+
     void testGetRegionPopulationBreakdown_ReturnsList() throws SQLException {
         mockPrepareAndExecute(QUERY_REGION_BREAKDOWN);
         mockBreakdownResultSet();
