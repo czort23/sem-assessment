@@ -1,10 +1,17 @@
 package com.napier.sem.model;
 
+
 /**
- * Represents a country.
+ * Represents a country entity within the world database.
+ * <p>
+ * Each country contains information about its code, name, continent,
+ * region, population, and capital city. This model is populated by
+ * {@link com.napier.sem.dao.CountryDAO} and displayed in reports through
+ * {@link com.napier.sem.helper.OutputHelper}.
+ * </p>
  */
 public class Country {
-    /** The code of the country. */
+    /** The ISO code of the country (e.g., "ESP" for Spain). */
     private String code;
 
     /** The name of the country. */
@@ -45,7 +52,13 @@ public class Country {
     public String getCapital() { return capital; }
     public void setCapital(String capital) { this.capital = capital; }
 
-    // Console-friendly output
+    /**
+     * Returns a formatted string representation of the country,
+     * aligned with the layout used in console reports.
+     *
+     * @return A formatted string with the country's code, name, continent,
+     *         region, population, and capital city.
+     */
     @Override
     public String toString() {
         return String.format("%-10s %-40s %-20s %-30s %-15d %s",

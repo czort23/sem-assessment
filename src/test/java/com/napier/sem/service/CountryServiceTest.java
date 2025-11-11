@@ -13,23 +13,53 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
+/**
+ * Unit tests for {@link CountryService}.
+ *
+ * <p>These tests verify that the service layer correctly delegates method calls
+ * to {@link CountryDAO} and properly handles the returned data. The DAO is mocked
+ * to isolate service logic from the database layer.</p>
+ *
+ * <p>Each test follows a consistent pattern:
+ * <ul>
+ *   <li>Arrange – mock DAO behavior</li>
+ *   <li>Act – call the service method</li>
+ *   <li>Assert – verify result and DAO interactions</li>
+ * </ul>
+ * </p>
+ */
 public class CountryServiceTest {
-
+    // ------------------------------------------------------------
+    // Constants
+    // ------------------------------------------------------------
     private final String CONTINENT = "North America";
     private final String REGION = "Northern America";
+    // ------------------------------------------------------------
+    // Dependencies
+    // ------------------------------------------------------------
 
+    /** Mocked DAO dependency (no database connection used). */
     @Mock
     private CountryDAO mockCountryDAO;
 
     private CountryService countryService;
 
+    // ------------------------------------------------------------
+    // Setup
+    // ------------------------------------------------------------
+
+    /** Initializes Mockito mocks before each test. */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         countryService = new CountryService(mockCountryDAO);
     }
 
+    // ------------------------------------------------------------
+    // Helper methods
+    // ------------------------------------------------------------
+
+    /** Creates a mock result list containing one country (USA). */
     private List<Country> mockResultSetForSingleCountry() {
         Country usa = new Country(
                 "USA",
@@ -52,6 +82,10 @@ public class CountryServiceTest {
         assertEquals(331002651, usa.getPopulation());
         assertEquals("Washington D.C.", usa.getCapital());
     }
+
+    // ------------------------------------------------------------
+    // Tests
+    // ------------------------------------------------------------
 
     @Test
     void testGetAllCountries_ReturnsCountryList() {

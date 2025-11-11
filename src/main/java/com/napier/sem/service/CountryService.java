@@ -7,72 +7,96 @@ import java.sql.Connection;
 import java.util.List;
 
 /**
- * Service layer for handling all operations related to country reports.
+ * Service layer responsible for handling all operations related to country reports.
+ * <p>
+ * This class acts as a bridge between the application logic (e.g., menu system)
+ * and the {@link CountryDAO}, which directly communicates with the database.
+ * </p>
+ * <p>
+ * It provides high-level methods to retrieve lists of countries or top-N
+ * country reports, filtered by world, continent, or region.
+ * </p>
  */
 public class CountryService {
     /** DAO responsible for database access related to countries. */
     private final CountryDAO countryDAO;
 
-    // Constructor for production
+    /**
+     * Constructs a service instance for production use.
+     * Creates an internal {@link CountryDAO} using a database connection.
+     *
+     * @param conn Active database connection.
+     */
     public CountryService(Connection conn) {
         this.countryDAO = new CountryDAO(conn);
     }
 
-    // Constructor for testing (inject DAO)
+    /**
+     * Constructs a service instance for testing.
+     * Allows injecting a mock or pre-configured DAO instance.
+     *
+     * @param countryDAO A predefined {@link CountryDAO} instance (e.g., mock for unit testing).
+     */
     public CountryService(CountryDAO countryDAO) {
         this.countryDAO = countryDAO;
     }
 
     /**
-     * Gets all countries.
-     * @return A list of {@link Country} objects.
+     * Retrieves all countries in the world, ordered by population (descending).
+     *
+     * @return A list of all {@link Country} objects.
      */
     public List<Country> getAllCountries() {
         return countryDAO.getAllCountries();
     }
 
     /**
-     * Gets all countries on the chosen continent.
-     * @param continent The name of a continent the user wants.
-     * @return A list of {@link Country} objects.
+     * Retrieves all countries located within a given continent.
+     *
+     * @param continent The name of the continent (e.g., "Asia").
+     * @return A list of {@link Country} objects from that continent.
      */
     public List<Country> getCountriesByContinent(String continent) {
         return countryDAO.getCountriesByContinent(continent);
     }
 
     /**
-     * Gets all countries on the chosen region.
-     * @param region The name of a region the user wants.
-     * @return A list of {@link Country} objects.
+     * Retrieves all countries located within a given region.
+     *
+     * @param region The name of the region (e.g., "Western Europe").
+     * @return A list of {@link Country} objects from that region.
      */
     public List<Country> getCountriesByRegion(String region) {
         return countryDAO.getCountriesByRegion(region);
     }
 
     /**
-     * Gets top N countries in the world by population.
-     * @param n The number of countries to output.
-     * @return A list of {@link Country} objects.
+     * Retrieves the top N most populated countries in the world.
+     *
+     * @param n The number of top countries to retrieve.
+     * @return A list of the top N {@link Country} objects worldwide.
      */
     public List<Country> getTopNCountriesInWorld(int n) {
         return countryDAO.getTopNCountriesInWorld(n);
     }
 
     /**
-     * Gets top N countries on a continent by population.
-     * @param continent The name of a continent the user wants.
-     * @param n The number of countries to output.
-     * @return A list of {@link Country} objects.
+     * Retrieves the top N most populated countries in a given continent.
+     *
+     * @param continent The name of the continent.
+     * @param n The number of top countries to retrieve.
+     * @return A list of the top N {@link Country} objects in that continent.
      */
     public List<Country> getTopNCountriesInContinent(String continent, int n) {
         return countryDAO.getTopNCountriesInContinent(continent, n);
     }
 
     /**
-     * Gets top N countries on a region by population.
-     * @param region The name of a region the user wants.
-     * @param n The number of countries to output.
-     * @return A list of {@link Country} objects.
+     * Retrieves the top N most populated countries in a given region.
+     *
+     * @param region The name of the region.
+     * @param n The number of top countries to retrieve.
+     * @return A list of the top N {@link Country} objects in that region.
      */
     public List<Country> getTopNCountriesInRegion(String region, int n) {
         return countryDAO.getTopNCountriesInRegion(region, n);

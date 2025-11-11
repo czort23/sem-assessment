@@ -16,14 +16,21 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
+/**
+ * Unit tests for {@link CityDAO}.
+ * These tests use Mockito to simulate database behavior (no real DB connection).
+ * The goal is to ensure DAO methods correctly handle results, parameters, and exceptions.
+ */
 public class CityReportDAOTest {
 
+    // --- Test constants ---
     private static final String CONTINENT = "Europe";
     private static final String REGION = "Western Europe";
     private static final String COUNTRY = "United Kingdom";
     private static final String DISTRICT = "England";
 
+
+    // --- Mocked dependencies ---
     @Mock
     private Connection mockConn;
 
@@ -35,13 +42,15 @@ public class CityReportDAOTest {
 
     @InjectMocks
     private CityDAO cityDAO;
-
+    /** Initialize Mockito before each test. */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
+    // --- Helper methods for mocking behavior ---
 
+    /** Simulates one city row in ResultSet (London). */
     private void mockSingleCityRow() throws SQLException {
         when(mockRs.next()).thenReturn(true, false);
         when(mockRs.getString("City")).thenReturn("London");
@@ -49,19 +58,20 @@ public class CityReportDAOTest {
         when(mockRs.getString("District")).thenReturn("England");
         when(mockRs.getInt("Population")).thenReturn(8000000);
     }
-
+    /** Prepares mock statement and result for a valid list of cities. */
     private void mockReturnCityList() throws SQLException {
         when(mockConn.prepareStatement(anyString())).thenReturn(mockStmt);
         when(mockStmt.executeQuery()).thenReturn(mockRs);
         mockSingleCityRow();
     }
 
+    /** Prepares mock result for an empty list (no cities returned). */
     private void mockReturnEmptyList() throws SQLException {
         when(mockConn.prepareStatement(anyString())).thenReturn(mockStmt);
         when(mockStmt.executeQuery()).thenReturn(mockRs);
         when(mockRs.next()).thenReturn(false);
     }
-
+    /** Verifies that one city ("London") is returned correctly. */
     private void assertSingleLondon(List<City> cities) throws SQLException {
         assertNotNull(cities);
         assertEquals(1, cities.size());
@@ -76,7 +86,7 @@ public class CityReportDAOTest {
         verify(mockStmt).executeQuery();
         verify(mockRs, times(2)).next();
     }
-
+    /** Verifies an empty list result behaves as expected. */
     private void assertEmpty(List<City> cities) throws SQLException {
         assertNotNull(cities);
         assertTrue(cities.isEmpty());
@@ -85,7 +95,7 @@ public class CityReportDAOTest {
         verify(mockRs, times(1)).next();
     }
 
-    // All Cities
+    // --- Tests for retrieving all cities ---
 
     @Test
     void testGetAllCities_ReturnsList() throws SQLException {
@@ -208,7 +218,13 @@ public class CityReportDAOTest {
         verify(mockStmt).setInt(2, n);
     }
 
-    // Exceptions
+
+    // --- Exception handling tests ---
+
+    /**
+     * Verifies that SQL exceptions are correctly wrapped
+     * into a {@link DataAccessException} across all DAO methods.
+     */
 
     @Test
     void testSQLExceptionWrappedInDataAccessException() throws SQLException {

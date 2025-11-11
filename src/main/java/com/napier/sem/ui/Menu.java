@@ -3,7 +3,16 @@ package com.napier.sem.ui;
 import java.util.*;
 
 /**
- * Represents a simple menu displayed to the user.
+ * Represents a reusable console-based menu that displays a list of options to the user.
+ * <p>
+ * Each option is represented by a {@link MenuOption} object containing:
+ * a numeric key, a short description, and an associated action ({@link Runnable}).
+ * </p>
+ * <p>
+ * The menu runs in a loop, continuously displaying options and executing
+ * the corresponding action based on the user’s input, until an exit option (key 0)
+ * is selected.
+ * </p>
  */
 public class Menu {
     /** The title of the menu displayed to the user. */
@@ -14,18 +23,32 @@ public class Menu {
 
     /** Scanner instance for reading user input. */
     private final Scanner sc;
-
+    /**
+     * Constructs a new menu instance.
+     *
+     * @param title The title of the menu (e.g., "Main Menu").
+     * @param sc    The {@link Scanner} instance used for user input.
+     */
     public Menu(String title, Scanner sc) {
         this.title = title;
         this.sc = sc;
     }
 
     /**
-     * Adds a new {@link MenuOption} to this menu.
-     * @param key The numeric key used to identify this option.
-     * @param description The description of the option displayed to the user.
-     * @param action The action executed when this option is selected.
-     * @return this {@code Menu} instance (for method chaining).
+     * Adds a new {@link MenuOption} to the menu.
+     * <p>
+     * Each menu option consists of:
+     * <ul>
+     *   <li>A numeric key (e.g., 1, 2, 3, 0 for Exit)</li>
+     *   <li>A description shown to the user</li>
+     *   <li>An action to execute when selected</li>
+     * </ul>
+     * </p>
+     *
+     * @param key         The numeric key associated with the menu option.
+     * @param description A short label describing what the option does.
+     * @param action      The {@link Runnable} action executed when the user selects this option.
+     * @return This {@code Menu} instance (allows method chaining).
      */
     public Menu addOption(int key, String description, Runnable action) {
         options.add(new MenuOption(key, description, action));
@@ -33,7 +56,16 @@ public class Menu {
     }
 
     /**
-     * Outputs this menu (in a loop) and reads user input.
+     * Displays the menu and handles user interaction.
+     * <p>
+     * This method:
+     * <ol>
+     *   <li>Prints the menu title and options to the console.</li>
+     *   <li>Waits for user input.</li>
+     *   <li>Validates the input and executes the matching option’s action.</li>
+     *   <li>Continues looping until the user selects the exit option (key 0).</li>
+     * </ol>
+     * </p>
      */
     public void run() {
         while (true) {
