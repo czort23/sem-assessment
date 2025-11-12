@@ -17,14 +17,23 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class CapitalCityDAOTest {
 
+/**
+ * Tests for CapitalCityDAO using mocked database objects.
+ */
+public class CapitalCityDAOTest {
+// Mocked database connection.
     @Mock
     private Connection mockConn;
+
+    // Mocked PreparationStatement used to simulate SQL execution.
     @Mock
     private PreparedStatement mockStmt;
+
+    // Mocked ResultSet to simulate data returned from queries.
     @Mock
     private ResultSet mockRs;
+
 
     private CapitalCityDAO capitalCityDAO;
 
@@ -34,6 +43,7 @@ public class CapitalCityDAOTest {
         capitalCityDAO = new CapitalCityDAO(mockConn);
     }
 
+    // Mocks a single capital city record.
     private void mockCityResult() throws SQLException {
         when(mockRs.next()).thenReturn(true, false);
         when(mockRs.getString("City")).thenReturn("London");
@@ -41,6 +51,7 @@ public class CapitalCityDAOTest {
         when(mockRs.getInt("Population")).thenReturn(8908081);
     }
 
+    //Test getting all capital cities (normal case).
     @Test
     void testGetAllCapitalCities() throws SQLException {
         when(mockConn.prepareStatement(QueryLoader.get("all_capital_cities"))).thenReturn(mockStmt);
@@ -60,6 +71,7 @@ public class CapitalCityDAOTest {
         verify(mockRs, times(2)).next();
     }
 
+    // Test when query returns no results.
     @Test
     void testGetAllCapitalCitiesEmptyList() throws SQLException {
         when(mockConn.prepareStatement(QueryLoader.get("all_capital_cities"))).thenReturn(mockStmt);
@@ -74,12 +86,14 @@ public class CapitalCityDAOTest {
         verify(mockRs, times(1)).next();
     }
 
+    // Test that SQL errors are wrapped in DataAccessException.
     @Test
     void testSQLExceptionWrapped() throws SQLException {
         when(mockConn.prepareStatement(anyString())).thenThrow(new SQLException());
         assertThrows(DataAccessException.class, () -> capitalCityDAO.getAllCapitalCities());
     }
 
+    // Test getting capital cities by continent.
     @Test
     void testGetCapitalCitiesByContinent() throws SQLException {
         when(mockConn.prepareStatement(QueryLoader.get("all_capital_cities_by_continent"))).thenReturn(mockStmt);

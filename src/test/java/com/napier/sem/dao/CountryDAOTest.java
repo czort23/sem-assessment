@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 /**
  * Unit tests for {@link CountryDAO}.
- * These tests verify DAO logic independently from the database
+ * These tests verify DAO logic independently of the database
  * by mocking all JDBC interactions (Connection, PreparedStatement, ResultSet).
  */
 public class CountryDAOTest {

@@ -13,20 +13,27 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
+// Integration tests for CapitalCityService using a real database connection.
 public class AppCapitalCityReportIntegrationTest {
 
     private static CapitalCityService capitalCityService;
 
+
+    // Connects to the database before running all tests.
     @BeforeAll
     static void setUpDatabase() {
         DatabaseConnection.connect();
     }
 
+
+    //Disconnects from the database after all tests.
     @AfterAll
     static void tearDownDatabase() {
         DatabaseConnection.disconnect();
     }
 
+    // Creates the service with an active database connection.
     @BeforeEach
     void setUp() {
         Connection conn = DatabaseConnection.get();
@@ -34,6 +41,7 @@ public class AppCapitalCityReportIntegrationTest {
         capitalCityService = new CapitalCityService(conn);
     }
 
+    // Checks that all capital cities can be retrieved.
     @Test
     void testAllCapitalCities_NotEmpty() {
         List<CapitalCity> capitals = capitalCityService.getAllCapitalCities();
@@ -41,6 +49,7 @@ public class AppCapitalCityReportIntegrationTest {
         assertFalse(capitals.isEmpty(), "Expected at least one capital city from database");
     }
 
+    // Verifies that cities are sorted in descending population order.
     @Test
     void testAllCapitalCities_SortedByPopulationDesc() {
         List<CapitalCity> capitals = capitalCityService.getAllCapitalCities();
@@ -55,6 +64,7 @@ public class AppCapitalCityReportIntegrationTest {
         }
     }
 
+    // Checks that the world top N query returns no more than N results.
     @Test
     void testTopNCapitalCitiesInWorld_LimitRespected() {
         int n = 10;
@@ -65,6 +75,7 @@ public class AppCapitalCityReportIntegrationTest {
         assertTrue(capitals.size() <= n, "Returned more than N capital cities in world");
     }
 
+    // Checks that continent-filtered top N results are valid.
     @Test
     void testTopNCapitalCitiesInContinent_LimitRespected() {
         int n = 5;
@@ -75,6 +86,7 @@ public class AppCapitalCityReportIntegrationTest {
         assertTrue(capitals.size() <= n, "Returned more than N capital cities for continent");
     }
 
+    // Checks that region-filtered top N results are valid.
     @Test
     void testTopNCapitalCitiesInRegion_LimitRespected() {
         int n = 5;
