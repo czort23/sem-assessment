@@ -14,6 +14,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+// Unit tests for CapitalCityService using a mocked DAO.
 public class CapitalServiceTest {
 
     private final String CONTINENT = "Europe";
@@ -24,12 +25,14 @@ public class CapitalServiceTest {
 
     private CapitalCityService capitalCityService;
 
+    // Set up mocks before each test.
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         capitalCityService = new CapitalCityService(mockCapitalCityDAO);
     }
 
+    // Creates a mock capital city record.
     private List<CapitalCity> mockSingleCapitalCity() {
         CapitalCity london = new CapitalCity(
                 "London",
@@ -39,6 +42,7 @@ public class CapitalServiceTest {
         return Arrays.asList(london);
     }
 
+    // Checks values for one sample city (London).
     private void assertCapitalCityList(List<CapitalCity> cities) {
         assertEquals(1, cities.size());
         CapitalCity london = cities.get(0);
@@ -79,7 +83,7 @@ public class CapitalServiceTest {
     }
 
 
-    // 2. By continent
+    // 2. Capital cities by continent
     @Test
     void testGetCapitalCitiesByContinent_ReturnsCapitalCityList() {
         when(mockCapitalCityDAO.getCapitalCitiesByContinent(CONTINENT)).thenReturn(mockSingleCapitalCity());
@@ -111,7 +115,7 @@ public class CapitalServiceTest {
     }
 
 
-    // 3. By region
+    // 3. Capital cities by region.
     @Test
     void testGetCapitalCitiesByRegion_ReturnsCapitalCityList() {
         when(mockCapitalCityDAO.getCapitalCitiesByRegion(REGION)).thenReturn(mockSingleCapitalCity());
