@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Capital City Reports</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+
+    <p>List of reports:</p>
+    <a href="city.html"> City Reports</a> <br>
+    <a href="capitalCity.html"> Capital City Reports</a> <br>
+    <a href="country.html"> Country Reports</a> <br>
+    <a href="population.html"> Population Reports</a> <br>
+    <a href="language.html"> Language Reports</a> <br>
+
+    <h2>Capital City Reports</h2>
+
+    <p>Select a capital city report type:</p>
+
+    <select id="reportType">
+        <option value="all_capitals">All Capital Cities (World)</option>
+        <option value="capitals_by_continent">Capital Cities by Continent</option>
+        <option value="capitals_by_region">Capital Cities by Region</option>
+        <option value="top_n_capitals_world">Top N Capital Cities (World)</option>
+        <option value="top_n_capitals_continent">Top N Capital Cities by Continent</option>
+        <option value="top_n_capitals_region">Top N Capital Cities by Region</option>
+    </select>
+
+    <br><br>
+
+    <input type="text" id="param1" placeholder="Continent or Region">
+
+    <input type="number" id="numberInput" placeholder="N (Top N Only)">
+    <br><br>
+
+    <button onclick="loadCapitals()">Load Report</button>
+
+    <br><br>
+
+    <div class="showData">Waiting...</div>
+
+</div>
+
+</body>
+
+<script>
+    function loadCapitals() {
+
+        let type = document.getElementById("reportType").value;
+        let p1 = document.getElementById("param1").value;
+        let n = document.getElementById("numberInput").value;
+
+        // Use Nginx proxy path
+        let base = "/app/";
+        let URL = "";
+
+        switch (type) {
+
+            // ------------ BASIC LISTS ----------------
+            case "all_capitals":
+                URL = base + "capitals/all";
+                break;
+
+            case "capitals_by_continent":
+                URL = base + "capitals/continent?name=" + encodeURIComponent(p1);
+                break;
+
+            case "capitals_by_region":
+                URL = base + "capitals/region?name=" + encodeURIComponent(p1);
+                break;
+
+            // ------------ TOP-N LISTS ----------------
+            case "top_n_capitals_world":
+                URL = base + "capitals/top?n=" + n;
+                break;
+
+            case "top_n_capitals_continent":
+                URL = base + "capitals/top/continent?name=" + encodeURIComponent(p1) + "&n=" + n;
+                break;
+
+            case "top_n_capitals_region":
+                URL = base + "capitals/top/region?name=" + encodeURIComponent(p1) + "&n=" + n;
+                break;
+        }
+
+        console.log("Fetching: " + URL);
+
+        $.getJSON(URL, function (data) {
+
+            if (!Array.isArray(data) || data.length === 0) {
+                $(".showData").html("<p>No results found.</p>");
+                return;
+            }
+
+            // Extract columns
+            let col = [];
+            for (let i = 0; i < data.length; i++) {
+                for (let key in data[i]) {
+                    if (col.indexOf(key) === -1) col.push(key);
+                }
+            }
+
+            // Build table
+            let table = document.createElement("table");
+
+            let headerRow = table.insertRow(-1);
+            for (let i = 0; i < col.length; i++) {
+                let th = document.createElement("th");
+                th.innerHTML = col[i];
+                headerRow.appendChild(th);
+            }
+
+            for (let i = 0; i < data.length; i++) {
+                let row = table.insertRow(-1);
+                for (let j = 0; j < col.length; j++) {
+                    let cell = row.insertCell(-1);
+                    cell.innerHTML = data[i][col[j]];
+                }
+            }
+
+            $(".showData").html(table);
+        })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                console.error("Request failed:", textStatus, errorThrown);
+                $(".showData").html(
+                    "<p>Error: " + jqXHR.status + " " + jqXHR.statusText + "</p>"
+                );
+            });
+    }
+</script>
+
+</html>

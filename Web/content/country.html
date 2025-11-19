@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Country Reports</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <p>List of reports:</p>
+    <a href="city.html"> City Reports</a> <br>
+    <a href="capitalCity.html"> Capital City Reports</a> <br>
+    <a href="country.html"> Country Reports</a> <br>
+    <a href="population.html"> Population Reports</a> <br>
+    <a href="language.html"> Language Reports</a> <br>
+
+    <h2>Country Reports</h2>
+
+    <p>Select a country report type:</p>
+
+    <select id="reportType">
+        <option value="all_countries">All Countries (World)</option>
+        <option value="countries_by_continent">Countries by Continent</option>
+        <option value="countries_by_region">Countries by Region</option>
+        <option value="top_n_countries">Top N Countries (World)</option>
+        <option value="top_n_countries_by_continent">Top N Countries by Continent</option>
+        <option value="top_n_countries_by_region">Top N Countries by Region</option>
+    </select>
+
+    <br><br>
+
+    <input type="text" id="param1" placeholder="Continent / region">
+
+    <input type="number" id="numberInput" placeholder="N (Number)">
+    <br><br>
+    <button onclick="loadCountries()">Load Report</button>
+
+    <br><br>
+
+    <div class="showData">Waiting...</div>
+</div>
+
+</body>
+
+<script>
+    function loadCountries() {
+        let type = document.getElementById("reportType").value;
+        let p1   = document.getElementById("param1").value;
+        let n    = document.getElementById("numberInput").value;
+
+        // Use nginx proxy to reach the app
+        let base = "/app/";
+        let URL  = "";
+
+        switch (type) {
+            case "all_countries":
+                URL = base + "countries/all";
+                break;
+
+            case "countries_by_continent":
+                URL = base + "countries/continent?name=" + encodeURIComponent(p1);
+                break;
+
+            case "countries_by_region":
+                URL = base + "countries/region?name=" + encodeURIComponent(p1);
+                break;
+
+            case "top_n_countries":
+                URL = base + "countries/top?n=" + n;
+                break;
+
+            case "top_n_countries_by_continent":
+                URL = base + "countries/top/continent?name=" + encodeURIComponent(p1) + "&n=" + n;
+                break;
+
+            case "top_n_countries_by_region":
+                URL = base + "countries/top/region?name=" + encodeURIComponent(p1) + "&n=" + n;
+                break;
+        }
+
+        console.log("Fetching: " + URL);
+
+        $.getJSON(URL, function (data) {
+            if (!Array.isArray(data) || data.length === 0) {
+                $(".showData").html("<p>No results found.</p>");
+                return;
+            }
+
+            // Collect column names
+            let col = [];
+            for (let i = 0; i < data.length; i++) {
+                for (let key in data[i]) {
+                    if (col.indexOf(key) === -1) {
+                        col.push(key);
+                    }
+                }
+            }
+
+            // Create table
+            let table = document.createElement("table");
+
+            // Header row
+            let tr = table.insertRow(-1);
+            for (let i = 0; i < col.length; i++) {
+                let th = document.createElement("th");
+                th.innerHTML = col[i];
+                tr.appendChild(th);
+            }
+
+            // Data rows
+            for (let i = 0; i < data.length; i++) {
+                tr = table.insertRow(-1);
+                for (let j = 0; j < col.length; j++) {
+                    let tabCell = tr.insertCell(-1);
+                    tabCell.innerHTML = data[i][col[j]];
+                }
+            }
+
+            $(".showData").html(table);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.error("Request failed:", textStatus, errorThrown);
+            $(".showData").html(
+                "<p>Error: " + jqXHR.status + " " + jqXHR.statusText + "</p>"
+            );
+        });
+    }
+</script>
+
+</html>
