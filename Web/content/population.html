@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Population Reports</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <p>List of reports:</p>
+    <a href="city.html"> City Reports</a> <br>
+    <a href="capitalCity.html"> Capital City Reports</a> <br>
+    <a href="country.html"> Country Reports</a> <br>
+    <a href="population.html"> Population Reports</a> <br>
+    <a href="language.html"> Language Reports</a> <br>
+
+    <h2>Population Reports</h2>
+
+    <p>Select a population report type:</p>
+
+    <select id="reportType">
+        <option value="world_population">World Population</option>
+        <option value="population_by_continent">Population of a Continent</option>
+        <option value="population_by_region">Population of a Region</option>
+        <option value="population_by_country">Population of a Country</option>
+        <option value="population_by_district">Population of a District</option>
+        <option value="population_by_city">Population of a City</option>
+        <option value="continent_population_summary">Population Breakdown by Continent</option>
+        <option value="region_population_summary">Population Breakdown by Region</option>
+        <option value="country_population_summary">Population Breakdown by Country</option>
+    </select>
+
+    <br><br>
+
+    <input type="text" id="param1" placeholder="Continent / Region / Country / District / City">
+
+    <br><br>
+    <button onclick="loadPopulation()">Load Report</button>
+
+    <br><br>
+
+    <div class="showData">Waiting...</div>
+</div>
+
+<script>
+    function loadPopulation() {
+        const type = document.getElementById("reportType").value;
+        const p1   = document.getElementById("param1").value;
+
+        const base = "/app/";
+        let URL = "";
+
+        switch (type) {
+            // -------- Simple totals ----------
+            case "world_population":
+                URL = base + "population/world";
+                break;
+
+            case "population_by_continent":
+                URL = base + "population/continent?name=" + encodeURIComponent(p1);
+                break;
+
+            case "population_by_region":
+                URL = base + "population/region?name=" + encodeURIComponent(p1);
+                break;
+
+            case "population_by_country":
+                URL = base + "population/country?name=" + encodeURIComponent(p1);
+                break;
+
+            case "population_by_district":
+                URL = base + "population/district?name=" + encodeURIComponent(p1);
+                break;
+
+            case "population_by_city":
+                URL = base + "population/city?name=" + encodeURIComponent(p1);
+                break;
+
+            // -------- Breakdown tables ----------
+            case "continent_population_summary":
+                URL = base + "population/breakdown/continent";
+                break;
+
+            case "region_population_summary":
+                URL = base + "population/breakdown/region";
+                break;
+
+            case "country_population_summary":
+                URL = base + "population/breakdown/country";
+                break;
+        }
+
+        console.log("Fetching:", URL);
+
+        $.getJSON(URL, function (data) {
+            // If backend returns a single object, normalise to array
+            if (!Array.isArray(data)) {
+                data = [data];
+            }
+
+            if (!data || data.length === 0) {
+                $(".showData").html("<p>No results found.</p>");
+                return;
+            }
+
+            // Collect column names
+            const col = [];
+            for (let i = 0; i < data.length; i++) {
+                for (let key in data[i]) {
+                    if (col.indexOf(key) === -1) {
+                        col.push(key);
+                    }
+                }
+            }
+
+            const table = document.createElement("table");
+
+            // Header
+            let tr = table.insertRow(-1);
+            for (let i = 0; i < col.length; i++) {
+                const th = document.createElement("th");
+                th.innerHTML = col[i];
+                tr.appendChild(th);
+            }
+
+            // Rows
+            for (let i = 0; i < data.length; i++) {
+                tr = table.insertRow(-1);
+                for (let j = 0; j < col.length; j++) {
+                    const cell = tr.insertCell(-1);
+                    cell.innerHTML = data[i][col[j]];
+                }
+            }
+
+            $(".showData").html(table);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.error("Request failed:", textStatus, errorThrown);
+            $(".showData").html(
+                "<p>Error: " + jqXHR.status + " " + jqXHR.statusText + "</p>"
+            );
+        });
+    }
+</script>
+
+</body>
+</html>
