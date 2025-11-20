@@ -5,6 +5,7 @@ import com.napier.sem.config.DatabaseConnection;
 import com.napier.sem.model.City;
 import com.napier.sem.model.CapitalCity;
 import com.napier.sem.model.Country;
+import com.napier.sem.model.PopulationReport;
 import com.napier.sem.service.CityService;
 import com.napier.sem.service.CapitalCityService;
 import com.napier.sem.service.CountryService;
@@ -12,7 +13,9 @@ import com.napier.sem.service.LanguageReportService;
 import com.napier.sem.service.PopulationReportService;
 
 import java.sql.Connection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static spark.Spark.*;
 
@@ -37,21 +40,18 @@ public class RestServer {
         LanguageReportService languageService = new LanguageReportService(conn);
         PopulationReportService populationService = new PopulationReportService(conn);
 
-        // Simple health check
+        // Health check
         get("/ping", (req, res) -> "OK");
 
         // ------------------------------------------------------------------
-        // CITY REPORT ENDPOINTS
+        // CITY REPORT
         // ------------------------------------------------------------------
-
-        // /app/cities/all
         get("/cities/all", (req, res) -> {
             res.type("application/json");
             List<City> cities = cityService.getAllCities();
             return gson.toJson(cities);
         });
 
-        // /app/cities/continent
         get("/cities/continent", (req, res) -> {
             res.type("application/json");
             String name = req.queryParams("name");
@@ -62,7 +62,6 @@ public class RestServer {
             return gson.toJson(cityService.getCitiesByContinent(name));
         });
 
-        // /app/cities/region
         get("/cities/region", (req, res) -> {
             res.type("application/json");
             String name = req.queryParams("name");
@@ -73,7 +72,6 @@ public class RestServer {
             return gson.toJson(cityService.getCitiesByRegion(name));
         });
 
-        // /app/cities/country?name=United%20Kingdom
         get("/cities/country", (req, res) -> {
             res.type("application/json");
             String name = req.queryParams("name");
@@ -84,7 +82,6 @@ public class RestServer {
             return gson.toJson(cityService.getCitiesByCountry(name));
         });
 
-        // /app/cities/district
         get("/cities/district", (req, res) -> {
             res.type("application/json");
             String name = req.queryParams("name");
@@ -95,14 +92,12 @@ public class RestServer {
             return gson.toJson(cityService.getCitiesByDistrict(name));
         });
 
-        // /app/cities/top
         get("/cities/top", (req, res) -> {
             res.type("application/json");
             int n = parseN(req.queryParams("n"), 10);
             return gson.toJson(cityService.getTopNCitiesInWorld(n));
         });
 
-        // /app/cities/top/continent
         get("/cities/top/continent", (req, res) -> {
             res.type("application/json");
             String name = req.queryParams("name");
@@ -116,7 +111,6 @@ public class RestServer {
             return gson.toJson(cityService.getTopNCitiesInContinent(name, n));
         });
 
-        // /app/cities/top/region
         get("/cities/top/region", (req, res) -> {
             res.type("application/json");
             String name = req.queryParams("name");
@@ -130,7 +124,6 @@ public class RestServer {
             return gson.toJson(cityService.getTopNCitiesInRegion(name, n));
         });
 
-        // /app/cities/top/country
         get("/cities/top/country", (req, res) -> {
             res.type("application/json");
             String name = req.queryParams("name");
@@ -144,7 +137,6 @@ public class RestServer {
             return gson.toJson(cityService.getTopNCitiesInCountry(name, n));
         });
 
-        // /app/cities/top/district
         get("/cities/top/district", (req, res) -> {
             res.type("application/json");
             String name = req.queryParams("name");
@@ -159,17 +151,14 @@ public class RestServer {
         });
 
         // ------------------------------------------------------------------
-        // CAPITAL CITY REPORT ENDPOINTS
+        // CAPITAL CITY REPORT
         // ------------------------------------------------------------------
-
-        // /app/capitals/all
         get("/capitals/all", (req, res) -> {
             res.type("application/json");
             List<CapitalCity> capitals = capitalCityService.getAllCapitalCities();
             return gson.toJson(capitals);
         });
 
-        // /app/capitals/continent
         get("/capitals/continent", (req, res) -> {
             res.type("application/json");
             String continent = req.queryParams("name");
@@ -180,7 +169,6 @@ public class RestServer {
             return gson.toJson(capitalCityService.getCapitalCitiesByContinent(continent));
         });
 
-        // /app/capitals/region
         get("/capitals/region", (req, res) -> {
             res.type("application/json");
             String region = req.queryParams("name");
@@ -191,14 +179,12 @@ public class RestServer {
             return gson.toJson(capitalCityService.getCapitalCitiesByRegion(region));
         });
 
-        // /app/capitals/top
         get("/capitals/top", (req, res) -> {
             res.type("application/json");
             int n = parseN(req.queryParams("n"), 10);
             return gson.toJson(capitalCityService.getTopNCapitalCitiesInWorld(n));
         });
 
-        // /app/capitals/top/continent
         get("/capitals/top/continent", (req, res) -> {
             res.type("application/json");
             String continent = req.queryParams("name");
@@ -210,7 +196,6 @@ public class RestServer {
             return gson.toJson(capitalCityService.getTopNCapitalCitiesInContinent(continent, n));
         });
 
-        // /app/capitals/top/region
         get("/capitals/top/region", (req, res) -> {
             res.type("application/json");
             String region = req.queryParams("name");
@@ -223,17 +208,14 @@ public class RestServer {
         });
 
         // ------------------------------------------------------------------
-        // COUNTRY REPORT ENDPOINTS
+        // COUNTRY REPORT
         // ------------------------------------------------------------------
-
-        // /app/countries/all
         get("/countries/all", (req, res) -> {
             res.type("application/json");
             List<Country> countries = countryService.getAllCountries();
             return gson.toJson(countries);
         });
 
-        // /app/countries/continent
         get("/countries/continent", (req, res) -> {
             res.type("application/json");
             String continent = req.queryParams("name");
@@ -244,7 +226,6 @@ public class RestServer {
             return gson.toJson(countryService.getCountriesByContinent(continent));
         });
 
-        // /app/countries/region
         get("/countries/region", (req, res) -> {
             res.type("application/json");
             String region = req.queryParams("name");
@@ -255,14 +236,12 @@ public class RestServer {
             return gson.toJson(countryService.getCountriesByRegion(region));
         });
 
-        // /app/countries/top
         get("/countries/top", (req, res) -> {
             res.type("application/json");
             int n = parseN(req.queryParams("n"), 10);
             return gson.toJson(countryService.getTopNCountriesInWorld(n));
         });
 
-        // /app/countries/top/continent
         get("/countries/top/continent", (req, res) -> {
             res.type("application/json");
             String continent = req.queryParams("name");
@@ -274,7 +253,6 @@ public class RestServer {
             return gson.toJson(countryService.getTopNCountriesInContinent(continent, n));
         });
 
-        // /app/countries/top/region
         get("/countries/top/region", (req, res) -> {
             res.type("application/json");
             String region = req.queryParams("name");
@@ -289,24 +267,26 @@ public class RestServer {
         // ------------------------------------------------------------------
         // LANGUAGE REPORT ENDPOINT
         // ------------------------------------------------------------------
-
-        // /app/languages
         get("/languages", (req, res) -> {
             res.type("application/json");
             return gson.toJson(languageService.getLanguagePopulationReport());
         });
 
         // ------------------------------------------------------------------
-        // POPULATION REPORT ENDPOINTS
+        // POPULATION REPORT
         // ------------------------------------------------------------------
 
-        // /app/population/world
         get("/population/world", (req, res) -> {
             res.type("application/json");
-            return gson.toJson(populationService.getWorldPopulation());
+            Long pop = populationService.getWorldPopulation();
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("scope", "world");
+            map.put("population", pop);
+
+            return gson.toJson(map);
         });
 
-        // /app/population/continent
         get("/population/continent", (req, res) -> {
             res.type("application/json");
             String name = req.queryParams("name");
@@ -314,10 +294,17 @@ public class RestServer {
                 res.status(400);
                 return "{\"error\":\"Missing parameter 'name' (continent)\"}";
             }
-            return gson.toJson(populationService.getContinentPopulation(name));
+
+            Long pop = populationService.getContinentPopulation(name);
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("scope", "continent");
+            map.put("name", name);
+            map.put("population", pop);
+
+            return gson.toJson(map);
         });
 
-        // /app/population/region
         get("/population/region", (req, res) -> {
             res.type("application/json");
             String name = req.queryParams("name");
@@ -325,10 +312,17 @@ public class RestServer {
                 res.status(400);
                 return "{\"error\":\"Missing parameter 'name' (region)\"}";
             }
-            return gson.toJson(populationService.getRegionPopulation(name));
+
+            Long pop = populationService.getRegionPopulation(name);
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("scope", "region");
+            map.put("name", name);
+            map.put("population", pop);
+
+            return gson.toJson(map);
         });
 
-        // /app/population/country
         get("/population/country", (req, res) -> {
             res.type("application/json");
             String name = req.queryParams("name");
@@ -336,10 +330,17 @@ public class RestServer {
                 res.status(400);
                 return "{\"error\":\"Missing parameter 'name' (country)\"}";
             }
-            return gson.toJson(populationService.getCountryPopulation(name));
+
+            Long pop = populationService.getCountryPopulation(name);
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("scope", "country");
+            map.put("name", name);
+            map.put("population", pop);
+
+            return gson.toJson(map);
         });
 
-        // /app/population/district
         get("/population/district", (req, res) -> {
             res.type("application/json");
             String name = req.queryParams("name");
@@ -347,10 +348,17 @@ public class RestServer {
                 res.status(400);
                 return "{\"error\":\"Missing parameter 'name' (district)\"}";
             }
-            return gson.toJson(populationService.getDistrictPopulation(name));
+
+            Long pop = populationService.getDistrictPopulation(name);
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("scope", "district");
+            map.put("name", name);
+            map.put("population", pop);
+
+            return gson.toJson(map);
         });
 
-        // /app/population/city
         get("/population/city", (req, res) -> {
             res.type("application/json");
             String name = req.queryParams("name");
@@ -358,29 +366,37 @@ public class RestServer {
                 res.status(400);
                 return "{\"error\":\"Missing parameter 'name' (city)\"}";
             }
-            return gson.toJson(populationService.getCityPopulation(name));
+
+            Long pop = populationService.getCityPopulation(name);
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("scope", "city");
+            map.put("name", name);
+            map.put("population", pop);
+
+            return gson.toJson(map);
         });
 
-        // /app/population/breakdown/continent
         get("/population/breakdown/continent", (req, res) -> {
             res.type("application/json");
-            return gson.toJson(populationService.getContinentPopulationBreakdown());
+            List<PopulationReport> list = populationService.getContinentPopulationBreakdown();
+            return gson.toJson(list);
         });
 
-        // /app/population/breakdown/region
         get("/population/breakdown/region", (req, res) -> {
             res.type("application/json");
-            return gson.toJson(populationService.getRegionPopulationBreakdown());
+            List<PopulationReport> list = populationService.getRegionPopulationBreakdown();
+            return gson.toJson(list);
         });
 
-        // /app/population/breakdown/country
         get("/population/breakdown/country", (req, res) -> {
             res.type("application/json");
-            return gson.toJson(populationService.getCountryPopulationBreakdown());
+            List<PopulationReport> list = populationService.getCountryPopulationBreakdown();
+            return gson.toJson(list);
         });
 
         // ------------------------------------------------------------------
-        // Error handler
+        // ERROR HANDLER
         // ------------------------------------------------------------------
         exception(Exception.class, (e, req, res) -> {
             e.printStackTrace();
@@ -399,7 +415,7 @@ public class RestServer {
         }
         try {
             int n = Integer.parseInt(nParam);
-            return n > 0 ? n : defaultN;
+            return (n > 0) ? n : defaultN;
         } catch (NumberFormatException e) {
             return defaultN;
         }

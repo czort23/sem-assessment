@@ -26,3 +26,5 @@ services:
       - app
     ports:
       - "80:80"
+    volumes:
+      - ./web/content:/usr/share/nginx/html:ro

@@ -3,9 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Language Reports</title>
-
-    <link rel="stylesheet" href="style.css">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <style>
+        th, td, p, input
+        {
+            font-size: 14px;
+        }
+        table, th, td
+        {
+            border: solid 1px #DDD;
+            border-collapse: collapse;
+            padding: 2px 3px;
+            text-align: center;
+        }
+        th
+        {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 
@@ -20,11 +35,17 @@
     <h2>Language Reports</h2>
 
     <p>
-        This report shows the number of people who speak
-        Chinese, English, Hindi, Spanish, and Arabic, plus their % of world population.
+        This report shows the number of people who speak the following languages from the greatest number to smallest, including the percentage of the world population:
+        <ul>
+            <li>Chinese</li>
+            <li>English</li>
+            <li>Hindi</li>
+            <li>Spanish</li>
+            <li>Arabic</li>
+        </ul>
     </p>
 
-    <button onclick="loadLanguageReport()">Load Language Report</button>
+    <button onclick="loadLanguageReport()">Load Report</button>
 
     <br><br>
 
@@ -59,7 +80,7 @@
             let tr = table.insertRow(-1);
             for (let i = 0; i < col.length; i++) {
                 const th = document.createElement("th");
-                th.innerHTML = col[i];
+                th.innerHTML = col[i].charAt(0).toUpperCase() + col[i].slice(1);
                 tr.appendChild(th);
             }
 

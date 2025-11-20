@@ -3,9 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Capital City Reports</title>
-
-    <link rel="stylesheet" href="style.css">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <style>
+        th, td, p, input
+        {
+            font-size: 14px;
+        }
+        table, th, td
+        {
+            border: solid 1px #DDD;
+            border-collapse: collapse;
+            padding: 2px 3px;
+            text-align: center;
+        }
+        th
+        {
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
@@ -34,7 +49,7 @@
 
     <br><br>
 
-    <input type="text" id="param1" placeholder="Continent or Region">
+    <input type="text" id="param1" placeholder="Continent/Region">
 
     <input type="number" id="numberInput" placeholder="N (Top N Only)">
     <br><br>
@@ -112,7 +127,7 @@
             let headerRow = table.insertRow(-1);
             for (let i = 0; i < col.length; i++) {
                 let th = document.createElement("th");
-                th.innerHTML = col[i];
+                th.innerHTML = col[i].charAt(0).toUpperCase() + col[i].slice(1);
                 headerRow.appendChild(th);
             }
 
