@@ -20,11 +20,11 @@ services:
 
 
   web:
-    build: ./web
+    build: ./Web
     container_name: sem-web
     depends_on:
       - app
     ports:
       - "80:80"
     volumes:
-      - ./web/content:/usr/share/nginx/html:ro
+      - ./Web/content:/usr/share/nginx/html:ro
