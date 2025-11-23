@@ -20,7 +20,7 @@ services:
 
 
   web:
-    build: ./web
+    build: ./Web
     container_name: sem-web
     depends_on:
       - app
