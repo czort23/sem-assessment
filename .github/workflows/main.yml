@@ -1,5 +1,9 @@
 name: A workflow for SEM App
-on: push
+
+on:
+  push:
+    branches:
+      - develop
 
 jobs:
   UnitTests:
@@ -78,8 +82,7 @@ jobs:
       - name: Package and Run docker compose
         run: |
           mvn package -DskipTests
-          docker compose up -d db
-          docker compose ps
+          docker compose up --abort-on-container-exit
 
       - name: Deploy Release
         uses: marvinpinto/action-automatic-releases@latest
