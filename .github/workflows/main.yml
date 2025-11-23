@@ -20,8 +20,6 @@ jobs:
       - name: Unit Tests
         run: mvn -Dtest="com.napier.sem.dao.*Test,com.napier.sem.service.*Test" test
 
-
-
   IntegrationTests:
     name: Integration Tests
     runs-on: ubuntu-22.04
@@ -50,7 +48,6 @@ jobs:
             -e MYSQL_DATABASE=world \
             db
 
-          # Let MySQL initialise
           sleep 25
 
       - name: Integration Tests
@@ -62,8 +59,6 @@ jobs:
           docker stop sem-db || true
           docker rm sem-db || true
           docker image rm db || true
-
-
 
   build:
     name: Build and Start Using docker-compose
@@ -83,8 +78,14 @@ jobs:
       - name: Package and Run docker compose
         run: |
           mvn package -DskipTests
-
           docker compose up -d db
-
           docker compose ps
 
+      - name: Deploy Release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          automatic_release_tag: "latest"
+          files: |
+            ./target/*.jar
