@@ -24,6 +24,7 @@ jobs:
       - name: Unit Tests
         run: mvn -Dtest="com.napier.sem.dao.*Test,com.napier.sem.service.*Test" test
 
+
   IntegrationTests:
     name: Integration Tests
     runs-on: ubuntu-22.04
@@ -51,7 +52,6 @@ jobs:
             -e MYSQL_ROOT_PASSWORD=example \
             -e MYSQL_DATABASE=world \
             db
-
           sleep 25
 
       - name: Integration Tests
@@ -64,8 +64,9 @@ jobs:
           docker rm sem-db || true
           docker image rm db || true
 
+
   build:
-    name: Build and Start Using docker-compose
+    name: Build Docker Images
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -79,10 +80,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Package and Run docker compose
-        run: |
-          mvn package -DskipTests
-          docker compose up --abort-on-container-exit
+      - name: Package JAR (skip tests)
+        run: mvn package -DskipTests
+
+      - name: Build Docker images (compose)
+        run: docker compose build
 
       - name: Deploy Release
         uses: marvinpinto/action-automatic-releases@latest
