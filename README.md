@@ -20,4 +20,4 @@ If all tests pass:
 - Release appears under: https://github.com/czort23/sem-assessment/releases
 
 ### 3. Run Locally
-Use Docker Compose:
+Use Docker Compose
