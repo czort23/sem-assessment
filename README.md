@@ -5,25 +5,19 @@
 - Release [![Releases](https://img.shields.io/github/release/czort23/sem-assessment/all.svg?style=flat-square)](https://github.com/czort23/sem-assessment/releases)
 
 
+## Deployment Steps (Simple Explanation)
 
-## Deployment Steps
-
-Our project uses GitHub Actions to automatically test, build, and release the application.
-
-### 1. CI Pipeline (Automatically on push to `develop`)
-- **Unit tests** run using Maven.
-- **Integration tests** run using a temporary MySQL Docker container.
-- **Docker images** for the app, database, and web server are built using `docker compose build`.
+### 1. CI Pipeline
+Every push to `develop` runs:
+- Unit tests (Maven)
+- Integration tests using a temporary MySQL Docker container
+- Docker image build for db, app, and web services
 
 ### 2. Automated Release
-After all tests pass:
-- Maven builds a single runnable JAR (`sem-assessment.jar`).
-- GitHub Actions uploads the JAR as a **release asset**.
-- A new release is created automatically under:  
-  https://github.com/czort23/sem-assessment/releases
+If all tests pass:
+- Maven creates the runnable JAR (`sem-assessment.jar`)
+- GitHub Actions uploads it as a release asset
+- Release appears under: https://github.com/czort23/sem-assessment/releases
 
-### 3. Run the project locally
-You can run the full system using:
-
-```bash
-docker compose up
+### 3. Run Locally
+Use Docker Compose:
